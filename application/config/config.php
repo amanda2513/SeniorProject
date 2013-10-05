@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'URL';
+$config['base_url']	= '';
 
 /*
 |--------------------------------------------------------------------------
@@ -224,7 +224,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = '5V9ZIiJzo4HmRes0k2dwFcHs1jK0ze9v';
 
 /*
 |--------------------------------------------------------------------------

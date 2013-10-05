@@ -18,7 +18,7 @@
 <body>
 	
 	<div class="page-header" id="wsu_header">
-		<a href="http://www.wayne.edu"><img src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
+		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
 		<div class="wsu_sign_in_container pull-right">
 		<!-- This will be the actual button when it's implemented
 			<button class="btn btn-small wsu_btn" id="sign_out_btn">Sign Out</button>
@@ -92,39 +92,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Example</td>
-					<td>Joe</td>
-					<td>Some Title</td>
-					<td>Poster</td>
-					<td>1/3</td>
-					<td>
-						<button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>
-					</td>
-				</tr>
-				<tr>
-					<td>Student</td>
-					<td>Sam</td>
-					<td>Different Title</td>
-					<td>Oral Presentation</td>
-					<td>3/3</td>
-					<td>
-						<button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>
-					</td>
-				</tr>
-				<tr>
-					<td>Graduate</td>
-					<td>Some</td>
-					<td>Unique Title</td>
-					<td>Oral Presentation</td>
-					<td>2/3</td>
-					<td>
-						<button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>
-					</td>
-				</tr>
+				<?php
+					$result = mysql_query("SELECT * FROM participants");
+					while ($row = mysql_fetch_array($result)){
+						echo '<tr>';
+						echo '<td>' . $row['PLN'] . '</td>';
+						echo '<td>' . $row['PFN'] . '</td>';
+						echo '<td>' . $row['PPT'] . '</td>';
+						echo '<td>' . $row['PPC'] . '</td>';
+						echo '<td>' . $row['PJC'] . '</td>';
+						echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
+						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
+					}
+				?>
 			</tbody>
 		</table>
 	</div>

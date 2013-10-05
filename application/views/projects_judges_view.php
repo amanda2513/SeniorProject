@@ -18,7 +18,7 @@
 <body>
 		
 	<div class="page-header" id="wsu_header">
-		<a href="http://www.wayne.edu"><img src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
+		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
 		<div class="wsu_sign_in_container pull-right">
 		<!-- This will be the actual button when it's implemented
 			<button class="btn btn-small wsu_btn" id="sign_out_btn">Sign Out</button>
@@ -91,37 +91,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>Imajudge</td>
-					<td>John</td>
-					<td>Computer Science</td>
-					<td>Some Title</td>
-					<td>Poster</td>
-					<td>
-						<button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>
-					</td>
-				</tr>
-				<tr>
-					<td>Smith</td>
-					<td>Forinstance</td>
-					<td>English</td>
-					<td>Different Title</td>
-					<td>Oral Presentation</td>
-					<td>
-						<button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>
-					</td>
-				</tr>
-				<tr>
-					<td>Teacherguy</td>
-					<td>Mister</td>
-					<td>Physics</td>
-					<td>Unique Title</td>
-					<td>Oral Presentation</td>
-					<td>
-						<button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>
-					</td>
+					
 				</tr>
 			</tbody>
 		</table>
