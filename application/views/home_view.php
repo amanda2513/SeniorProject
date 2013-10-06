@@ -14,8 +14,9 @@
 		<div class="wsu_sign_in_container pull-right">
 			<?php 
 				if(validation_errors() != false){
-					echo '<div class="alert" id="wsu_alert">
-					<strong>Could not validate your credentials.</div>';
+					//echo '<div class="alert" id="wsu_alert">
+					//<strong>Could not validate your credentials.</div>';
+					echo validation_errors();
 	  			}
 	  			else{
 	  				echo '<p class="text-center" id="wsu_login_message">Already Registered?</p>';
@@ -27,7 +28,7 @@
 				echo form_open('GERSS/login_validation', $form_attributes);
 
 				$username_attributes = 
-					array('name'=>'username','class'=>'input-medium','id'=>'username','placeholder'=>'Username');
+					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');
 				echo form_input($username_attributes);
 			
 				$password_attributes = 
@@ -38,7 +39,7 @@
 					array('name'=>'signin','class'=>'btn btn-small wsu_btn','id'=>'sign_in_btn');
 				echo form_submit($submit_attributes,'Sign In');
 
-				echo form_close();
+				
 			?>
 		</div>
 	</div>

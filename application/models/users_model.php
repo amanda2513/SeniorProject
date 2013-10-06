@@ -29,7 +29,7 @@ class Users_model extends CI_Model {
 			'key' => $key
 		);
 
-		$query = $this->db->insert('temp_users',$data);
+		$query = $this->db->insert('users',$data);
 		if($query){
 			return true;
 		}
