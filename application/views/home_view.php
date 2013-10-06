@@ -25,7 +25,7 @@
 			<?php 
 				$form_attributes = 
 					array('name'=>'signinform','class'=>'form-inline pull-right','id'=>'sign_in_form');
-				echo form_open('GERSS/login_validation', $form_attributes);
+				echo form_open('gerss/login_validation', $form_attributes);
 
 				$username_attributes = 
 					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');

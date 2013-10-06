@@ -30,10 +30,10 @@
 			<?php 
 				$form_attributes = 
 					array('name'=>'signinform','class'=>'form-inline pull-right','id'=>'sign_in_form');
-				echo form_open('GERSS/home', $form_attributes);
+				echo form_open('gerss/login_validation', $form_attributes);
 
 				$username_attributes = 
-					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Username');
+					array('name'=>'username','class'=>'input-medium','id'=>'username','placeholder'=>'Username');
 				echo form_input($username_attributes);
 			
 				$password_attributes = 
@@ -65,7 +65,7 @@
 			<?php 
 				$form_attributes = 
 					array('name'=>'registration_form','id'=>'registration_form');
-				echo form_open('GERSS/registration_validation', $form_attributes);
+				echo form_open('gerss/registration_validation', $form_attributes);
 
 				$username_attributes = 
 					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');
