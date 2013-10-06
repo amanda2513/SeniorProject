@@ -10,8 +10,8 @@ class GERSS extends CI_Controller {
 
 //-----------------HOME PAGE---------------------//
 	public function home(){
-		$title['title']="WSU-GERSS :: Home";
-		$this->load->view('home_view',$title);
+		$data['title']="WSU-GERSS :: Home";
+		$this->load->view('home_view',$data);
 	}
 
 	public function login_validation(){
@@ -28,8 +28,8 @@ class GERSS extends CI_Controller {
 			redirect('GERSS/projects_participants');
 		}
 		else {
-			$title['title']="WSU-GERSS :: Home";
-			$this->load->view('home_view',$title);
+			$data['title']="WSU-GERSS :: Home";
+			$this->load->view('home_view',$data);
 		}
 	}
 
@@ -40,8 +40,8 @@ class GERSS extends CI_Controller {
 
 //---------------REGISTRATION-------------------------------//
 	public function registration() {
-		$title['title']="WSU-GERSS :: Register";
-		$this->load->view('registration_view',$title);
+		$data['title']="WSU-GERSS :: Register";
+		$this->load->view('registration_view',$data);
 	}
 
 	public function registration_validation(){
@@ -81,8 +81,8 @@ class GERSS extends CI_Controller {
 			}	else echo "problem adding to database.";
 
 		} else{
-			$title['title']="WSU-GERSS :: Register";
-			$this->load->view('registration_view',$title);
+			$data['title']="WSU-GERSS :: Register";
+			$this->load->view('registration_view',$data);
 		}
 	}
 
@@ -90,9 +90,9 @@ class GERSS extends CI_Controller {
 	public function projects_participants(){
 		//if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');		
-
-			$title['title']="WSU-GERSS :: Projects";
-			$this->load->view('projects_participants_view',$title);
+			$data['participant']=$this->users_model->getUsers("participants");
+			$data['title']="WSU-GERSS :: Projects";
+			$this->load->view('projects_participants_view',$data);
 		//}
 		//else{
 		//	redirect('GERSS/home');
@@ -101,8 +101,8 @@ class GERSS extends CI_Controller {
 
 	public function projects_judges(){
 		if ($this->session->userdata('is_logged_in')){
-			$title['title']="WSU-GERSS :: Projects";
-			$this->load->view('projects_judges_view',$title);
+			$data['title']="WSU-GERSS :: Projects";
+			$this->load->view('projects_judges_view',$data);
 		}
 		else{
 			redirect('GERSS/home');

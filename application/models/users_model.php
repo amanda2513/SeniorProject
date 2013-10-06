@@ -39,6 +39,8 @@ class Users_model extends CI_Model {
 	}
 
 	public function getUsers($table_name){
-		return mysql_query("SELECT * FROM $table_name");
+		$sql = $this->db->query('SELECT * FROM '.$table_name);
+		return $sql -> result();
+
 	}
 }

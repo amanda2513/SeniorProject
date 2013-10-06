@@ -93,14 +93,13 @@
 			</thead>
 			<tbody>
 				<?php
-					$result = mysql_query("SELECT * FROM participants");
-					while ($row = mysql_fetch_array($result)){
+					foreach($participant as $row){
 						echo '<tr>';
-						echo '<td>' . $row['PLN'] . '</td>';
-						echo '<td>' . $row['PFN'] . '</td>';
-						echo '<td>' . $row['PPT'] . '</td>';
-						echo '<td>' . $row['PPC'] . '</td>';
-						echo '<td>' . $row['PJC'] . '</td>';
+						echo '<td>' . $row->PLN . '</td>';
+						echo '<td>' . $row->PFN . '</td>';
+						echo '<td>' . $row->PPT . '</td>';
+						echo '<td>' . $row->PPC . '</td>';
+						echo '<td>' . $row->PJC . '</td>';
 						echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
 						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
 					}
