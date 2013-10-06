@@ -33,7 +33,7 @@
 				echo form_open('gerss/login_validation', $form_attributes);
 
 				$username_attributes = 
-					array('name'=>'username','class'=>'input-medium','id'=>'username','placeholder'=>'Username');
+					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');
 				echo form_input($username_attributes);
 			
 				$password_attributes = 
