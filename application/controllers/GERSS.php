@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class GERSS extends CI_Controller {
+class Gerss extends CI_Controller {
 
 	public function index()
 	{
@@ -25,7 +25,7 @@ class GERSS extends CI_Controller {
 			$this->load->model('users_model');
 			$this->users_model->set_user_session();
 
-			redirect('GERSS/projects_participants');
+			redirect('gerss/projects_participants');
 		}
 		else {
 			$data['title']="WSU-GERSS :: Home";
@@ -104,13 +104,13 @@ class GERSS extends CI_Controller {
 			$this->load->view('projects_judges_view',$data);
 		}
 		else{
-			redirect('GERSS/home');
+			redirect('gerss/home');
 		}
 	}
 
 //---------------Multiple Pages----------------------------//
 	public function logout(){
 		$this->session->sess_destroy();
-		redirect('GERSS/home');
+		redirect('gerss/home');
 	}
 }
