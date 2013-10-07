@@ -51,7 +51,8 @@
 				<p class="text-center">The event will be held [DATE] from [START - END] in [LOCATION]. We hope many will join us for this wonderful event!</p>
 			</br>
 			<div class="reg_button_container">
-				<a class="btn btn-lg wsu_btn" id="participant_register_btn" href="./registration"><strong>Participants</strong></br>Register Here</a>
+             	<a class="btn btn-lg wsu_btn" id="participant_register_btn" href='<?php echo base_url(). "gerss/registration"; ?>'><strong>Participants</strong></br>Register Here</a>
+				<!--<a class="btn btn-lg wsu_btn" id="participant_register_btn" href="./registration"><strong>Participants</strong></br>Register Here</a> -->
 				<a class="btn btn-lg wsu_btn" id="judge_register_btn" href="#"><strong>Judges</strong></br>Register Here</a>
 			</div>
 	</div>
