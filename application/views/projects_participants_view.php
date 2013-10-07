@@ -95,11 +95,12 @@
 				<?php
 					foreach($participant as $row){
 						echo '<tr>';
-						echo '<td>' . $row->PLN . '</td>';
-						echo '<td>' . $row->PFN . '</td>';
-						echo '<td>' . $row->PPT . '</td>';
-						echo '<td>' . $row->PPC . '</td>';
-						echo '<td>' . $row->PJC . '</td>';
+						
+						echo '<td>' . $row->pln . '</td>';
+						echo '<td>' . $row->pfn . '</td>';
+						echo '<td>' . $row->ppt . '</td>';
+						echo '<td>' . $row->pjc . '</td>';
+						echo '<td>' . $row->ppc . '</td>';
 						echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
 						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
 					}
