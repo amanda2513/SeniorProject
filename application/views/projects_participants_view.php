@@ -24,7 +24,9 @@
 			<button class="btn btn-small wsu_btn" id="sign_out_btn">Sign Out</button>
 		This next link is just for navigation
 		-->
-			<a class="btn btn-small wsu_btn" id="sign_out_btn" href="home">Sign Out</a>
+			
+            
+            <a class="btn btn-small wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
 		</div>
 	</div>
 
