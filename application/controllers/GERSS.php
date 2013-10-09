@@ -28,8 +28,10 @@ class Gerss extends CI_Controller {
 			redirect('gerss/projects_participants');
 		}
 		else {
+			$redirect= $this->session->set_flashdata('errors', validation_errors());
+
 			$data['title']="WSU-GERSS :: Home";
-			$this->load->view('home_view',$data);
+			redirect($this->input->post('redirect'));
 		}
 	}
 
@@ -46,10 +48,22 @@ class Gerss extends CI_Controller {
 
 	public function registration_validation(){
 		$this->load->library('form_validation');
-		
+
+		$this->form_validation->set_rules('type','Type','required|trim');
+		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
+		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
+		$this->form_validation->set_rules('department','Department','required|trim');
 		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim');
 		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
+
+		if($this->input->post('type')=='participant')
+		{
+			$this->form_validation->set_rules('category', 'Project Category', 'required|trim');
+			$this->form_validation->set_rules('project_title', 'Project Title', 'required|trim');
+			$this->form_validation->set_rules('project_desc', 'Project Description', 'required|trim');
+		}
+
 		
 		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
@@ -73,33 +87,37 @@ class Gerss extends CI_Controller {
 			if ($this->users_model->add_temp_user($key)){
 				//if ($this->email->send()){
 					//echo "The email has been sent!";
+				$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
+				redirect($this->input->post('redirect'));
 
-					echo "This needs to automatically redirect to home with success message";
-					echo '<a href="./home">Home</a>';
 				//}	else echo "could not send the email.";
 			}	else echo "problem adding to database.";
 
-		} else{
-			$data['title']="WSU-GERSS :: Register";
-			$this->load->view('registration_view',$data);
+		}
+		else{
+			
+			$redirect=$this->session->set_flashdata('errors',validation_errors());
+			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
 		}
 	}
 
 //----------------PROJECTS PAGE-----------------------------//
 	public function projects_participants(){
-		//if ($this->session->userdata('is_logged_in')){
+		if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');		
-			$data['participant']=$this->users_model->getUsers("participants");
+			$data['participant']=$this->users_model->getAllUserType("users","participant");
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_participants_view',$data);
-		//}
-		//else{
-		//	redirect('GERSS/home');
-		//}
+		}
+		else{
+			redirect('gerss/home');
+		}
 	}
 
 	public function projects_judges(){
 		if ($this->session->userdata('is_logged_in')){
+			$this->load->model('users_model');		
+			$data['judge']=$this->users_model->getAllUserType("users","judge");
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_judges_view',$data);
 		}

@@ -12,10 +12,13 @@ light-blue: #CEDDDB
 teal: #006666
 burgandy: #8B2145
 --------------------------**/
-
+html{
+	height:100%;
+}
 body{
 	background: #fff url('../img/main-gradient-bg.gif') left top repeat-x;
 	font-family: Arial;
+	height:100%;
 }
 
 /**------HEADER------**/
@@ -134,13 +137,12 @@ body{
 
 /*------------BUTTONS, HERO UNIT, H2, PAGINATION - (MULTIPLE PAGES)------------*/
 .wsu_hero_unit{
-	margin-top:30px;
-	margin-right:10%;
-	margin-left:10%;
-	padding-top: 25px;
-	padding-bottom: 30px;
+	margin-top:2%;
+	margin-bottom:2%;
+	margin-right:5%;
+	margin-left:5%;
 	background: #f7f7f7;
-	min-height: 80%;
+	min-height: 65%;
 	-moz-box-shadow: .5px .5px .5px .5px #777;
 	-webkit-box-shadow: .5px .5px 1px .5px #777;
 	box-shadow:  .5px .5px 1px .5px #777;
@@ -182,7 +184,17 @@ background-color: #e6e6e6;
 	padding-top:1%;
 	padding-bottom: 1%;
 	font-size: .85em;
-
 	line-height:50%;
 }
-/*-------------------------------------------------*/
+/*----------------REGISTRATION---------------------*/
+ #registration{
+	width: 70%;
+	margin-left:15%;
+	margin-right:15%;
+}
+
+#registration_type{
+	width:30%;
+	margin-left:33%;
+	margin-right:37%;
+}

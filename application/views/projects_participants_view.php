@@ -20,12 +20,6 @@
 	<div class="page-header" id="wsu_header">
 		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
 		<div class="wsu_sign_in_container pull-right">
-		<!-- This will be the actual button when it's implemented
-			<button class="btn btn-small wsu_btn" id="sign_out_btn">Sign Out</button>
-		This next link is just for navigation
-		-->
-			
-            
             <a class="btn btn-small wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
 		</div>
 	</div>
@@ -48,6 +42,14 @@
 
 	<div class="hero-unit wsu_hero_unit">
 		
+		<!-- Output user session details-->
+		<?php
+			/*echo "<pre>";
+			print_r($this->session->all_userdata());
+			echo "</pre>";*/
+		?>
+
+
 		<h2 class="wsu_h2 text-center">Graduate Exhibition Registration &amp; Scoring System</h2>
 		
 		<form class="form-search">
@@ -83,6 +85,10 @@
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
+						Project Description
+						<i class="pull-right icon-resize-vertical"></i>
+					</th>
+					<th>
 						Project Category
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
@@ -95,16 +101,22 @@
 			</thead>
 			<tbody>
 				<?php
-					foreach($participant as $row){
-						echo '<tr>';
-						
-						echo '<td>' . $row->pln . '</td>';
-						echo '<td>' . $row->pfn . '</td>';
-						echo '<td>' . $row->ppt . '</td>';
-						echo '<td>' . $row->pjc . '</td>';
-						echo '<td>' . $row->ppc . '</td>';
-						echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-						<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
+					if(isset($participant)){
+						foreach($participant as $row){
+							echo '<tr>';
+							
+							echo '<td>' . $row->lastname . '</td>';
+							echo '<td>' . $row->firstname . '</td>';
+							echo '<td>' . $row->title . '</td>';
+							echo '<td>' . $row->description . '</td>';
+							echo '<td>' . $row->category . '</td>';
+							echo '<td>' . $row->judgecount . '</td>';
+							echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
+							<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
+						}
+					}
+					else{
+						echo "No results found.";
 					}
 				?>
 			</tbody>
