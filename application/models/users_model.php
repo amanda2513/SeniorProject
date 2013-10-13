@@ -4,7 +4,7 @@ class Users_model extends CI_Model {
 
 	public function set_user_session(){
 		$email = $this->input->post('email');
-		$user_type = $this->getSingleUserType('users',$email);
+		$user_type = $this->get_single_user_type('users',$email);
 
 		$data = array (
 				'email'=>$email,
@@ -50,19 +50,19 @@ class Users_model extends CI_Model {
 	}
 
 	//Returns all users from table specified in variable table_name
-	public function getAllUsers($table_name){
+	public function get_all_users($table_name){
 		$sql = $this->db->query('SELECT * FROM '.$table_name);
 		return $sql -> result();
 	}
 
 	//Returns all users that are the type (participant, judge, admin, score_entry) specified in user_type from the table specified in table_name
-	public function getAllUserType($table_name,$user_type){
+	public function get_all_user_type($table_name,$user_type){
 		$sql = $this->db->get_where($table_name,array('usertype'=>$user_type));
 		return $sql -> result();
 	}
 
 	//Returns a user's type (participant, judge, admin, score_entry) based on their email.
-	public function getSingleUserType($table_name,$user_email){
+	public function get_single_user_type($table_name,$user_email){
 		$sql = $this->db->get_where($table_name,array('email'=>$user_email));
 		$user_record = $sql -> row();
 		return $user_record -> usertype;

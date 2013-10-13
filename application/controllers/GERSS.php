@@ -105,7 +105,7 @@ class Gerss extends CI_Controller {
 	public function projects_participants(){
 		if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');		
-			$data['participant']=$this->users_model->getAllUserType("users","participant");
+			$data['participant']=$this->users_model->get_all_user_type("users","participant");
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_participants_view',$data);
 		}
@@ -117,7 +117,7 @@ class Gerss extends CI_Controller {
 	public function projects_judges(){
 		if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');		
-			$data['judge']=$this->users_model->getAllUserType("users","judge");
+			$data['judge']=$this->users_model->get_all_user_type("users","judge");
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_judges_view',$data);
 		}
