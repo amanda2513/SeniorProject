@@ -166,7 +166,7 @@ body{
 @media (max-width:1200px){
 	.wsu_hero_unit{
 		margin:0;
-		padding:0;
+		padding:5%;
 		min-height:100%;
 	}
 }
