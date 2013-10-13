@@ -53,7 +53,7 @@ class Gerss extends CI_Controller {
 		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim');
 		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
 
@@ -72,42 +72,22 @@ class Gerss extends CI_Controller {
 			//generate a random key
 			$key = md5(uniqid());
 
-			$this->load->library('email', array('mailtype'=>'html'));
+		//	$this->load->library('email', array('mailtype'=>'html'));
 			$this->load->model('users_model');
 			
 		//	$this->email->from('info@gradproject.dynu.com', "Plamen");
-		$email = $this->input->post('email');
-		//$this->email->to($this->input->post('email'));
+		//	$this->email->to($this->input->post('email'));
 		//	$this->email->subject("Confirm your account.");
 			
-			$message = "<p>Thank you for signing up!</p>";
-			$message .= "<p><a href='".base_url()."gerss/register_user/$key' >Click here</a> to confirm your account</p>";
+		//	$message = "<p>Thank you for signing up!</p>";
+		//	$message .= "<p><a href='GERSS/register_user/$key' >Click here</a> to confirm your account</p>";
 			
 		//	$this->email->message($message);
-//---------------SEND EMAIL TO THE USER-------------------------------//
-		$client = new SoapClient('https://api.jangomail.com/api.asmx?WSDL');
-			$parameters = array
-				(
-					'Username'          => (string) 'plampetkov', 
-					'Password'          => (string) 'October2013', 
-					'FromEmail'         => (string) 'info@gradproject.com', 
-					'FromName'          => (string) 'Project Administrator',
-					'ToEmailAddress'    => (string)	$email, 
-					'Subject'           => (string) 'Confirm your account.', 
-					'MessagePlain'      => (string) 'Transactional Plain (plain text)',
-					'MessageHTML'       => (string)	$message,
-					'Options'           => (string) 'OpenTrack=True,ClickTrack=True'
-				);
-	
-			$response = $client->SendTransactionalEmail($parameters);
-			//echo "Message(s) sent!";
-
 			
 			if ($this->users_model->add_temp_user($key)){
 				//if ($this->email->send()){
 					//echo "The email has been sent!";
-				//$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
-				$redirect=$this->session->set_flashdata('success','We sent you a confirmation email. Please reply to complete your registration.');
+				$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
 				redirect($this->input->post('redirect'));
 
 				//}	else echo "could not send the email.";
@@ -119,24 +99,6 @@ class Gerss extends CI_Controller {
 			$redirect=$this->session->set_flashdata('errors',validation_errors());
 			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
 		}
-	}
-//----------------REGISTER USER----------------------------//	
-	public function register_user($key){
-		$this->load->model('users_model'); 
-		
-		if ($this->users_model->is_key_valid($key)){
-			if($this->users_model->add_user($key)){
-				//$data['title']="WSU-GERSS :: Home";
-				$this->load->view('home_view');
-			}else echo "failed";	
-		}else echo "invalid key";
-	}
-
-//----------------CHECK FOR VALID WSU EMAIL ADDRESS-------------//	
-	public function valid_domain($str){
-		if (stristr($str,'@wayne.edu') !== false) return true;
-			$this->form_validation->set_message(__FUNCTION__, "$str is not a valid WSU email address.");
-	  	return FALSE;
 	}
 
 //----------------PROJECTS PAGE-----------------------------//
