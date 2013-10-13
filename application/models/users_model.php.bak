@@ -40,54 +40,13 @@ class Users_model extends CI_Model {
 			'key' => $key
 		);
 
-		//$query = $this->db->insert('users_test',$data);
-		$query = $this->db->insert('temp_users',$data);
+		$query = $this->db->insert('users',$data);
 		if($query){
 			return true;
 		}
 		else {
 			return false;
 		}
-	}
-
-	//Valid Key
-	public function is_key_valid($key){
-		$this->db->where('key', $key);
-		$query = $this->db->get('temp_users');
-		
-		if ($query->num_rows() == 1){
-			return true;
-		}else return false;
-	}
-	
-	//Add User To USERS Table
-	public function add_user($key){
-		$this->db->where('key', $key);
-		$temp_user = $this->db->get('temp_users');
-		
-		if ($temp_user->num_rows() == 1){
-			$row = $temp_user->row();
-			
-			$data = array(
-				'email' => $row->email,
-				'password'=>$row->password,
-				'key' => $row->key,
-				'firstname'=>$row->firstname,
-				'lastname' =>$row->lastname,
-				'department'=>$row->department,
-				'title'=>$row->title,
-				'description'=>$row->description,
-				'usertype'=>$row->usertype,
-				'category'=>$row->category
-				);
-				
-				$did_add_user = $this->db->insert('users', $data);
-		}
-		if($did_add_user){
-			$this->db->where('key', $key);
-			$this->db->delete('temp_users');
-			return true;
-		}return false;
 	}
 
 	//Returns all users from table specified in variable table_name
