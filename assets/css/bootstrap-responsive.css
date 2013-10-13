@@ -897,7 +897,9 @@
   }
 }
 
-@media (max-width: 480px) {
+/*GERSS override @media (max-width: 480px) { */
+
+@media (max-width: 768px) {
   .nav-collapse {
     -webkit-transform: translate3d(0, 0, 0);
   }
