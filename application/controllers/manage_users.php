@@ -49,5 +49,40 @@ class Manage_users extends CI_Controller {
 			redirect('gerss/home');
 		}
 	}
-
+	
+//---------------------------SEARCH MANAGE USERS---------------------------//	
+	public function search_users_participant_view($id){
+		$form = $id;
+		
+		switch($form) {
+		   case '1': 
+		   		 $search = $this->input->post('search_participant');
+		   		 $this->load->model('users_model');
+				 $data['participant']=$this->users_model->find_user("users", $search);
+				 $data['title']="WSU-GERSS :: Projects";
+				 $this->load->view('users_participant_view',$data);
+				 break;
+		   case '2': 
+				 $search = $this->input->post('search_judge');
+				 $this->load->model('users_model');
+        		 $data['judge']=$this->users_model->find_user("users", $search);
+				 $data['title']="WSU-GERSS :: Projects";
+			     $this->load->view('users_judge_view',$data);
+         		 break;
+		  case '3': 
+				 $search = $this->input->post('search_seu');
+				 $this->load->model('users_model');
+        		 $data['score_entry_user']=$this->users_model->find_user("users", $search);
+				 $data['title']="WSU-GERSS :: Projects";
+			     $this->load->view('users_seu_view',$data);
+         		 break;
+		  case '4': 
+				 $search = $this->input->post('search_admin');
+				 $this->load->model('users_model');
+        		 $data['admin']=$this->users_model->find_user("users", $search);
+				 $data['title']="WSU-GERSS :: Projects";
+			     $this->load->view('users_admin_view',$data);
+         		 break;
+		};
+	}
 }

@@ -20,7 +20,7 @@
 	<div class="page-header" id="wsu_header">
 		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
 		<div class="wsu_sign_in_container pull-right">
-		<a class="btn btn-small wsu_btn" id="sign_out_btn" href="logout">Sign Out</a>
+			<a class="btn btn-small wsu_btn" id="sign_out_btn" href="logout">Sign Out</a>
 		</div>
 	</div>
 
@@ -43,19 +43,19 @@
 	<div class="hero-unit wsu_hero_unit">
 
 		<h2 class="wsu_h2 text-center">Graduate Exhibition Registration &amp; Scoring System</h2>
+<!----------------------------------------------------------Search Form---------------------------------------------------------------->
 
-		<form class="form-search">
+		<form class="form-search" method="post" action='<?php $id=2; echo base_url()."gerss/search/$id"; ?>'>
 			<div class="input-append">
-				<input type="text" class="input-medium search-query" placeholder="Judge's Last Name">
+				<input type="text" name="search_judges"  id="search_judges" class="input-medium search-query" placeholder="Judge's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
 			<button class="btn wsu_btn" type="reset" id="clear">Clear</button>
 		</form>
 
 		<ul class="nav nav-tabs">
-			<div id="group_by_text">Group By:</div>
-			<li><a href="projects_participants">Participants</a></li>
-			<li class="active"><a href="localhost/SeniorProject/GERSS/projects_judges">Judges</a></li>
+            <li><a href='<?php echo base_url()."gerss/projects_participants"?>'>Participants</a></li>
+			<li class="active"><a href='<?php echo base_url()."gerss/projects_judges"?>'>Judges</a></li>
 			<button class="btn wsu_btn pull-right" href="#" id="btn_add_participant"><i class="icon-plus"></i> Add Judge</button>
 		</ul>
 
@@ -87,7 +87,7 @@
 			</thead>
 			<tbody>
 				<?php
-					if(isset($judge)){
+					if(!empty($judge)){
 						foreach($judge as $row){
 							echo '<tr>';
 							
@@ -98,10 +98,11 @@
 							echo '<td>' . $row->category . '</td>';
 							echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
 							<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
+						echo '</tr>';
 						}
 					}
 					else{
-						echo "<tr><td>No results found.</td></tr>";
+						echo "<td>No results found.</td>";
 					}
 				?>
 			</tbody>

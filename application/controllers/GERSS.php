@@ -54,14 +54,14 @@ class Gerss extends CI_Controller {
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
 		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim');
+		$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]|callback_password_check');
 		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
 
 		if($this->input->post('type')=='participant')
 		{
 			$this->form_validation->set_rules('category', 'Project Category', 'required|trim');
 			$this->form_validation->set_rules('project_title', 'Project Title', 'required|trim');
-			$this->form_validation->set_rules('project_desc', 'Project Description', 'required|trim');
+			$this->form_validation->set_rules('project_desc', 'Project Description', 'required|trim|callback_limit_words');
 		}
 
 		
@@ -69,21 +69,21 @@ class Gerss extends CI_Controller {
 		
 		if ($this->form_validation->run()){
 			
-			//generate a random key
+			//Generate a random key
 			$key = md5(uniqid());
 
 			$this->load->library('email', array('mailtype'=>'html'));
 			$this->load->model('users_model');
 			
-		//	$this->email->from('info@gradproject.dynu.com', "Plamen");
-		$email = $this->input->post('email');
-		//$this->email->to($this->input->post('email'));
-		//	$this->email->subject("Confirm your account.");
+		  //$this->email->from('info@gradproject.dynu.com', "Plamen");
+			$email = $this->input->post('email');
+		  //$this->email->to($this->input->post('email'));
+		  //$this->email->subject("Confirm your account.");
 			
 			$message = "<p>Thank you for signing up!</p>";
 			$message .= "<p><a href='".base_url()."gerss/register_user/$key' >Click here</a> to confirm your account</p>";
 			
-		//	$this->email->message($message);
+		  //$this->email->message($message);
 //---------------SEND EMAIL TO THE USER-------------------------------//
 		$client = new SoapClient('https://api.jangomail.com/api.asmx?WSDL');
 			$parameters = array
@@ -111,7 +111,7 @@ class Gerss extends CI_Controller {
 				redirect($this->input->post('redirect'));
 
 				//}	else echo "could not send the email.";
-			}	else echo "problem adding to database.";
+			}else echo "problem adding to database.";
 
 		}
 		else{
@@ -139,6 +139,35 @@ class Gerss extends CI_Controller {
 	  	return FALSE;
 	}
 
+//----------------LIMIT DESCRIPTION TO 250 WORDS-------------//	
+	public function limit_words($str){
+		$this->load->helper('text');
+		$string = word_limiter($str, 250);
+		if ($string <= $str) return true;
+		$this->form_validation->set_message(__FUNCTION__, "Description should not exceed 250 words.");
+	  	return false;
+	}
+
+//----------------PASSWORD CHECK-------------//	
+public function password_check($str)
+{
+   if (preg_match('#[0-9]#', $str) && preg_match('#[a-zA-Z]#', $str)) return TRUE;
+   $this->form_validation->set_message(__FUNCTION__, "Your password should contain a number and a letter.");
+   return FALSE;
+}
+/* Require number,letter,and special characters
+if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
+
+    {
+        $this->form_validation->set_message('password_check', 'Your password should contain a number,letter,and special characters"');
+        return FALSE;
+    }
+    else
+    {
+        return TRUE;
+    }}
+*/
+
 //----------------PROJECTS PAGE-----------------------------//
 	public function projects_participants(){
 		if ($this->session->userdata('is_logged_in')){
@@ -163,6 +192,28 @@ class Gerss extends CI_Controller {
 			redirect('gerss/home');
 		}
 	}
+	
+//---------------------------SEARCH PROJECTS---------------------------//	
+	public function search($id){
+		$form = $id;
+		
+		switch($form) {
+		   case '1': 
+		   		 $search = $this->input->post('search');
+		   		 $this->load->model('users_model');
+				 $data['participant']=$this->users_model->find_user("users", $search);
+				 $data['title']="WSU-GERSS :: Projects";
+				 $this->load->view('projects_participants_view',$data);
+				 break;
+		   case '2': 
+				 $search = $this->input->post('search_judges');
+				 $this->load->model('users_model');
+        		 $data['judge']=$this->users_model->find_user("users", $search);
+				 $data['title']="WSU-GERSS :: Projects";
+			     $this->load->view('projects_judges_view',$data);
+         		 break;
+		};
+	}	
 
 //---------------Multiple Pages----------------------------//
 	public function logout(){

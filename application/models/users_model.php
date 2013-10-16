@@ -89,7 +89,12 @@ class Users_model extends CI_Model {
 			return true;
 		}return false;
 	}
-
+	
+	//FIND User In The USERS Table
+	public function find_user($table_name,$search){
+		$sql = $this->db->get_where($table_name,array('lastname'=>$search));
+		return $sql -> result();
+	}
 	//Returns all users from table specified in variable table_name
 	public function get_all_users($table_name){
 		$sql = $this->db->query('SELECT * FROM '.$table_name);

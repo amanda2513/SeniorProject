@@ -51,10 +51,12 @@
 
 
 		<h2 class="wsu_h2 text-center">Graduate Exhibition Registration &amp; Scoring System</h2>
+        
+<!----------------------------------------------------------Search Form---------------------------------------------------------------->
 		
-		<form class="form-search">
+		<form class="form-search"  method="post" action='<?php $id=1; echo base_url()."manage_users/search_users_participant_view/$id"; ?>'>
 			<div class="input-append">
-				<input type="text" class="input-medium search-query" placeholder="Participant's Last Name">
+				<input type="text" name="search_participant" id="search_participant" class="input-medium search-query" placeholder="Participant's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
 			<button class="btn wsu_btn" type="reset" id="clear">Clear</button>

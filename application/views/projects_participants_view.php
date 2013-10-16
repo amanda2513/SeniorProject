@@ -51,10 +51,11 @@
 
 
 		<h2 class="wsu_h2 text-center">Graduate Exhibition Registration &amp; Scoring System</h2>
-		
-		<form class="form-search">
+        
+<!----------------------------------------------------------Search Form---------------------------------------------------------------->		
+		<form class="form-search" method="post" action='<?php $id=1; echo base_url()."gerss/search/$id"; ?>'>
 			<div class="input-append">
-				<input type="text" class="input-medium search-query" placeholder="Participant's Last Name">
+				<input type="text" name="search"  id="search" class="input-medium search-query" placeholder="Participant's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
 			<button class="btn wsu_btn" type="reset" id="clear">Clear</button>
@@ -63,10 +64,9 @@
 		
 
 		<ul class="nav nav-tabs">
-			<div id="group_by_text">Group By:</div>
-			<li class="active"><a href="projects_participants">Participants</a></li>
-			<li><a href="projects_judges">Judges</a></li>
-			<button class="btn wsu_btn pull-right" href="#" id="btn_add_participant"><i class="icon-plus"></i> Add Participant</button>
+            <li class="active"><a href='<?php echo base_url()."gerss/projects_participants"?>'>Participants</a></li>
+			<li><a href='<?php echo base_url()."gerss/projects_judges"?>'>Judges</a></li>
+			<button class="btn wsu_btn pull-right" href="#" id="btn_add_participant"><i class="icon-plus"></i> Add Participant</button> 
 		</ul>
 
 		<table id="project_participants_table" class="table wsu_table table-bordered table-striped tablesorter">
@@ -101,7 +101,7 @@
 			</thead>
 			<tbody>
 				<?php
-					if(isset($participant)){
+					if(!empty($participant)){
 						foreach($participant as $row){
 							echo '<tr>';
 							
@@ -113,10 +113,12 @@
 							echo '<td>' . $row->judgecount . '</td>';
 							echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
 							<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
+							
+						echo '</tr>';
 						}
 					}
 					else{
-						echo "No results found.";
+						echo "<td>No results found.</td>";
 					}
 				?>
 			</tbody>
