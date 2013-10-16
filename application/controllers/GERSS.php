@@ -201,14 +201,14 @@ if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
 		   case '1': 
 		   		 $search = $this->input->post('search');
 		   		 $this->load->model('users_model');
-				 $data['participant']=$this->users_model->find_user("users", $search);
+				 $data['participant']=$this->users_model->find_user("users", "participant", $search);
 				 $data['title']="WSU-GERSS :: Projects";
 				 $this->load->view('projects_participants_view',$data);
 				 break;
 		   case '2': 
 				 $search = $this->input->post('search_judges');
 				 $this->load->model('users_model');
-        		 $data['judge']=$this->users_model->find_user("users", $search);
+        		 $data['judge']=$this->users_model->find_user("users", "judge", $search);
 				 $data['title']="WSU-GERSS :: Projects";
 			     $this->load->view('projects_judges_view',$data);
          		 break;

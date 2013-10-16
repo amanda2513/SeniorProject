@@ -89,12 +89,38 @@ class Users_model extends CI_Model {
 			return true;
 		}return false;
 	}
+
 	
 	//FIND User In The USERS Table
-	public function find_user($table_name,$search){
-		$sql = $this->db->get_where($table_name,array('lastname'=>$search));
+	public function find_user($table_name,$usertype,$search){
+		$sql = $this->db->get_where($table_name,array('lastname'=>$search, 'usertype'=>$usertype));
 		return $sql -> result();
 	}
+
+
+	//Admin adds a user, skips temp-users table FOR NOW
+	public function admin_add_user(){
+		$data = array(
+				'usertype'=>$this->input->post('type'),
+				'firstname'=>$this->input->post('firstname'),
+				'lastname' =>$this->input->post('lastname'),
+				'department'=>$this->input->post('department'),
+				'email' => $this->input->post('email'),
+				'password'=>md5($this->input->post('password')),
+				'category'=>$this->input->post('category'),
+				'title'=>$this->input->post('project_title'),
+				'description'=>$this->input->post('project_desc')
+				);
+				
+		$did_add_user = $this->db->insert('users', $data);
+
+		if($did_add_user){
+			return true;
+		}
+		return false;
+
+	}
+
 	//Returns all users from table specified in variable table_name
 	public function get_all_users($table_name){
 		$sql = $this->db->query('SELECT * FROM '.$table_name);

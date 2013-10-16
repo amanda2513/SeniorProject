@@ -151,12 +151,14 @@ body{
 
 /*------------BUTTONS, HERO UNIT, H2, PAGINATION - (MULTIPLE PAGES)------------*/
 .wsu_hero_unit{
-	margin-top:2%;
-	margin-bottom:2%;
+	min-height:70%;
+	margin-top:1%;
+	margin-bottom:1%;
 	margin-right:5%;
 	margin-left:5%;
+	padding-top:1%;
+	padding-bottom:1%;
 	background: #f7f7f7;
-	min-height: 65%;
 	-moz-box-shadow: .5px .5px .5px .5px #777;
 	-webkit-box-shadow: .5px .5px 1px .5px #777;
 	box-shadow:  .5px .5px 1px .5px #777;
@@ -221,23 +223,22 @@ background-color: #e6e6e6;
 	line-height:50%;
 }
 /*----------------REGISTRATION---------------------*/
- @media (min-width:767px){
-	#registration_type{
-		margin-left:33%;
-		margin-right:37%;
-	}
-}
-
 @media (min-width:768px) and (max-width:1199px){
 	#registration{
 		width:80%;
-		margin-left:15%;
-		margin-right:15%;
+		margin-left:10%;
+		margin-right:10%;
 	}
 }
 
-@media (min-width:1200px){
+@media (min-width:1400px){
 	#registration{
+		width:70%;
+		margin-left:15%;
+		margin-right:15%;
+	}
+
+	#registration_type{
 		width:70%;
 		margin-left:15%;
 		margin-right:15%;
@@ -246,4 +247,10 @@ background-color: #e6e6e6;
 
 #description{
 	resize:vertical;
+}
+
+#register_btn{
+	width:25%;
+	margin-right:37.5%;
+	margin-left:37.5%;
 }

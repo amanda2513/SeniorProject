@@ -58,7 +58,7 @@
 				<input type="text" name="search_seu" id="search_seu" class="input-medium search-query" placeholder="SEU's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
-			<button class="btn wsu_btn" type="reset" id="clear">Clear</button>
+			<a class="btn wsu_btn" id="clear" href='<?php echo base_url()."manage_users/seu";?>'>Clear</a>
 		</form>
 
 		
@@ -68,7 +68,7 @@
 			<li><a href='<?php echo base_url()."manage_users/judges"?>'>Judges</a></li>
 			<li class="active"><a href='<?php echo base_url()."manage_users/seu"?>'>Score Entry Users</a></li>
 			<li><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
-			<button class="btn wsu_btn pull-right" href="#" id="btn_add_seu"><i class="icon-plus"></i> Add SEU</button>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("seu");?>" id="btn_add_seu"><i class="icon-plus"></i> Add SEU</a>
 		</ul>
 
 		<table id="users_scoreentry_table" class="table wsu_table table-bordered table-striped tablesorter">

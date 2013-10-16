@@ -50,13 +50,14 @@
 				<input type="text" name="search_judges"  id="search_judges" class="input-medium search-query" placeholder="Judge's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
-			<button class="btn wsu_btn" type="reset" id="clear">Clear</button>
+			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."gerss/projects_judges";?>">Clear</a>
 		</form>
 
 		<ul class="nav nav-tabs">
-            <li><a href='<?php echo base_url()."gerss/projects_participants"?>'>Participants</a></li>
-			<li class="active"><a href='<?php echo base_url()."gerss/projects_judges"?>'>Judges</a></li>
-			<button class="btn wsu_btn pull-right" href="#" id="btn_add_participant"><i class="icon-plus"></i> Add Judge</button>
+			<div id="group_by_text">Group By:</div>
+			<li><a href="<?php echo base_url()."gerss/projects_participants"?>">Participants</a></li>
+			<li class="active"><a href="<?php echo base_url()."gerss/projects_judges"?>">Judges</a></li>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("judge");?>" id="btn_add_judge"><i class="icon-plus"></i> Add Judge</a>
 		</ul>
 
 		<table id="project_judges_table" class="table table-bordered table-striped tablesorter">

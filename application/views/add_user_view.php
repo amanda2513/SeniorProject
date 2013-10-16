@@ -12,62 +12,64 @@
 <body>
 	<div class="page-header" id="wsu_header">
 		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
-
 		<div class="wsu_sign_in_container pull-right">
-			<?php 
-				if(validation_errors() != false){
-					echo '<div class="alert" id="wsu_alert">
-					<strong>Could not validate your credentials.</div>';
-	  			}
-	  			else{
-	  				echo '<p class="text-center" id="wsu_login_message">Already Registered?</p>';
-	  			}
-  			?>
-			<?php 
-				$form_attributes = 
-					array('name'=>'signinform','class'=>'form-inline','id'=>'sign_in_form');
-				echo form_open('gerss/login_validation', $form_attributes);
-
-				$username_attributes = 
-					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Username');
-				echo form_input($username_attributes);
-			
-				$password_attributes = 
-					array('name'=>'password','class'=>'input-medium','id'=>'password','placeholder'=>'Password');
-				echo form_password($password_attributes);
-				
-				$submit_attributes = 
-					array('name'=>'signin','class'=>'btn btn-small wsu_btn','id'=>'sign_in_btn');
-				echo form_submit($submit_attributes,'Sign In');
-
-				echo form_close();
-			?>
+            <a class="btn btn-small wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
 		</div>
-	</div><!--close header-->
+	</div>
+
+	<div class="navbar wsu_navbar">
+		<div class="navbar-inner">
+			<a class="btn btn-navbar" id="collapsed_menu_btn" data-toggle="collapse" data-target=".nav-collapse">
+				<span class = "icon-th-list"></span>
+			</a>
+			<div class = "nav-collapse collapse">
+				<ul class="nav text-center">
+					<li>
+						<a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a>
+					</li>
+					<li>
+						<a id="nav_scores" href="#">Scores</a>
+					</li>
+					<li class="active">
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+					</li>
+					<li>
+						<a id="nav_systemsettings" href="#">System Settings</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div><!--close nav-->
 
 	<div class="hero-unit wsu_hero_unit">
 		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
-		<h4 class="wsu_h2 text-center visible-phone visible-tablet">Graduate Exhibition Registration &amp; Scoring System</h4>
-		<!--Invalid registrations redirect back to this page with errors-->
+
+		<!--Invalid add-user forms redirect back to this page with errors-->
 		<?php		
-			//Get the type of registration from the URL .../registration?type=[whateverthisis] and store it in variable selected_option
+			//Get the type of add-user from the URL .../add?type=[whateverthisis] and store it in variable selected_option
 		 	$selected_type = $_GET['type'];
 
 		 	//The values of registration type dropdown
-		 	$options = array("participant","judge");
+		 	$options = array("participant","judge","seu","admin");
 
 		 	//If type from URL is participant, make that the default selected dropdown option, else judge
 		 	if($selected_type == "participant"){
 		 		$options[0]="selected='selected'";
 		 	}
-		 	else{
+		 	elseif($selected_type == "judge"){
 		 		$options[1]="selected='selected'";
+		 	}
+		 	elseif($selected_type == "seu"){
+		 		$options[2]="selected='selected'";
+		 	}
+		 	else{
+		 		$options[3]="selected='selected'";
 		 	}
 		?>
 
 		<!--
-			Form for registration type = Drop down with Judge & Participant options defined above
-			When it submits, it will change the URL to registration?type=[selected dropdown option]
+			Form for registration type = Drop down with user type options defined above
+			When it submits, it will change the URL to manage_users/add?type=[selected dropdown option]
 			This is the form's only job.
 			Selected option will be appended to the actual registration submission
 		-->
@@ -75,17 +77,19 @@
 			<div class="row-fluid">
 				<div class="span6 offset3">
 					<div class="control-group">
-						<label class="control-label" for='type'> Registration Type: </label>
+						<label class="control-label" for='type'> New User's Type: </label>
 						<div class="controls">
 							<select name="type" id="type" onChange="this.form.submit()">
-								<option value="participant" <?php echo $options[0]?>>Participant</option>
-								<option value="judge" <?php echo $options[1]?>>Judge</option>
+								<option value="participant" <?php echo $options[0];?>>Participant</option>
+								<option value="judge" <?php echo $options[1];?>>Judge</option>
+								<option value="seu" <?php echo $options[2];?>>Score Entry User</option>
+								<option value="admin" <?php echo $options[3];?>>Admin</option>
 							</select>
 						</div>
 					</div>
 				</div>
 			</div>
-		</form><!--end registration-type form-->
+		</form><!--end add-user-type form-->
 		
 		<hr class="muted"/>
 		<?php
@@ -95,18 +99,24 @@
 				echo $this->session->flashdata('errors');
 				echo '</div>';
   			}
+  			//If I successfully added a user, show success div
+  			if($this->session->flashdata('success')){
+  				echo '<div class="alert alert-success text-center" id="wsu_alert">';
+  				echo $this->session->flashdata('success');
+  				echo '</div>';
+  			}
   			//If there are no errors, show "Fill out form" message
   			else{
-  				echo '<p class="span10 offset2">Fill out the form below to register:</p>';
+  				echo '<p class="span10 offset2">Fill out the form below to add a user:</p>';
   			}
   		?>
 
 		<!--
-			Actual Registration Submission Form
+			Actual Add user Submission Form
 			Name, Department, Email, Password
-			Same for participants & judges until IF statement
+			Same for all users until IF statement
 		-->
-		<form class="form-horizontal" name="registration" id="registration" method="post" accept-charset="utf-8" action='<?php echo base_url()."gerss/registration_validation";?>'>
+		<form class="form-horizontal" name="registration" id="registration" method="post" accept-charset="utf-8" action='<?php echo base_url()."manage_users/add_user_validation";?>'>
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
@@ -136,7 +146,7 @@
 								<label class="control-label" for="department">Department:</label>
 								<div class="controls">
 									<select name="department">
-										<option value="">Select Your Department</option>
+										<option value="">Select User's Department</option>
 										<option value="Computer Science">Computer Science</option>
 										<option value="English">English</option>
 										<option value="Science">Science</option>
@@ -153,14 +163,14 @@
 							</div>
 
 							<div class="control-group">
-								<label class="control-label" for="password">Create a Password:</label>
+								<label class="control-label" for="password">Temporary Password:</label>
 								<div class="controls">
 									<input type="password" name="password" class="input-large" id="password" placeholder="Password">
 								</div>
 							</div>
 
 							<div class="control-group">
-								<label class="control-label" for="cpassword">Confirm Password:</label>
+								<label class="control-label" for="cpassword">Confirm Temporary Password:</label>
 								<div class="controls">
 									<input type="password" name="cpassword" class="input-large" id="confirm_password" placeholder="Password">
 								</div>
@@ -174,7 +184,7 @@
 							//open right column - span6 - participant only
 							'<div class="span6" id="project_info_span">
 
-								<p class="text-center muted"><small>Project Information: All Fields Are Required</small></p>
+								<p class="text-center muted"><small>Project Information: All Fields are Optional</small></p>
 
 								<div class="control-group">
 									<label class="control-label" for="category">Category:</label>
@@ -198,22 +208,17 @@
 										<textarea name="project_desc" class="input-xlarge" id="description" rows="10" placeholder="Abstract should not exceed 250 words"></textarea>
 									</div>
 								</div>
-							</div><!--close right column (participant only) span-->
-					
-							
-							<p class="text-center span6 offset3">
-								<em><small>By registering, you attest to having followed all federal, state and institutional regulatory requirements in the performance of the research/scholarship.</small></em>
-							</p>';
+							</div><!--close right column (participant only) span-->';
 						}
 						else{
-						//If the registration type is Judges, add these fields
+						//If the registration type is a non-participant, add these fields
 							
 						}
 					?>
 					</div><!--close form column row-fluid-->
 					<div class="row-fluid">
 						<div class="span12">
-							<input type="submit" name="registration_submit" class="btn btn-medium wsu_btn span2 offset5", id="register_btn" value="Register"/>
+							<input type="submit" name="registration_submit" class="btn btn-medium wsu_btn" id="register_btn" value="Add User"/>
 						</div>
 					</div><!--close submit button row-fluid-->
 				</div><!--close span12-->
