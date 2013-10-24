@@ -62,7 +62,47 @@
 			<p>The Graduate School is pleased to invite the campus community to the third annual Graduate Exhibition to celebrate the achievements of Wayne State University graduate students across our campus. The event will include an exhibition of graduate student research and scholarship from all disciplines, and will feature 100 posters and art exhibits and six oral presentations.</p>
 			</br>
 			<p class="text-center">We hope many will join us for this wonderful event!</p></br>
-			<p class="text-center">The event will be held: </br> [DATE] from [START - END] in [LOCATION].</p>
+			<p class="text-center">
+				Event Information:
+			</br>
+				<div class="row-fluid">
+					<div class="span3 offset1 text-center">
+						<?php
+							echo "Date: ";
+							//If exhib date isn't set, show TBA.
+							//If exhib date is set, show date in Day, Month date, Year format
+							if($settings['exhib_date']!='0000-00-00')
+								echo date("D, M d".","." Y",strtotime($settings["exhib_date"]));
+							else
+								echo "TBA";
+						?>
+					</div>
+
+					<div class="span4 text-center">
+						<?php	
+							echo "Time: ";
+							//If exhib start time AND exhib end time aren't set, show TBA
+							//If exhib start time AND exhib end time are set, show  Start - End
+							if($settings['exhib_start']!=NULL && $settings['exhib_end']!=NULL)
+								echo $settings["exhib_start"]. " - " . $settings["exhib_end"];
+							else
+								echo "TBA";
+						?>
+					</div>
+
+					<div class="span3 text-center">
+						<?php
+							echo "Location: ";
+							//If exhib location isn't set, show TBA
+							//If exhib location is set, show Location
+							if($settings['exhib_location'] != NULL)
+								echo $settings["exhib_location"];
+							else
+								echo "TBA";
+						?>
+					</div>
+				</div>
+			</p>
 			</br>
 			<div class="reg_button_container row-fluid">
              	

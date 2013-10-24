@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
-	<script type="text/javascript" src="<?php echo (JS.'jquery-latest.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {		
@@ -34,7 +34,7 @@
 					<li class="active"><a id="nav_projects" href="gerss/projects_participants">Projects</a></li>
 					<li><a id="nav_scores" href="#">Scores</a></li>
 					<li><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a></li>
-					<li><a id="nav_systemsettings" href="#">System Settings</a></li>
+					<li><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
 				</ul>
 			</div>
 		</div>

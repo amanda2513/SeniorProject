@@ -224,7 +224,7 @@ background-color: #e6e6e6;
 }
 /*----------------REGISTRATION---------------------*/
 @media (min-width:768px) and (max-width:1199px){
-	#registration{
+	#registration,#general_settings{
 		width:80%;
 		margin-left:10%;
 		margin-right:10%;
@@ -232,7 +232,7 @@ background-color: #e6e6e6;
 }
 
 @media (min-width:1400px){
-	#registration{
+	#registration,#general_settings{
 		width:70%;
 		margin-left:15%;
 		margin-right:15%;
@@ -249,7 +249,7 @@ background-color: #e6e6e6;
 	resize:vertical;
 }
 
-#register_btn{
+#register_btn, #save_settings_btn{
 	width:25%;
 	margin-right:37.5%;
 	margin-left:37.5%;
