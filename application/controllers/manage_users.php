@@ -87,7 +87,15 @@ class Manage_users extends CI_Controller {
 		};
 	}
 
-
+	public function delete($user){
+		//echo $user;
+		$this->load->model('users_model');
+		$data['participant']=$this->users_model->admin_del_user("users", $user);
+		//$data['title']="WSU-GERSS :: Projects";
+		//$this->load->view('users_participant_view',$data);
+		redirect('manage_users/participants');
+	}
+	
 	public function add(){
 		$data['title']="WSU-GERSS :: Add User";
 		$this->load->view('add_user_view',$data);

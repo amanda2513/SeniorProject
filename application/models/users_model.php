@@ -120,6 +120,20 @@ class Users_model extends CI_Model {
 		return false;
 
 	}
+	
+	//Admin delete a user
+	public function admin_del_user($table_name, $del_user){
+						
+		$did_del_user = $this->db->delete($table_name, array('id' => $del_user));
+		
+		//$this->db->delete('mytable', array('id' => $del_user)); 
+
+		if($did_del_user){
+			return true;
+		}
+		return false;
+
+	}
 
 	//Returns all users from table specified in variable table_name
 	public function get_all_users($table_name){
