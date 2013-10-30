@@ -98,6 +98,12 @@ class Users_model extends CI_Model {
 	}
 
 
+	public function get_user_by_id($user_id){
+		$sql = $this->db->get_where('users',array('id'=>$user_id));
+		return $sql->row_array();
+	}
+
+
 	//Admin adds a user, skips temp-users table FOR NOW
 	public function admin_add_user(){
 		$data = array(

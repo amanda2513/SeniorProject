@@ -99,10 +99,11 @@
 							echo '<td>' . $row->lastname . '</td>';
 							echo '<td>' . $row->firstname . '</td>';
 							echo '<td> TODO</td>';
-							echo '<td><button class="btn wsu_btn" href="#"><i class="icon-lock"></i></button> <button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
-							<button class="btn wsu_btn" href="#"><i class="icon-trash"></i></button>';
-
-							echo '</tr>';
+							echo '<td>
+							<a class="btn wsu_btn" href="#"><i class="icon-lock"></i></a> 
+							<a class="btn wsu_btn" href="';echo base_url()."manage_users/edit/".$row->id."?type=".$row->usertype;echo'"><i class="icon-pencil"></i></a>
+							<a class="btn wsu_btn" href="';echo base_url()."manage_users/delete/".$row->id;echo'"><i class="icon-trash"></i></a>
+							</td>';
 						}
 					}
 					else{

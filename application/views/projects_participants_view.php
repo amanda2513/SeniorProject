@@ -112,7 +112,8 @@
 							echo '<td>' . $row->description . '</td>';
 							echo '<td>' . $row->category . '</td>';
 							echo '<td>' . $row->judgecount . '</td>';
-							echo '<td><button class="btn wsu_btn" href="#"><i class="icon-pencil"></i></button>
+							echo '<td>
+							<a class="btn wsu_btn" href="';echo base_url()."manage_users/edit/".$row->id."?type=".$row->usertype;echo'"><i class="icon-pencil"></i></a>
 							<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
 							
 						echo '</tr>';

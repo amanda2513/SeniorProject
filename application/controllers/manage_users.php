@@ -97,8 +97,13 @@ class Manage_users extends CI_Controller {
 	}
 	
 	public function add(){
-		$data['title']="WSU-GERSS :: Add User";
-		$this->load->view('add_user_view',$data);
+		if ($this->session->userdata('is_logged_in')){
+			$data['title']="WSU-GERSS :: Add User";
+			$this->load->view('add_user_view',$data);
+		}
+		else{
+			redirect('gerss/home');
+		}
 	}
 
 	public function add_user_validation(){
@@ -140,4 +145,58 @@ class Manage_users extends CI_Controller {
 		}
 	}
 
+	public function edit(){
+		if ($this->session->userdata('is_logged_in')){
+			$data['title']="WSU-GERSS :: Edit User";
+
+			$this->load->model("users_model");
+			
+			$user=$this->uri->segment(3);
+			$data['user_data']=$this->users_model->get_user_by_id($user);
+			$this->load->view('edit_user_view',$data);
+			
+		}
+		else{
+			redirect('gerss/home');
+		}
+	}
+
+		public function edit_user_validation(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('type','Type','required|trim');
+		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
+		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
+		$this->form_validation->set_rules('department','Department','required|trim');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
+		$this->form_validation->set_rules('password', 'Password', 'required|trim');
+		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
+		
+		$this->form_validation->set_message('is_unique', "That email address already exists.");
+		
+		if ($this->form_validation->run()){
+			
+			//generate a random key
+			$key = md5(uniqid());
+
+			$this->load->model('users_model');
+			$email = $this->input->post('email');
+
+			if ($this->users_model->update_user()){
+				//if ($this->email->send()){
+					//echo "The email has been sent!";
+				//$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
+				$redirect=$this->session->set_flashdata('success','User Has Been Edited');
+				redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+
+				//}	else echo "could not send the email.";
+			}	else echo "problem adding to database.";
+
+		}
+		else{
+			
+			$redirect=$this->session->set_flashdata('errors',validation_errors());
+			redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+		}
+	}
 }
