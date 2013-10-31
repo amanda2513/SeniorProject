@@ -8,6 +8,7 @@
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
 
+
 </head>
 <body>
 	<div class="page-header" id="wsu_header">
@@ -67,109 +68,49 @@
   				echo '<br>';
   			}
   		?>
-
-		<form class="form-horizontal" name="general_settings" id="general_settings" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/general_settings_form";?>'>
-			<div class="row-fluid">
-				<div class="span6 offset3">
-				<!--	
-					<hr class="muted">
-					<small class="muted text-center">Section Label</small>
-
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
+<!--
+				<table id="users_participants_table" class="table wsu_table table-bordered table-striped tablesorter">
+			<thead>
+				<tr>
+					<th>
+						Last Name
+						<i class="pull-right icon-resize-vertical"></i>
+					</th>
+					<th>
+						First Name
+						<i class="pull-right icon-resize-vertical"></i>
+					</th>
+					<th>
+						Status
+						<i class="pull-right icon-resize-vertical"></i>
+					</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+					if(!empty($category)){
+						foreach($category as $row){
+							echo '<tr>';
 							
-						</div>
-					</div>
+							echo '<td>' . $row->category_name  . '</td>';
+							echo '<td>' . '</td>';
+							echo '<td>' . '</td>';
+							echo '<td>
+							<a class="btn wsu_btn" href="';echo base_url()."category/edit/".$row->category_name;echo'"><i class="icon-pencil"></i></a>
+							<a class="btn wsu_btn" href="javascript:void(0);" onclick="javascript:confirmclick($row->category_name)"><i class="icon-trash"></i></a>
+							</td>';
 
-					
-					<small class="muted text-center">Section Label</small>
-
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-
-					
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-					
-					<hr class="muted">
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-					<hr class="muted">
-					<small class="muted text-center">Section Label</small>
-
-				
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-					
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-					
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-				
-
-					
-					<small class="muted text-center">Section Label</small>
-	    			<div class="control-group">
-						<label class="control-label" for="">Control Label</label>
-						<div class="controls" name="">
-							
-						</div>
-					</div>
-
-					<hr class="muted">
-					<div class="row-fluid">
-						<div class="span2 offset5">
-							<input type="submit" name="general_settings_submit" class="btn btn-medium wsu_btn" name="save_settings_btn" value="Save Settings"/>
-						</div>
-					</div>
--->
-				</div><!--close settings span-->
-			</div><!--close settings row-fluid-->
-		</form><!--close form-->
+							echo '</tr>';
+						}
+					}else{
+						echo "<td>No results found.</td>";
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
 	</div><!--close hero-unit-->
+
 </body>
 </html>

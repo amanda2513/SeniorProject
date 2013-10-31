@@ -6,13 +6,24 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap-responsive.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
-	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'bootbox.min.js');?>"></script>
+	
 	<script type="text/javascript">	
 		$(document).ready(function() {		
 			$("#users_judge_table").tablesorter( {sortList: [[0,0]]});
 		});	
+	</script>
+	<script type="text/javascript">
+		function confirmModal(id){
+			bootbox.confirm("Are you sure you delete this?",function(result){
+				if(result){
+					window.location.href='<?php echo base_url()."manage_users/delete/";?>'+id;
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -102,7 +113,7 @@
 							echo '<td>
 							<a class="btn wsu_btn" href="#"><i class="icon-lock"></i></a> 
 							<a class="btn wsu_btn" href="';echo base_url()."manage_users/edit/".$row->id."?type=".$row->usertype;echo'"><i class="icon-pencil"></i></a>
-							<a class="btn wsu_btn" href="';echo base_url()."manage_users/delete/".$row->id;echo'"><i class="icon-trash"></i></a>
+							<button class="btn wsu_btn" onClick="confirmModal('; echo "'".$row->id ."'";echo')"><i class="icon-trash"></i></button>
 							</td>';
 						}
 					}
@@ -113,6 +124,5 @@
 			</tbody>
 		</table>
 	</div>
-
 </body>
 </html>
