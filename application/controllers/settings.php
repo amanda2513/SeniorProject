@@ -21,9 +21,25 @@ class Settings extends CI_Controller {
 
 	public function categories(){
 		if ($this->session->userdata('is_logged_in')){
+			$this->load->model('category_settings_model');		
 			$data['title'] = "WSU-GERSS :: Settings";
-					
-			$this->load->view('settings_category_view', $data);
+			switch($this->uri->segment(3)){
+				case 'add':
+					$this->add_category($this->uri->segment(4));
+					break;
+				case 'edit':
+					$this->edit_category($this->uri->segment(4));
+					break;
+				case 'delete':
+					if($this->category_settings_model->delete_category($this->uri->segment(4))){
+						$redirect=$this->session->set_flashdata('success','Project Category Deleted');
+						redirect(base_url()."settings/categories",$this->input->post('redirect'));
+					}
+				default:
+					$data['category']=$this->category_settings_model->get_all("categories");
+					$this->load->view('settings_category_view', $data);
+					break;
+			}
 		}
 		else{
 			redirect('gerss/home');
@@ -61,6 +77,41 @@ class Settings extends CI_Controller {
 			redirect(base_url()."settings/general",$this->input->post('redirect'));
 		}
 
+	}
+
+	public function add_category($category_name){
+		if ($this->session->userdata('is_logged_in')){
+			$data['title'] = "WSU-GERSS :: Settings";					
+			$this->load->view('add_category_view', $data);
+		}
+		else{
+			redirect('gerss/home');
+		}	
+	}
+
+	public function add_category_validation(){
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('category_name','Category Name','required|trim|xss_clean|is_unique[categories.category]');
+		
+		if ($this->form_validation->run()){
+
+			$this->load->model('category_settings_model');
+			
+			if ($this->category_settings_model->add_category()){
+
+				$redirect=$this->session->set_flashdata('success','Project Category Added');
+				redirect(base_url()."settings/categories",$this->input->post('redirect'));
+
+				//}	else echo "could not send the email.";
+			}	else echo "problem adding to database.";
+
+		}
+		else{
+			
+			$redirect=$this->session->set_flashdata('errors',validation_errors());
+			redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
+		}
 	}
 
 }

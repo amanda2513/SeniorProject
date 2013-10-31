@@ -232,7 +232,7 @@ background-color: #e6e6e6;
 }
 
 @media (min-width:1400px){
-	#registration,#general_settings{
+	#registration,#general_settings,#add_category{
 		width:70%;
 		margin-left:15%;
 		margin-right:15%;
@@ -249,7 +249,7 @@ background-color: #e6e6e6;
 	resize:vertical;
 }
 
-#register_btn, #save_settings_btn{
+#register_btn, #save_settings_btn,#submit_category_btn{
 	width:25%;
 	margin-right:37.5%;
 	margin-left:37.5%;

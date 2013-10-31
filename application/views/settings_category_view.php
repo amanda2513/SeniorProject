@@ -6,7 +6,24 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap-responsive.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
+	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'bootbox.min.js');?>"></script>
+	<script type="text/javascript">	
+		$(document).ready(function() {		
+			$("#category_settings_table").tablesorter( {sortList: [[0,0]]});
+		});	
+	</script>
+	<script type="text/javascript">
+		function confirmModal(id){
+			bootbox.confirm("Are you sure you delete this?",function(result){
+				if(result){
+					window.location.href='<?php echo base_url()."settings/categories/delete/";?>'+id;
+				}
+			});
+		}
+	</script>
 
 
 </head>
@@ -46,8 +63,9 @@
 		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 
 		<ul class="nav nav-tabs">
-			<li><a href="<?php echo base_url()."settings/general"?>">General Settings</a></li>
-			<li class="active"><a href="<?php echo base_url()."settings/categories"?>">Category Settings</a></li>
+			<li><a href="<?php echo base_url()."settings/general"?>">General</a></li>
+			<li class="active"><a href="<?php echo base_url()."settings/categories"?>">Project Categories</a></li>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."settings/categories/add";?>" id="btn_add_category"><i class="icon-plus"></i> Add Category</a>
 		</ul>
 
 		<?php
@@ -68,20 +86,20 @@
   				echo '<br>';
   			}
   		?>
-<!--
-				<table id="users_participants_table" class="table wsu_table table-bordered table-striped tablesorter">
+
+		<table id="category_settings_table" class="table wsu_table table-bordered table-striped tablesorter">
 			<thead>
 				<tr>
 					<th>
-						Last Name
+						Category
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
-						First Name
+						Subcategories
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
-						Status
+						Points Possible
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>Actions</th>
@@ -93,13 +111,13 @@
 						foreach($category as $row){
 							echo '<tr>';
 							
-							echo '<td>' . $row->category_name  . '</td>';
+							echo '<td>' . $row->category  . '</td>';
 							echo '<td>' . '</td>';
 							echo '<td>' . '</td>';
 							echo '<td>
-							<a class="btn wsu_btn" href="';echo base_url()."category/edit/".$row->category_name;echo'"><i class="icon-pencil"></i></a>
-							<a class="btn wsu_btn" href="javascript:void(0);" onclick="javascript:confirmclick($row->category_name)"><i class="icon-trash"></i></a>
-							</td>';
+							<a class="btn wsu_btn" href="#"><i class="icon-pencil"></i></a>
+							<!--<a class="btn wsu_btn" href="';echo base_url()."settings/categories/edit/".$row->category;echo'"><i class="icon-pencil"></i></a>-->
+							<button class="btn wsu_btn" onClick="confirmModal('; echo "'".$row->cat_id ."'";echo')"><i class="icon-trash"></i></button>							</td>';
 
 							echo '</tr>';
 						}

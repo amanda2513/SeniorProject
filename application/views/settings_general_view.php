@@ -71,8 +71,8 @@
 		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="<?php echo base_url()."settings/general"?>">General Settings</a></li>
-			<li><a href="<?php echo base_url()."settings/categories"?>">Category Settings</a></li>
+			<li class="active"><a href="<?php echo base_url()."settings/general"?>">General</a></li>
+			<li><a href="<?php echo base_url()."settings/categories"?>">Project Categories</a></li>
 		</ul>
 
 		<?php
