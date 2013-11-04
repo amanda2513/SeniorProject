@@ -31,21 +31,22 @@
 			var $input = 
 			'<div class="control-group"><label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
 				'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
-					'<input type="text" placeholder="Content, Display, Oral, etc." name="subcategory'+$subcat_id+'_name" class="input-large"/>'+
+					'<input type="text" placeholder="Content, Display, Oral, etc." name="subcategory['+$subcat_id+'][name]" class="input-large"/>'+
 				'</div>'+
 				'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
 					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criteria</button>'+
 					'<div class="control-group">'+
 						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criteria:</label>'+
-						'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
-							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory'+$subcat_id+'_desc" class="input-large" rows="3"></textarea>'+
-							'<input type="number" placeholder="Points Possible" name="subcategory'+$subcat_id+'_points" class="input-large"/>'+
+						'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
+							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
+							'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
 						'</div>'+
 					'</div>'
 				'</div>'+
 				'<hr/>'+
 			'</div>';
 
+			//append fields to the div with id dynamic_fields
 			$('#dynamic_fields').append($input);
 		};
 
@@ -53,17 +54,18 @@
 		//this will dynamically add three input fields for subcategory criteria: name, description, points possible to the div of subcat_id that is passed here
 		function add_subcat_criteria($subcat_id){
 
-			subcategory_criteria_count[$subcat_id-1]+=1;
+			subcategory_criteria_count[$subcat_id]+=1;
 
 			var $input = 
 			'<div class="control-group">'+
 				'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criteria:</label>'+
-				'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
-					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory'+$subcat_id+'_desc" class="input-large" rows="3"></textarea>'+
-					'<input type="number" placeholder="Points Possible" name="subcategory'+$subcat_id+'_points" class="input-large"/>'+
+				'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
+					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][desc]" class="input-large" rows="3"></textarea>'+
+					'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
 
+			//append fields to the div with id dynamic_subcat[#]_criteria
 			$('#dynamic_subcat'+$subcat_id+'_criteria').append($input);
 		};
 	</script>
@@ -162,9 +164,9 @@
 
 									<div class="control-group">
 										<label class="control-label" for="subcategory0_criteria">Criteria:</label>
-										<div class="controls inline" name="subcategory0_criteria">
-											<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcat_criteria[0][desc]" class="input-large" rows="3"></textarea>
-											<input type="number" placeholder="Points Possible" name="subcat_criteria[0][points]" class="input-large"/>
+										<div class="controls inline" name="subcategory[0][criteria][]">
+											<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory[0][criteria][0][desc]" class="input-large" rows="3"></textarea>
+											<input type="number" placeholder="Points Possible" name="subcategory[0][criteria][0][points]" class="input-large"/>
 										</div>
 									</div>
 								</div>

@@ -93,22 +93,73 @@ class Settings extends CI_Controller {
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('category_name','Category Name','required|trim|xss_clean|is_unique[categories.category]');
-		
+
+		foreach($_REQUEST['subcategory'] as $subcat_id=>$subcategory){
+			//echo $subcategory['name'] . '</br>';
+			$this->form_validation->set_rules(
+					'subcategory['.$subcat_id.'][name]',
+					'Subcategory Name','required|trim|xss_clean');
+			
+			foreach($subcategory['criteria'] as $criteria_id=>$subcat_criteria){
+				//echo $subcat_criteria['desc'].'</br>';
+				//echo $subcat_criteria['points']. '</br>';
+				$this->form_validation->set_rules(
+					'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][desc]',
+					'Subcategory Criteria - Description','required|trim|xss_clean');
+				$this->form_validation->set_rules(
+					'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][points]',
+					'Subcategory Criteria - Points Possible','required|trim|numeric|xss_clean');
+			}
+		}
+
+
 		if ($this->form_validation->run()){
 
-			$this->load->model('category_settings_model');
+			/*$this->load->model('category_settings_model');
+
+			$cat_id = $this->category_settings_model->add_category();
+
+			if (isset($cat_id)){
+				foreach($_REQUEST['subcategory'] as $subcat_id=>$subcategory){
+					
+					$subcat_id = $this->category_settings_model->add_subcategory();
+
+//TODO: I don't want to redirect on all errors.
+//I want to add name to array and output list of failed attempts after 
+// everything has attempted to be added to db			
+
+					if(isset($subcat_id)){
+						foreach($subcategory['criteria'] as $criteria_id=>$subcat_criteria){
+							$data= array(
+								'subcat_id' => $subcat_id;
+								'desc' => 'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][desc]';
+								'points' => 'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][points]';
+							);
+							if($this->category_settings_model->add_criteria($data)){
+								$redirect=$this->session->set_flashdata('success','Project Category Added');
+								redirect(base_url()."settings/categories",$this->input->post('redirect'));
+							}
+							else{
+								$redirect=$this->session->set_flashdata('errors','Database Error from'. $subcat_criteria['desc'] .'and'. $subcat_criteria['points'] . 'Please Try Again.');
+								redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
+							}
+						}
+					}
+					else{
+						$redirect=$this->session->set_flashdata('errors','Database Error from' . $subcategory['name'] . '. Please Try Again or Contact the Site Administrator');
+						redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
+					}
+				}
+			}
+			else{
+				$redirect=$this->session->set_flashdata('errors','Database Error. Please Try Again or Contact the Site Administrator');
+				redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
+			}*/
+		
 			
-			if ($this->category_settings_model->add_category()){
-
-				$redirect=$this->session->set_flashdata('success','Project Category Added');
-				redirect(base_url()."settings/categories",$this->input->post('redirect'));
-
-				//}	else echo "could not send the email.";
-			}	else echo "problem adding to database.";
 
 		}
 		else{
-			
 			$redirect=$this->session->set_flashdata('errors',validation_errors());
 			redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
 		}
