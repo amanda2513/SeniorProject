@@ -188,6 +188,7 @@
 							<input type="submit" name="category_submit" class="btn span12 wsu_btn" id="submit_category_btn" value="Submit"/>
 						</div>
 					</div>
+
 					</div><!--close submit button row-fluid-->
 				</div><!--close span12-->
 			</div><!--close form's row-fluid-->
