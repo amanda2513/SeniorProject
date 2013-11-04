@@ -38,7 +38,7 @@
 					'<div class="control-group">'+
 						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criteria:</label>'+
 						'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
-							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory1_desc" class="input-large" rows="3"></textarea>'+
+							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory'+$subcat_id+'_desc" class="input-large" rows="3"></textarea>'+
 							'<input type="number" placeholder="Points Possible" name="subcategory'+$subcat_id+'_points" class="input-large"/>'+
 						'</div>'+
 					'</div>'
