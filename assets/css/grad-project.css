@@ -1,0 +1,256 @@
+/**
+--------COLORS------------
+PRIMARY
+green: #0C5449
+yellow: #FFCC33
+
+SECONDARY
+yellow-gold: #CCA500
+light-beige: #DAD6BD
+beige: #8B835F
+light-blue: #CEDDDB
+teal: #006666
+burgandy: #8B2145
+--------------------------**/
+html{
+	height:100%;
+	width:100%;
+}
+body{
+	background: #f7f7f7;
+	font-family: Arial;
+	height:100%;
+	width:100%;
+	padding:0;
+}
+
+@media (min-width:768px){
+	body{
+		background: #fff url('../img/main-gradient-bg.gif') left top repeat-x;
+	}
+}
+
+
+
+/**------HEADER------**/
+#wsu_header{
+	background: #0C5449;
+	margin:0;
+	min-height:10%;
+	width:100%;
+	padding-bottom:1%;
+	overflow:hidden;
+}
+
+.wsu_sign_in_container{
+	margin-top:1%;
+	margin-right:1%;
+	color:#FFCC33;
+}
+
+@media (max-width:767px){
+	.wsu_sign_in_container{
+		float:left;
+	}
+}
+
+#wsu_logo{
+	margin-top:2%;
+}
+
+#wsu_alert{
+	margin-bottom:1%;
+}
+
+#wsu_login_message{
+	margin-top:3%;
+	margin-bottom:3%;
+}
+
+#sign_out_btn{
+	margin-top: 30%;
+	color: #000000;
+}
+
+#wsu_error{
+	margin:0;
+}
+
+/**-------MAIN NAVBAR------**/
+.navbar .wsu_navbar{
+	margin-top:0;
+
+}
+
+.wsu_navbar .navbar-inner{
+	background: #e5e5e5;
+}
+
+.wsu_navbar li {
+	float:none;
+	width:25%;
+
+}
+
+.wsu_navbar .nav li a {
+	font-size: 150%;
+	min-height:45px;
+	line-height:45px;
+	color: #000000;
+}
+
+.wsu_navbar .nav li a:hover{
+	background-color: #dbdddd;
+	color: #000000;
+}
+
+.wsu_navbar .nav .active a{
+	background: #E5E4E3;
+}
+
+.wsu_navbar ul{
+	min-width:100%;
+}
+
+/*------------HOME PAGE------------*/
+.reg_button_container{
+}
+
+#participant_register_btn{
+	
+}
+
+#judge_register_btn{
+	
+}
+
+/**-------SUB PAGES - NAV TABS----------**/
+.nav-tabs {
+	margin-bottom:5px;
+}
+
+.nav-tabs li a {
+	color: #000000;
+}
+
+.nav-tabs a:hover{
+	background-color: #dbdddd;
+	color: #000000;
+}
+
+.nav-tabs .active a{
+	background: #E5E4E3;
+	color: #000000;
+}
+
+.nav-tabs .active a:hover{
+	background: #E5E4E3;
+	color: #000000;
+}
+
+
+/*------------BUTTONS, HERO UNIT, H2, PAGINATION - (MULTIPLE PAGES)------------*/
+.wsu_hero_unit{
+	min-height:70%;
+	margin-top:1%;
+	margin-bottom:1%;
+	margin-right:5%;
+	margin-left:5%;
+	padding-top:1%;
+	padding-bottom:1%;
+	background: #f7f7f7;
+	-moz-box-shadow: .5px .5px .5px .5px #777;
+	-webkit-box-shadow: .5px .5px 1px .5px #777;
+	box-shadow:  .5px .5px 1px .5px #777;
+	bottom: 20px;
+}
+
+@media (max-width:1200px){
+	.wsu_hero_unit{
+		margin:0;
+		padding:5%;
+		min-height:100%;
+	}
+}
+
+.content{
+	margin-left:10%;
+	margin-right:10%;
+	text-align:justify;
+}
+
+@media (max-width:979px){
+	.content{
+		margin:0;
+	}
+}
+
+.wsu_h2 {
+	padding-bottom: 10px;
+}
+
+.wsu_btn{
+	background: #e6e6e6;
+}
+
+.wsu_btn:hover{
+	background-color: #dbdddd;
+	color: #000000;
+}
+
+.wsu_pagination {
+	margin:0;
+	width: 50%;
+}
+
+/*--------TABLES----------------*/
+table {
+	margin-top: 0px;
+}
+
+table.tablesorter thead tr .header {
+	cursor: pointer;
+}
+
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+background-color: #e6e6e6;
+}
+
+#group_by_text {
+	padding-top:1%;
+	padding-bottom: 1%;
+	font-size: .85em;
+	line-height:50%;
+}
+/*----------------REGISTRATION---------------------*/
+@media (min-width:768px) and (max-width:1199px){
+	#registration,#general_settings{
+		width:80%;
+		margin-left:10%;
+		margin-right:10%;
+	}
+}
+
+@media (min-width:1400px){
+	#registration,#general_settings,#add_category{
+		width:70%;
+		margin-left:15%;
+		margin-right:15%;
+	}
+
+	#registration_type{
+		width:70%;
+		margin-left:15%;
+		margin-right:15%;
+	}
+}
+
+#description{
+	resize:vertical;
+}
+
+#register_btn, #save_settings_btn{
+	width:25%;
+	margin-right:37.5%;
+	margin-left:37.5%;
+}
