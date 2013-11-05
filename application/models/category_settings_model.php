@@ -15,7 +15,9 @@ class Category_settings_model extends CI_Model {
 		$did_add_category = $this->db->insert('categories', $data);
 
 		if($did_add_category){
-			return true;
+			$sql = $this->db->get_where('categories',array('category'=>$this->input->post('category_name')));
+			$cat_record = $sql -> row();
+			return $cat_record -> cat_id;
 		}
 		return false;
 	}
@@ -25,6 +27,38 @@ class Category_settings_model extends CI_Model {
 		$did_del_user = $this->db->delete('categories', array('cat_id' => $category_id));
 
 		if($did_del_user){
+			return true;
+		}
+		return false;
+	}
+
+	public function add_subcategory($cat_id,$subcategory){
+		$data = array(
+				'cat_id'=>$cat_id,
+				'subcat_name'=>$subcategory['name']
+				);
+				
+		$did_add_subcategory = $this->db->insert('subcategories', $data);
+
+		if($did_add_subcategory){
+			$sql = $this->db->get_where('subcategories',array('subcat_name'=>$subcategory['name']));
+			$subcat_record = $sql -> row();
+			return $subcat_record -> subcat_id;
+		}
+		
+	}
+
+	public function add_criteria($criteria){
+
+		$data = array(
+				'subcat_id'=>$criteria['subcat_id'],
+				'criteria_description'=>$criteria['desc'],
+				'criteria_points'=>$criteria['points']
+				);
+				
+		$did_add_criteria = $this->db->insert('subcat_criteria', $data);
+
+		if($did_add_criteria){
 			return true;
 		}
 		return false;

@@ -190,8 +190,8 @@
 						<label class="control-label" for="restrict_access">Access to only Admin &amp; Score Entry Users</label>
 						<div class="controls">
 							<select name="restrict_access" id="restrict_access" value="<?php echo set_value('restrict_access',$settings['restrict_access']);?>" >
-								<option>On</option>
-								<option>Off</option>
+								<option value="1">On</option>
+								<option value="0">Off</option>
 							</select>
 						</div>
 					</div>

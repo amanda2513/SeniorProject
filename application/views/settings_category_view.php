@@ -99,7 +99,7 @@
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
-						Points Possible
+						Total Points Possible
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>Actions</th>
@@ -107,21 +107,59 @@
 			</thead>
 			<tbody>
 				<?php 
-					if(!empty($category)){
-						foreach($category as $row){
-							echo '<tr>';
-							
-							echo '<td>' . $row->category  . '</td>';
-							echo '<td>' . '</td>';
-							echo '<td>' . '</td>';
+					if(!empty($category)&&!empty($subcategory)&&!empty($subcat_criteria)){
+
+						foreach($category as $index=>$row)
+						{
+							echo 
+								'<tr>
+									<td>' . 
+										$row->category  . '
+									</td>
+
+									<td>';
+
+										$current_cat_id = $row->cat_id;
+										$subcats[]= array();
+										$total_points = 0;
+
+										foreach($subcategory as $subcat)
+										{
+											$subcat_points = 0;
+
+											$current_subcat_id = $subcat->subcat_id;
+
+											if($subcat->cat_id == $current_cat_id)
+											{
+												echo $subcat->subcat_name;
+											
+
+												foreach($subcat_criteria as $criteria)
+												{
+													if($criteria->subcat_id == $current_subcat_id)
+													{
+														$subcat_points += $criteria->criteria_points;
+														$total_points +=$criteria->criteria_points;
+													}
+												}
+												echo  ' (' . $subcat_points . ' pts) </br>';
+											}
+										}
+								
+							echo '</td>';
+
+							echo '<td>' . $total_points . '</td>';
 							echo '<td>
 							<a class="btn wsu_btn" href="#"><i class="icon-pencil"></i></a>
 							<!--<a class="btn wsu_btn" href="';echo base_url()."settings/categories/edit/".$row->category;echo'"><i class="icon-pencil"></i></a>-->
 							<button class="btn wsu_btn" onClick="confirmModal('; echo "'".$row->cat_id ."'";echo')"><i class="icon-trash"></i></button>							</td>';
 
 							echo '</tr>';
+
 						}
-					}else{
+					}
+					else
+					{
 						echo "<td>No results found.</td>";
 					}
 				?>

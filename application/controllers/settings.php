@@ -37,6 +37,8 @@ class Settings extends CI_Controller {
 					}
 				default:
 					$data['category']=$this->category_settings_model->get_all("categories");
+					$data['subcategory']=$this->category_settings_model->get_all("subcategories");
+					$data['subcat_criteria']=$this->category_settings_model->get_all("subcat_criteria");
 					$this->load->view('settings_category_view', $data);
 					break;
 			}
@@ -48,6 +50,7 @@ class Settings extends CI_Controller {
 
 	public function general_settings_form(){
 		$this->load->library('form_validation');
+
 
 		$this->form_validation->set_rules('exhib_date','Exhibition Date','required|trim');
 		$this->form_validation->set_rules('exhib_start','Exhibition Start Time','required|trim');
@@ -115,32 +118,28 @@ class Settings extends CI_Controller {
 
 		if ($this->form_validation->run()){
 
-			/*$this->load->model('category_settings_model');
+			$this->load->model('category_settings_model');
 
 			$cat_id = $this->category_settings_model->add_category();
 
 			if (isset($cat_id)){
-				foreach($_REQUEST['subcategory'] as $subcat_id=>$subcategory){
+				foreach($_REQUEST['subcategory'] as $subcat_index=>$subcategory){
 					
-					$subcat_id = $this->category_settings_model->add_subcategory();
+					$subcat_id = $this->category_settings_model->add_subcategory($cat_id, $subcategory);
 
-//TODO: I don't want to redirect on all errors.
-//I want to add name to array and output list of failed attempts after 
-// everything has attempted to be added to db			
+//TODO: I don't want to redirect on all db errors for subcategories and their criteria.
+//I want to add subcat/criteria name to an array and output list of failed attempts after 
+// everything that's valid has been added to db			
 
 					if(isset($subcat_id)){
-						foreach($subcategory['criteria'] as $criteria_id=>$subcat_criteria){
+						foreach($subcategory['criteria'] as $criteria_index=>$subcat_criteria){
 							$data= array(
-								'subcat_id' => $subcat_id;
-								'desc' => 'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][desc]';
-								'points' => 'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][points]';
+								'subcat_id' => $subcat_id,
+								'desc' => $subcat_criteria['desc'],
+								'points' => $subcat_criteria['points']
 							);
-							if($this->category_settings_model->add_criteria($data)){
-								$redirect=$this->session->set_flashdata('success','Project Category Added');
-								redirect(base_url()."settings/categories",$this->input->post('redirect'));
-							}
-							else{
-								$redirect=$this->session->set_flashdata('errors','Database Error from'. $subcat_criteria['desc'] .'and'. $subcat_criteria['points'] . 'Please Try Again.');
+							if(!$this->category_settings_model->add_criteria($data)){
+								$redirect=$this->session->set_flashdata('errors','Database Error from '. $subcat_criteria['desc'] .' and '. $subcat_criteria['points'] . ' Please Try Again.');
 								redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
 							}
 						}
@@ -154,15 +153,16 @@ class Settings extends CI_Controller {
 			else{
 				$redirect=$this->session->set_flashdata('errors','Database Error. Please Try Again or Contact the Site Administrator');
 				redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
-			}*/
-		
-			
-
+			}
 		}
 		else{
 			$redirect=$this->session->set_flashdata('errors',validation_errors());
 			redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
 		}
+
+		//no errors
+		$redirect=$this->session->set_flashdata('success','Project Category Added');
+		redirect(base_url()."settings/categories",$this->input->post('redirect'));
 	}
 
 }
