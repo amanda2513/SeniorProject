@@ -170,6 +170,8 @@
 					<?php
 						//If the registration type is Participant, add these fields about their project
 						if($selected_type=='participant'){
+
+							
 							echo 
 							//open right column - span6 - participant only
 							'<div class="span6" id="project_info_span">
@@ -180,9 +182,11 @@
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="Poster">Poster</option>
-											<option value="Oral Presentation">Oral Presentation</option>
-										</select>
+											<option value="0">Select a Category</option>';
+											foreach($categories as $category){
+												echo '<option value="'.$category->category.'">'. $category->category.'</option>';
+											}
+								echo	'</select>
 									</div>
 								</div>
 

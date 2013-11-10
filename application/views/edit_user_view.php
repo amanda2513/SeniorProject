@@ -34,7 +34,7 @@
 						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
 					</li>
 					<li>
-						<a id="nav_systemsettings" href="#">System Settings</a>
+						<a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a>
 					</li>
 				</ul>
 			</div>
@@ -47,7 +47,7 @@
 		<!--Invalid add-user forms redirect back to this page with errors-->
 		<?php		
 			//Get the type of add-user from the URL .../add?type=[whateverthisis] and store it in variable selected_option
-		 	$selected_type = $_GET['type'];
+		 	$selected_type = $this->uri->segment(3);
 
 		 	//The values of registration type dropdown
 		 	$options = array("participant","judge","seu","admin");
@@ -112,10 +112,15 @@
 			Name, Department, Email, Password
 			Same for all users until IF statement
 		-->
-		<form class="form-horizontal" name="registration" id="registration" method="post" accept-charset="utf-8" action='<?php echo base_url()."manage_users/edit_user_validation";?>'>
+		<form class="form-horizontal" name="registration" id="registration" method="post"
+		accept-charset="utf-8" action='<?php echo base_url()."manage_users/edit_user_validation/".
+		$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$user_data['id'];?>'>
+
+
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
+
 						<?php
 						//Change form layout based on registration type
 						//start form's left column
@@ -138,14 +143,26 @@
 			    				</div>
 			    			</div>
 
+			    			
+
 							<div class="control-group">
 								<label class="control-label" for="department">Department:</label>
 								<div class="controls">
 									<select name="department" value="<?php echo set_value('department',$user_data['department']);?>">
 										<option value="">Select User's Department</option>
-										<option value="Computer Science">Computer Science</option>
-										<option value="English">English</option>
-										<option value="Science">Science</option>
+										<?php		
+											$departments = array('Computer Science', 'English', 'Science');
+
+											foreach($departments as $department){
+												if($user_data['department'] == $department){
+										 			$selected="selected='selected'";
+											 	}
+											 	else{
+											 		$selected = "";
+											 	}
+											 	echo '<option value="'.$department.'"'.$selected.'>'.$department.'</option>';
+										 	}
+										?>
 									</select>
 								</div>
 							</div>
@@ -154,23 +171,10 @@
 							<div class="control-group">
 								<label class="control-label" for="email">WSU Email:</label>
 								<div class="controls">
-									<input type="email" name="email" class="input-large" id="email" placeholder="Email" action="<?php echo $this->input->post('email');?>" value="<?php echo set_value('email',$user_data['email']);?>">
+									<input type="email" name="email" class="input-large" id="email" placeholder="Email" action="<?php echo $this->input->post('email');?>" value="<?php echo set_value('email',$user_data['email']);?>" readonly>
 								</div>
 							</div>
 
-							<div class="control-group">
-								<label class="control-label" for="password">Temporary Password:</label>
-								<div class="controls">
-									<input type="password" name="password" class="input-large" id="password" placeholder="Password">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="cpassword">Confirm Temporary Password:</label>
-								<div class="controls">
-									<input type="password" name="cpassword" class="input-large" id="confirm_password" placeholder="Password">
-								</div>
-							</div>
 						</div><!--close left span-->
 
 					<?php
@@ -185,10 +189,18 @@
 								<div class="control-group">
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
-										<select name="category" id="category" value="';echo set_value("category",$user_data["category"]);echo'">
-											<option value="Poster">Poster</option>
-											<option value="Oral Presentation">Oral Presentation</option>
-										</select>
+										<select name="category" id="category">
+											<option value="0">Select a Category</option>';
+											foreach($categories as $category){
+												if($user_data['category']==$category->category){
+													$selected = "selected='selected'";
+												}
+												else{
+													$selected = "";
+												}
+												echo '<option value="'.$category->category.'"'.$selected.'>'. $category->category.'</option>';
+											}
+								echo	'</select>
 									</div>
 								</div>
 

@@ -41,7 +41,7 @@ class Category_settings_model extends CI_Model {
 		$did_add_subcategory = $this->db->insert('subcategories', $data);
 
 		if($did_add_subcategory){
-			$sql = $this->db->get_where('subcategories',array('subcat_name'=>$subcategory['name']));
+			$sql = $this->db->get_where('subcategories',array('subcat_name'=>$subcategory['name'], 'cat_id'=>$cat_id));
 			$subcat_record = $sql -> row();
 			return $subcat_record -> subcat_id;
 		}
@@ -62,6 +62,22 @@ class Category_settings_model extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	public function get_category($category_name){
+		$sql = $this->db->get_where('categories',array('category'=>$category_name));
+		$category = $sql -> row();
+		return $category;
+	}
+
+	public function get_subcategories($cat_id){
+		$sql = $this->db->get_where('subcategories',array('cat_id'=>$cat_id));
+		return $sql -> result();
+	}
+
+	public function get_criteria($subcat_id){
+		$sql = $this->db->get_where('subcat_id', array('subcat_id'=>$subcat_id));
+		return $sql -> result();
 	}
 
 }

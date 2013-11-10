@@ -34,8 +34,7 @@
 						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
 					</li>
 					<li>
-						<a id="nav_systemsettings" href="#">System Settings</a>
-					</li>
+						<a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a>					</li>
 				</ul>
 			</div>
 		</div>

@@ -104,18 +104,20 @@
 				<?php 
 					if(!empty($participant)){
 						foreach($participant as $row){
-							echo '<tr>';
-							
-							echo '<td>' . $row->lastname  . '</td>';
-							echo '<td>' . $row->firstname . '</td>';
-							echo '<td> TODO</td>';
-							echo '<td>
-							<a class="btn wsu_btn" href="#"><i class="icon-lock"></i></a> 
-							<a class="btn wsu_btn" href="';echo base_url()."manage_users/edit/".$row->id."?type=".$row->usertype;echo'"><i class="icon-pencil"></i></a>
-							<button class="btn wsu_btn" onClick="confirmModal('; echo "'".$row->id ."'";echo')"><i class="icon-trash"></i></button>
-							</td>';
+							echo 
 
-							echo '</tr>';
+							'<tr>
+							
+								<td>' . $row->lastname  . '</td>
+								<td>' . $row->firstname . '</td>
+								<td> TODO </td>
+								<td>
+									<a class="btn wsu_btn" href="#"><i class="icon-lock"></i></a> 
+									<a class="btn wsu_btn" href="'.base_url()."manage_users/edit/".$row->usertype."/".substr($row->email,0,-10).'"><i class="icon-pencil"></i></a>
+									<button class="btn wsu_btn" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
+								</td>
+
+							</tr>';
 						}
 					}else{
 						echo "<td>No results found.</td>";

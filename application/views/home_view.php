@@ -56,17 +56,20 @@
   				echo '</div>';
   			}
   		?>
+
   		<div class="content">
 			<h2 class="wsu_h2 text-center hidden-phone">Graduate Exhibition Registration &amp; Scoring System</h2>
 			<h4 class="wsu_h2 text-center visible-phone">Graduate Exhibition Registration &amp; Scoring System</h4>
+			
+
 			<p>The Graduate School is pleased to invite the campus community to the third annual Graduate Exhibition to celebrate the achievements of Wayne State University graduate students across our campus. The event will include an exhibition of graduate student research and scholarship from all disciplines, and will feature 100 posters and art exhibits and six oral presentations.</p>
-			</br>
+			<br>
 			<p class="text-center">We hope many will join us for this wonderful event!</p></br>
 			<p class="text-center">
 				Event Information:
-			</br>
+			<br>
 				<div class="row-fluid">
-					<div class="span3 offset1 text-center">
+					<div class="span4 text-right">
 						<?php
 							echo "Date: ";
 							//If exhib date isn't set, show TBA.
@@ -90,7 +93,7 @@
 						?>
 					</div>
 
-					<div class="span3 text-center">
+					<div class="span4 text-left">
 						<?php
 							echo "Location: ";
 							//If exhib location isn't set, show TBA
@@ -103,19 +106,11 @@
 					</div>
 				</div>
 			</p>
-			</br>
+			<br>
+			
 			<div class="reg_button_container row-fluid">
-             	
-				<?php 
-					$participant="participant";
-					$judge="judge";
-				?>
-
-				<div class="span6">
-					<a class="btn btn-lg wsu_btn span5 offset3" id="participant_register_btn" href='<?php echo base_url()."gerss/registration?type=",urlencode($participant)?>'><strong>Participants</strong></br>Register Here</a>
-				</div>
-				<div class="span6">
-					<a class="btn btn-lg wsu_btn span5 offset3" id="judge_register_btn" href='<?php echo base_url()."gerss/registration?type=",urlencode($judge)?>'><strong>Judges</strong></br>Register Here</a>
+             	<div class="span6 offset3">
+					<a class="btn btn-lg wsu_btn span6 offset3" id="participant_register_btn" href='<?php echo base_url()."gerss/registration?type=",urlencode("participant")?>'><strong>Participants</strong></br>Register Here</a>
 				</div>
 			</div>
 		</div>

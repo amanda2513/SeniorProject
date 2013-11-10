@@ -128,13 +128,8 @@ class Manage_users extends CI_Controller {
 			$email = $this->input->post('email');
 
 			if ($this->users_model->admin_add_user()){
-				//if ($this->email->send()){
-					//echo "The email has been sent!";
-				//$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
 				$redirect=$this->session->set_flashdata('success','User Added');
 				redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
-
-				//}	else echo "could not send the email.";
 			}	else echo "problem adding to database.";
 
 		}
@@ -151,52 +146,55 @@ class Manage_users extends CI_Controller {
 
 			$this->load->model("users_model");
 			
-			$user=$this->uri->segment(3);
-			$data['user_data']=$this->users_model->get_user_by_id($user);
+			$user=$this->uri->segment(4);
+			
+			$data['user_data']=$this->users_model->get_user_by_username($user);
+
+			$this->load->model("category_settings_model");
+			$data['categories']=$this->category_settings_model->get_all('categories');
+
 			$this->load->view('edit_user_view',$data);
 			
 		}
+
 		else{
 			redirect('gerss/home');
 		}
 	}
 
-		public function edit_user_validation(){
+	public function edit_user_validation(){
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('type','Type','required|trim');
 		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
-		$this->form_validation->set_rules('password', 'Password', 'required|trim');
-		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|callback_valid_domain');
+				
 		
-		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
 		if ($this->form_validation->run()){
 			
 			//generate a random key
 			$key = md5(uniqid());
+			$id=$this->uri->segment(5);
 
 			$this->load->model('users_model');
 			$email = $this->input->post('email');
 
-			if ($this->users_model->update_user()){
-				//if ($this->email->send()){
-					//echo "The email has been sent!";
-				//$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
-				$redirect=$this->session->set_flashdata('success','User Has Been Edited');
-				redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
-
-				//}	else echo "could not send the email.";
-			}	else echo "problem adding to database.";
-
+			if ($this->users_model->update_user($id)){
+				$redirect=$this->session->set_flashdata('success','User Info Has Been Updated');
+				redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+			}
+			else{
+				$redirect=$this->session->set_flashdata('errors','There was a problem adding to the database. Please try again.');
+				redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+			}
 		}
 		else{
 			
 			$redirect=$this->session->set_flashdata('errors',validation_errors());
-			redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+			redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
 		}
 	}
 }

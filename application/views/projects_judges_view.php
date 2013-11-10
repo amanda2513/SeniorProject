@@ -98,7 +98,7 @@
 							echo '<td>' . $row->title . '</td>';
 							echo '<td>' . $row->category . '</td>';
 							echo '<td>
-							<a class="btn wsu_btn" href="';echo base_url()."manage_users/edit/".$row->id."?type=".$row->usertype;echo'"><i class="icon-pencil"></i></a>
+							<a class="btn wsu_btn" href="'.base_url()."manage_users/edit/".$row->usertype."/".substr($row->email,0,-10).'"><i class="icon-pencil"></i></a>
 							<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
 						echo '</tr>';
 						}

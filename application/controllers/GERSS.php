@@ -45,6 +45,8 @@ class Gerss extends CI_Controller {
 //---------------REGISTRATION-------------------------------//
 	public function registration() {
 		$data['title']="WSU-GERSS :: Register";
+		$this->load->model('category_settings_model');
+		$data['categories']=$this->category_settings_model->get_all('categories');
 		$this->load->view('registration_view',$data);
 	}
 
@@ -71,49 +73,7 @@ class Gerss extends CI_Controller {
 		
 		if ($this->form_validation->run()){
 			
-			//Generate a random key
-			$key = md5(uniqid());
-
-			$this->load->library('email', array('mailtype'=>'html'));
-			$this->load->model('users_model');
-			
-		  //$this->email->from('info@gradproject.dynu.com', "Plamen");
-			$email = $this->input->post('email');
-		  //$this->email->to($this->input->post('email'));
-		  //$this->email->subject("Confirm your account.");
-			
-			$message = "<p>Thank you for signing up!</p>";
-			$message .= "<p><a href='".base_url()."gerss/register_user/$key' >Click here</a> to confirm your account</p>";
-			
-		  //$this->email->message($message);
-//---------------SEND EMAIL TO THE USER-------------------------------//
-		$client = new SoapClient('https://api.jangomail.com/api.asmx?WSDL');
-			$parameters = array
-				(
-					'Username'          => (string) 'plampetkov', 
-					'Password'          => (string) 'October2013', 
-					'FromEmail'         => (string) 'info@gradproject.com', 
-					'FromName'          => (string) 'Project Administrator',
-					'ToEmailAddress'    => (string)	$email, 
-					'Subject'           => (string) 'Confirm your account.', 
-					'MessagePlain'      => (string) 'Transactional Plain (plain text)',
-					'MessageHTML'       => (string)	$message,
-					'Options'           => (string) 'OpenTrack=True,ClickTrack=True'
-				);
-	
-			$response = $client->SendTransactionalEmail($parameters);
-			//echo "Message(s) sent!";
-
-			
-			if ($this->users_model->add_temp_user($key)){
-				//if ($this->email->send()){
-					//echo "The email has been sent!";
-				//$redirect=$this->session->set_flashdata('success','Your account has been created. Thank you.');
-				$redirect=$this->session->set_flashdata('success','We sent you a confirmation email. Please reply to complete your registration.');
-				redirect($this->input->post('redirect'));
-
-				//}	else echo "could not send the email.";
-			}else echo "problem adding to database.";
+			$this->register_user();
 
 		}
 		else{
@@ -123,15 +83,18 @@ class Gerss extends CI_Controller {
 		}
 	}
 //----------------REGISTER USER----------------------------//	
-	public function register_user($key){
+	public function register_user(){
 		$this->load->model('users_model'); 
 		
-		if ($this->users_model->is_key_valid($key)){
-			if($this->users_model->add_user($key)){
-				//$data['title']="WSU-GERSS :: Home";
-				$this->load->view('home_view');
-			}else echo "failed";	
-		}else echo "invalid key";
+		if($this->users_model->admin_add_user()){
+			$redirect=$this->session->set_flashdata('success','You have been registered. You can now login with your WSU credentials.');
+			redirect($this->input->post('redirect'));
+		}
+		else{
+			$redirect=$this->session->set_flashdata('errors',validation_errors());
+			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
+		}
+		
 	}
 
 //----------------CHECK FOR VALID WSU EMAIL ADDRESS-------------//	

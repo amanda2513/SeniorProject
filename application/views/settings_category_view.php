@@ -120,7 +120,6 @@
 									<td>';
 
 										$current_cat_id = $row->cat_id;
-										$subcats[]= array();
 										$total_points = 0;
 
 										foreach($subcategory as $subcat)
@@ -150,9 +149,8 @@
 
 							echo '<td>' . $total_points . '</td>';
 							echo '<td>
-							<a class="btn wsu_btn" href="#"><i class="icon-pencil"></i></a>
-							<!--<a class="btn wsu_btn" href="';echo base_url()."settings/categories/edit/".$row->category;echo'"><i class="icon-pencil"></i></a>-->
-							<button class="btn wsu_btn" onClick="confirmModal('; echo "'".$row->cat_id ."'";echo')"><i class="icon-trash"></i></button>							</td>';
+							<a class="btn wsu_btn" href="'.base_url()."settings/categories/edit/".$row->category.'" disabled><i class="icon-pencil"></i></a>
+							<button class="btn wsu_btn" onClick="confirmModal('."'".$row->cat_id ."'".')"><i class="icon-trash"></i></button>							</td>';
 
 							echo '</tr>';
 

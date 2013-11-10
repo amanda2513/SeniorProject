@@ -173,15 +173,33 @@
 							<input class="input" size="16" type="number" min="1" id="projects_per_judge" name="projects_per_judge" value="<?php echo set_value('projects_per_judge',$settings['projects_per_judge']);?>" >
 						</div>
 					</div>
+		<?php
+			if($reg_cutoff_date['input'] < date('m/d/y'))
+				$status = "";
+			else
+				$status = "disabled";
+		?>
 
 					<!--Assign Judges button-->
 					<div class="control-group">
 						<label class="control-label" for="">System Generated Assignment</label>
 						<div class="controls">
-							<button class="btn btn-medium wsu_btn" size="16">Assign Judges</button>
+							<a href="#" class="btn btn-medium wsu_btn" size="16" <?php echo $status;?>>Assign Judges</a>
 						</div>
 					</div>
 				
+
+		<?php		
+			$options = array(0,1);
+
+		 	//If type from URL is participant, make that the default selected dropdown option, else judge
+		 	if($settings['restrict_access'] == 0){
+		 		$options[0]="selected='selected'";
+		 	}
+		 	else{
+		 		$options[1]="selected='selected'";
+		 	}
+		?>
 
 					<hr class="muted">
 					<small class="muted text-center">Restrict Access</small>
@@ -190,8 +208,8 @@
 						<label class="control-label" for="restrict_access">Access to only Admin &amp; Score Entry Users</label>
 						<div class="controls">
 							<select name="restrict_access" id="restrict_access" value="<?php echo set_value('restrict_access',$settings['restrict_access']);?>" >
-								<option value="1">On</option>
-								<option value="0">Off</option>
+								<option value="1" <?php echo $options[1]?>>On</option>
+								<option value="0" <?php echo $options[0]?>>Off</option>
 							</select>
 						</div>
 					</div>

@@ -41,9 +41,9 @@
 							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
 							'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
 						'</div>'+
-					'</div>'
+					'</div>'+
 				'</div>'+
-				'<hr/>'+
+				'<hr>'+
 			'</div>';
 
 			//append fields to the div with id dynamic_fields
@@ -124,18 +124,19 @@
   			}
   		?>
 
-		<form class="form-horizontal" name="add_category" id="add_category" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/add_category_validation";?>'>
+		<form class="form-horizontal" name="add_category" id="add_category" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/add_category_validation/";?>'>
 			<div class="row-fluid">
 				<div class="span12">
 
 					<div class="row-fluid">
 
 						<div class="span6 offset3">
-						<div class="span6">							
-							<button class="btn btn-medium wsu_btn span12" id="add_subcat" onclick="add_subcategory(); return false;"><i class="icon-plus"></i> Add Subcategory</button>
-						</div>
-						<div class="span6">
-							<input type="submit" name="category_submit" class="btn span12 wsu_btn" id="submit_category_btn" value="Submit"/>
+							<div class="span6">							
+								<button class="btn btn-medium wsu_btn span12" id="add_subcat" onclick="add_subcategory(); return false;"><i class="icon-plus"></i> Add Subcategory</button>
+							</div>
+							<div class="span6">
+								<input type="submit" name="category_submit" class="btn span12 wsu_btn" id="submit_category_btn" value="Submit"/>
+							</div>
 						</div>
 					</div>
 
@@ -151,16 +152,17 @@
 			    				</div>
 			    			</div>
 
-			    			<hr/><hr/>
+			    			<hr><hr>
 
 			    			<div id="dynamic_fields">
 			    				<div class="control-group">
 			    					<label class="control-label" for="subcategory0_name">Subcategory Name:</label>
 									<div class="controls inline" name="subcategory0_name">
-									<input type="text" placeholder="Content, Display, Oral, etc." name="subcategory[0][name]" class="input-large"/>
+										<input type="text" placeholder="Content, Display, Oral, etc." name="subcategory[0][name]" class="input-large"/>
+									</div>
 								</div>
 								<div id="dynamic_subcat0_criteria">
-									<button class="btn btn-medium wsu_btn" id="add_subcat0_criteria" onclick="add_subcat_criteria('0');return false;"><i class="icon-plus"></i> Add Criteria</button>
+									<button class="btn btn-medium wsu_btn" id="add_subcat0_criteria" onclick="add_subcat_criteria(0);return false;"><i class="icon-plus"></i> Add Criteria</button>
 
 									<div class="control-group">
 										<label class="control-label" for="subcategory0_criteria">Criteria:</label>
@@ -170,26 +172,25 @@
 										</div>
 									</div>
 								</div>
-								<hr/>
+							<hr>
 							</div>
-			    			</div>
-
-			    			<br/><br/>
 			    		</div>
-					</div><!--close form column row-fluid-->
+
+			    	<br/><br/>
+			    	</div>
 
 					
 
 					<div class="row-fluid">
 
 						<div class="span6 offset3">
-						<div class="span6">							
-							<button class="btn btn-medium wsu_btn span12" id="add_subcat" onclick="add_subcategory(); return false;"><i class="icon-plus"></i> Add Subcategory</button>
+							<div class="span6">							
+								<button class="btn btn-medium wsu_btn span12" id="add_subcat" onclick="add_subcategory(); return false;"><i class="icon-plus"></i> Add Subcategory</button>
+							</div>
+							<div class="span6">
+								<input type="submit" name="category_submit" class="btn span12 wsu_btn" id="submit_category_btn" value="Submit"/>
+							</div>
 						</div>
-						<div class="span6">
-							<input type="submit" name="category_submit" class="btn span12 wsu_btn" id="submit_category_btn" value="Submit"/>
-						</div>
-					</div>
 
 					</div><!--close submit button row-fluid-->
 				</div><!--close span12-->

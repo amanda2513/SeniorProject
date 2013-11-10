@@ -40,7 +40,6 @@ class Users_model extends CI_Model {
 			'key' => $key
 		);
 
-		//$query = $this->db->insert('users_test',$data);
 		$query = $this->db->insert('temp_users',$data);
 		if($query){
 			return true;
@@ -50,7 +49,7 @@ class Users_model extends CI_Model {
 		}
 	}
 
-	//Valid Key
+	/*//Valid Key
 	public function is_key_valid($key){
 		$this->db->where('key', $key);
 		$query = $this->db->get('temp_users');
@@ -58,7 +57,7 @@ class Users_model extends CI_Model {
 		if ($query->num_rows() == 1){
 			return true;
 		}else return false;
-	}
+	}*/
 	
 	//Add User To USERS Table
 	public function add_user($key){
@@ -98,13 +97,14 @@ class Users_model extends CI_Model {
 	}
 
 
-	public function get_user_by_id($user_id){
-		$sql = $this->db->get_where('users',array('id'=>$user_id));
+	public function get_user_by_username($username){
+		$email=$username.'@wayne.edu';
+		$sql = $this->db->get_where('users',array('email'=>$email));
 		return $sql->row_array();
 	}
 
 
-	//Admin adds a user, skips temp-users table FOR NOW
+	//Admin adds a user, skips temp-users table
 	public function admin_add_user(){
 		$data = array(
 				'usertype'=>$this->input->post('type'),
@@ -158,5 +158,27 @@ class Users_model extends CI_Model {
 		$sql = $this->db->get_where($table_name,array('email'=>$user_email));
 		$user_record = $sql -> row();
 		return $user_record -> usertype;
+	}
+
+	public function update_user($id){
+		$data = array(
+				'usertype'=>$this->input->post('type'),
+				'firstname'=>$this->input->post('firstname'),
+				'lastname' =>$this->input->post('lastname'),
+				'department'=>$this->input->post('department'),
+				'email' => $this->input->post('email'),
+				'category'=>$this->input->post('category'),
+				'title'=>$this->input->post('project_title'),
+				'description'=>$this->input->post('project_desc')
+				);
+
+		$this->db->where('id',$id);
+		$did_add_user = $this->db->update('users', $data);
+
+		if($did_add_user){
+			return true;
+		}
+		return false;
+
 	}
 }
