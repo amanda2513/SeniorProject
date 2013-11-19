@@ -2,7 +2,7 @@
 
 class Manage_users extends CI_Controller {
 
-	public function participants(){
+	public function participant(){
 		if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');		
 			$data['participant']=$this->users_model->get_all_user_type("users","participant");
@@ -14,7 +14,7 @@ class Manage_users extends CI_Controller {
 		}
 	}
 
-	public function judges(){
+	public function judge(){
 		if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');		
 			$data['judge']=$this->users_model->get_all_user_type("users","judge");
@@ -87,18 +87,32 @@ class Manage_users extends CI_Controller {
 		};
 	}
 
-	public function delete($user){
-		//echo $user;
+	public function delete(){
 		$this->load->model('users_model');
-		$data['participant']=$this->users_model->admin_del_user("users", $user);
-		//$data['title']="WSU-GERSS :: Projects";
-		//$this->load->view('users_participant_view',$data);
-		redirect('manage_users/participants');
+		$user_type=$this->uri->segment(3);
+		$user_id = $this->uri->segment(4);
+		if($user_type == 'participant'){
+			$user_was_deleted = $this->users_model->admin_del_participant($user_id);
+		}
+		else{
+			$user_was_deleted = $this->users_model->admin_del_user($user_id);
+		}
+
+		if($user_was_deleted){
+			$redirect=$this->session->set_flashdata('success','User Has Been Deleted');
+			redirect(base_url()."manage_users/".$this->uri->segment(3),$this->input->post('redirect'));
+		}
+		else{
+			$redirect=$this->session->set_flashdata('error','Error Deleting User');
+			redirect(base_url()."manage_users/".$this->uri->segment(3),$this->input->post('redirect'));
+		}
 	}
 	
 	public function add(){
 		if ($this->session->userdata('is_logged_in')){
 			$data['title']="WSU-GERSS :: Add User";
+			$this->load->model('category_settings_model');
+			$data['categories']=$this->category_settings_model->get_all('categories');
 			$this->load->view('add_user_view',$data);
 		}
 		else{
@@ -120,17 +134,20 @@ class Manage_users extends CI_Controller {
 		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
 		if ($this->form_validation->run()){
-			
-			//generate a random key
-			$key = md5(uniqid());
 
 			$this->load->model('users_model');
 			$email = $this->input->post('email');
 
-			if ($this->users_model->admin_add_user()){
+			if($this->input->post('type')=='participant'){
+				$this->users_model->add_participant();
 				$redirect=$this->session->set_flashdata('success','User Added');
 				redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
-			}	else echo "problem adding to database.";
+			}
+			else{
+				$this->users_model->admin_add_user();
+				$redirect=$this->session->set_flashdata('success','User Added');
+				redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+			}
 
 		}
 		else{
@@ -149,6 +166,11 @@ class Manage_users extends CI_Controller {
 			$user=$this->uri->segment(4);
 			
 			$data['user_data']=$this->users_model->get_user_by_username($user);
+
+			if($data['user_data']['usertype']=='participant'){
+				$project_id=$this->users_model->get_project_id($data['user_data']['id']);
+				$data['project_data']=$this->users_model->get_project_data($project_id);
+			}
 
 			$this->load->model("category_settings_model");
 			$data['categories']=$this->category_settings_model->get_all('categories');
@@ -175,20 +197,20 @@ class Manage_users extends CI_Controller {
 		
 		if ($this->form_validation->run()){
 			
-			//generate a random key
-			$key = md5(uniqid());
 			$id=$this->uri->segment(5);
 
 			$this->load->model('users_model');
 			$email = $this->input->post('email');
 
-			if ($this->users_model->update_user($id)){
+			if ($this->input->post('type')=='participant'){
+				$this->users_model->update_participant($id);
 				$redirect=$this->session->set_flashdata('success','User Info Has Been Updated');
-				redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+				redirect(base_url()."manage_users/edit/".$this->input->post('type').'/'.$this->uri->segment(4),$this->input->post('redirect'));
 			}
 			else{
-				$redirect=$this->session->set_flashdata('errors','There was a problem adding to the database. Please try again.');
-				redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+				$this->users_model->update_user($id);
+				$redirect=$this->session->set_flashdata('success','User Info Has Been Updated');
+				redirect(base_url()."manage_users/edit/".$this->input->post('type').'/'.$this->uri->segment(4),$this->input->post('redirect'));
 			}
 		}
 		else{

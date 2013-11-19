@@ -92,14 +92,16 @@ class Users_model extends CI_Model {
 	
 	//FIND User In The USERS Table
 	public function find_user($table_name,$usertype,$search){
-		$sql = $this->db->get_where($table_name,array('lastname'=>$search, 'usertype'=>$usertype));
+		$this->db->like('lastname',$search,'after');
+		$this->db->where('usertype',$usertype);
+		$sql = $this->db->get($table_name);
 		return $sql -> result();
 	}
 
 
 	public function get_user_by_username($username){
-		$email=$username.'@wayne.edu';
-		$sql = $this->db->get_where('users',array('email'=>$email));
+		$this->db->like('email',$username);
+		$sql = $this->db->get('users');
 		return $sql->row_array();
 	}
 
@@ -112,10 +114,7 @@ class Users_model extends CI_Model {
 				'lastname' =>$this->input->post('lastname'),
 				'department'=>$this->input->post('department'),
 				'email' => $this->input->post('email'),
-				'password'=>md5($this->input->post('password')),
-				'category'=>$this->input->post('category'),
-				'title'=>$this->input->post('project_title'),
-				'description'=>$this->input->post('project_desc')
+				'password'=>md5($this->input->post('password'))
 				);
 				
 		$did_add_user = $this->db->insert('users', $data);
@@ -126,15 +125,73 @@ class Users_model extends CI_Model {
 		return false;
 
 	}
+
+	public function add_participant(){
+		$data = array(
+				'usertype'=>$this->input->post('type'),
+				'firstname'=>$this->input->post('firstname'),
+				'lastname' =>$this->input->post('lastname'),
+				'department'=>$this->input->post('department'),
+				'email' => $this->input->post('email'),
+				'password'=>md5($this->input->post('password')),
+				);
+				
+		$did_add_user = $this->db->insert('users', $data);
+		$participant_id = mysql_insert_id();
+
+		if($did_add_user){
+			$data = array(
+				'category'=>$this->input->post('category'),
+				'title'=>$this->input->post('project_title'),
+				'description'=>$this->input->post('project_desc')
+				);
+			$did_add_project = $this->db->insert('projects',$data);
+			$project_id = mysql_insert_id();
+
+			if($did_add_project){
+				$data = array(
+					'participant_id'=>$participant_id,
+					'project_id'=>$project_id
+					);
+				//bridge table
+				$did_add_participant = $this->db->insert('participants',$data);
+				if($did_add_participant){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
 	
 	//Admin delete a user
-	public function admin_del_user($table_name, $del_user){
+	public function admin_del_user($user_id){
 						
-		$did_del_user = $this->db->delete($table_name, array('id' => $del_user));
+		$did_del_user = $this->db->delete('users', array('id' => $user_id));
 		
-		//$this->db->delete('mytable', array('id' => $del_user)); 
-
 		if($did_del_user){
+			return true;
+		}
+		return false;
+
+	}
+
+	public function admin_del_participant($participant_id){
+		$project_id = $this->get_project_id($participant_id);
+		$this->db->where('id',$participant_id);
+		$did_delete_user = $this->db->delete('users');
+
+		$this->db->where('project_id',$project_id);
+		$did_delete_user =$this->db->delete('projects');
+
+		if($did_delete_user){
 			return true;
 		}
 		return false;
@@ -149,6 +206,7 @@ class Users_model extends CI_Model {
 
 	//Returns all users that are the type (participant, judge, admin, score_entry) specified in user_type from the table specified in table_name
 	public function get_all_user_type($table_name,$user_type){
+		$this->db->order_by("lastname","asc");
 		$sql = $this->db->get_where($table_name,array('usertype'=>$user_type));
 		return $sql -> result();
 	}
@@ -160,16 +218,20 @@ class Users_model extends CI_Model {
 		return $user_record -> usertype;
 	}
 
+	//Returns a user's type (participant, judge, admin, score_entry) based on their id.
+	public function get_user_type($user_id){
+		$sql = $this->db->get_where('users',array('id'=>$user_id));
+		$user_record = $sql -> row();
+		return $user_record -> usertype;
+	}
+
 	public function update_user($id){
 		$data = array(
 				'usertype'=>$this->input->post('type'),
 				'firstname'=>$this->input->post('firstname'),
 				'lastname' =>$this->input->post('lastname'),
 				'department'=>$this->input->post('department'),
-				'email' => $this->input->post('email'),
-				'category'=>$this->input->post('category'),
-				'title'=>$this->input->post('project_title'),
-				'description'=>$this->input->post('project_desc')
+				'email' => $this->input->post('email')
 				);
 
 		$this->db->where('id',$id);
@@ -180,5 +242,85 @@ class Users_model extends CI_Model {
 		}
 		return false;
 
+	}
+
+	public function update_participant($id){
+		$data = array(
+				'usertype'=>$this->input->post('type'),
+				'firstname'=>$this->input->post('firstname'),
+				'lastname' =>$this->input->post('lastname'),
+				'department'=>$this->input->post('department'),
+				'email' => $this->input->post('email'),
+				'password'=>md5($this->input->post('password')),
+				);
+		
+		$this->db->where('id',$id);
+		$did_update_user = $this->db->update('users', $data);
+
+		$project_id = $this->get_project_id($id);
+
+		if($did_update_user){
+			$data = array(
+				'category'=>$this->input->post('category'),
+				'title'=>$this->input->post('project_title'),
+				'description'=>$this->input->post('project_desc')
+				);
+			$this->db->where('project_id',$project_id);
+			$did_update_project = $this->db->update('projects',$data);
+		}
+		else{
+			return false;
+		}
+	}
+
+	public function get_participant_info(){
+		$this->db->select('*');
+		$this->db->from('participants');
+		$this->db->join('projects', 'participants.project_id = projects.project_id');
+		$this->db->join('users', 'participants.participant_id = users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
+	public function filter_participant_info($search){
+		$this->db->like('lastname',$search,'after');
+		$this->db->from('participants');
+		$this->db->join('projects', 'participants.project_id = projects.project_id');
+		$this->db->join('users', 'participants.participant_id = users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
+	public function get_judge_info(){
+		$this->db->where('usertype','judge');
+		$sql = $this->db->get('users');
+
+		return $sql->result();
+	}
+
+	public function filter_judge_info($search){
+		$this->db->like('lastname',$search,'after');
+		$this->db->where('usertype','judge');
+		$sql = $this->db->get('users');
+
+		return $sql->result();
+	}
+
+	public function get_project_id($participant_id){
+		$this->db->where('participant_id',$participant_id);
+		$sql = $this->db->get('participants');
+		$result = $sql->row();
+		$project_id = $result->project_id;
+		return $project_id;
+	}
+
+	public function get_project_data($project_id){
+		$this->db->where('project_id',$project_id);
+		$sql = $this->db->get('projects');
+		return $sql->row();
 	}
 }

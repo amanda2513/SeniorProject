@@ -72,9 +72,12 @@ class Gerss extends CI_Controller {
 		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
 		if ($this->form_validation->run()){
-			
-			$this->register_user();
-
+			if($this->input->post('type')=='participant'){
+				$this->register_participant();
+			}
+			else{
+				$this->register_user();
+			}
 		}
 		else{
 			
@@ -95,6 +98,19 @@ class Gerss extends CI_Controller {
 			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
 		}
 		
+	}
+
+	public function register_participant(){
+		$this->load->model('users_model'); 
+		
+		if($this->users_model->add_participant()){
+			$redirect=$this->session->set_flashdata('success','You have been registered. You can now login with your WSU credentials.');
+			redirect($this->input->post('redirect'));
+		}
+		else{
+			$redirect=$this->session->set_flashdata('errors','Database Error. Try Again or Contact the Site Admin');
+			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
+		}
 	}
 
 //----------------CHECK FOR VALID WSU EMAIL ADDRESS-------------//	
@@ -136,8 +152,10 @@ if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
 //----------------PROJECTS PAGE-----------------------------//
 	public function projects_participants(){
 		if ($this->session->userdata('is_logged_in')){
-			$this->load->model('users_model');		
-			$data['participant']=$this->users_model->get_all_user_type("users","participant");
+			$this->load->model('users_model');
+			$this->load->model('judge_assignment_model');		
+			$data['participant']=$this->users_model->get_participant_info();
+			$data['judge_assignment']=$this->judge_assignment_model->get_all_from('assigned_judges');
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_participants_view',$data);
 		}
@@ -148,8 +166,13 @@ if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
 
 	public function projects_judges(){
 		if ($this->session->userdata('is_logged_in')){
-			$this->load->model('users_model');		
-			$data['judge']=$this->users_model->get_all_user_type("users","judge");
+			$this->load->model('users_model');
+			$this->load->model('judge_assignment_model');		
+			$data['judge']=$this->users_model->get_judge_info();
+			foreach($data['judge'] as $judge){
+				$judge->assignment_count=$this->judge_assignment_model->count_assigned_projects($judge->id);
+			}
+			$data['projects']=$this->judge_assignment_model->get_judge_projects($judge->id);
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_judges_view',$data);
 		}
@@ -166,17 +189,21 @@ if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
 		   case '1': 
 		   		 $search = $this->input->post('search');
 		   		 $this->load->model('users_model');
-				 $data['participant']=$this->users_model->find_user("users", "participant", $search);
+		   		 $this->load->model('judge_assignment_model');
+				 $data['participant']=$this->users_model->filter_participant_info($search);
+				 $data['judge_assignment']=$this->judge_assignment_model->get_all_from('assigned_judges');
 				 $data['title']="WSU-GERSS :: Projects";
 				 $this->load->view('projects_participants_view',$data);
 				 break;
 		   case '2': 
-				 $search = $this->input->post('search_judges');
-				 $this->load->model('users_model');
-        		 $data['judge']=$this->users_model->find_user("users", "judge", $search);
+				 $search = $this->input->post('search');
+		   		 $this->load->model('users_model');
+		   		 $this->load->model('judge_assignment_model');
+				 $data['judge']=$this->users_model->filter_judge_info($search);
+				 $data['judge_assignment']=$this->judge_assignment_model->get_all_from('assigned_judges');
 				 $data['title']="WSU-GERSS :: Projects";
-			     $this->load->view('projects_judges_view',$data);
-         		 break;
+				 $this->load->view('projects_judges_view',$data);
+				 break;
 		};
 	}	
 

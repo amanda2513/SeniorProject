@@ -31,7 +31,7 @@
 						<a id="nav_scores" href="#">Scores</a>
 					</li>
 					<li class="active">
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
 					</li>
 					<li>
 						<a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a>					</li>
@@ -189,9 +189,11 @@
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="Poster">Poster</option>
-											<option value="Oral Presentation">Oral Presentation</option>
-										</select>
+											<option value="0">Select a Category</option>';
+											foreach($categories as $category){
+												echo '<option value="'.$category->category.'">'. $category->category.'</option>';
+											}
+								echo	'</select>
 									</div>
 								</div>
 

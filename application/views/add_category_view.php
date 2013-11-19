@@ -29,14 +29,16 @@
 			subcategory_criteria_count[$subcat_id]=1;
 
 			var $input = 
-			'<div class="control-group"><label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
+			'<div class="control-group" id="control-group_'+$subcat_id+'">'+
+				'<label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
 				'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
 					'<input type="text" placeholder="Content, Display, Oral, etc." name="subcategory['+$subcat_id+'][name]" class="input-large"/>'+
+					'<i class="icon-remove" onclick="delete_subcat('+$subcat_id+')"></i>'+
 				'</div>'+
 				'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
 					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criteria</button>'+
 					'<div class="control-group">'+
-						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criteria:</label>'+
+						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 						'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
 							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
 							'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
@@ -50,6 +52,10 @@
 			$('#dynamic_fields').append($input);
 		};
 
+		function delete_subcat(div_id){
+			$('#control-group_'+div_id).remove();
+		};
+
 		//add_subcat_criteria function happens onclick of button with id add_subcat[#]_criteria
 		//this will dynamically add three input fields for subcategory criteria: name, description, points possible to the div of subcat_id that is passed here
 		function add_subcat_criteria($subcat_id){
@@ -57,16 +63,21 @@
 			subcategory_criteria_count[$subcat_id]+=1;
 
 			var $input = 
-			'<div class="control-group">'+
-				'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criteria:</label>'+
+			'<div class="control-group" id="control-group_'+$subcat_id+'_'+subcategory_criteria_count[$subcat_id]+'">'+
+				'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 				'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][desc]" class="input-large" rows="3"></textarea>'+
+					'<i class="icon-remove" onclick="delete_criterion('+$subcat_id+","+subcategory_criteria_count[$subcat_id]+')"></i>'+
 					'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
 
 			//append fields to the div with id dynamic_subcat[#]_criteria
 			$('#dynamic_subcat'+$subcat_id+'_criteria').append($input);
+		};
+
+		function delete_criterion(subcat,criteria){
+			$('#control-group_'+subcat+'_'+criteria).remove();
 		};
 	</script>
 </head>
@@ -92,7 +103,7 @@
 						<a id="nav_scores" href="#">Scores</a>
 					</li>
 					<li>
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
 					</li>
 					<li class="active">
 						<a id="nav_systemsettings" href="<?php echo base_url()."settings/categories"?>">System Settings</a>
@@ -143,7 +154,7 @@
 					<div class="row-fluid">
 						<div class="span6 offset3">
 
-							<hr/><hr/>
+							<hr>
 							
 							<div class="control-group">
 			    				<label class="control-label" for="category">Category Name:</label>
@@ -152,7 +163,7 @@
 			    				</div>
 			    			</div>
 
-			    			<hr><hr>
+			    			<hr>
 
 			    			<div id="dynamic_fields">
 			    				<div class="control-group">
@@ -165,7 +176,7 @@
 									<button class="btn btn-medium wsu_btn" id="add_subcat0_criteria" onclick="add_subcat_criteria(0);return false;"><i class="icon-plus"></i> Add Criteria</button>
 
 									<div class="control-group">
-										<label class="control-label" for="subcategory0_criteria">Criteria:</label>
+										<label class="control-label" for="subcategory0_criteria">Criterion:</label>
 										<div class="controls inline" name="subcategory[0][criteria][]">
 											<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory[0][criteria][0][desc]" class="input-large" rows="3"></textarea>
 											<input type="number" placeholder="Points Possible" name="subcategory[0][criteria][0][points]" class="input-large"/>

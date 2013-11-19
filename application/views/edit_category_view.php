@@ -30,13 +30,15 @@
 			subcategory_criteria_count[$subcat_id]=1;
 
 			var $input = 
-			'<div class="control-group"><label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
+			'<div class="control-group" id="control-group_'+$subcat_id+'">'+
+				'<label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
 				'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
 					'<input type="text" placeholder="Content, Display, Oral, etc." name="subcategory['+$subcat_id+'][name]" class="input-large"/>'+
+					'<i class="icon-remove" onclick="remove_subcat('+$subcat_id+')"></i>'+
 				'</div>'+
 				'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
-					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criteria</button>'+					'<div class="control-group">'+
-					'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criteria:</label>'+
+					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criterion</button>'+					'<div class="control-group">'+
+					'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 					'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
 						'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
 						'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
@@ -49,6 +51,10 @@
 			$('#dynamic_fields').append($input);
 		};
 
+		function remove_subcat(div_id){
+			$('#control-group_'+div_id).remove();
+		};
+
 		//add_subcat_criteria function happens onclick of button with id add_subcat[#]_criteria
 		//this will dynamically add three input fields for subcategory criteria: name, description, points possible to the div of subcat_id that is passed here
 		function add_subcat_criteria(subcat_id){
@@ -56,10 +62,11 @@
 			subcategory_criteria_count[subcat_id]+=1;
 
 			var $input = 
-			'<div class="control-group">'+
-				'<label class="control-label" for="subcategory'+subcat_id+'_criteria">Criteria:</label>'+
+			'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'">'+
+				'<label class="control-label" for="subcategory'+subcat_id+'_criteria">Criterion:</label>'+
 				'<div class="controls inline" name="subcategory['+subcat_id+'][criteria][]">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][desc]" class="input-large" rows="3"></textarea>'+
+					'<i class="icon-remove" onclick="remove_criterion('+subcat_id+","+subcategory_criteria_count[subcat_id]+')"></i>'+
 					'<input type="number" placeholder="Points Possible" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
@@ -68,43 +75,62 @@
 			$('#dynamic_subcat'+subcat_id+'_criteria').append($input);
 		};
 
+		function remove_criterion(subcat,criteria){
+			$('#control-group_'+subcat+'_'+criteria).remove();
+		};
+
 		//used for populating subcategory fields with what's already in database when page loads
-		function populate_subcategory(subcat_name){
+		function populate_subcategory(subcat_name,db_id){
 			//count is used to assign unique names to each element and is assigned to subcat_id for readability below. subtracting 1 because array is zerobased and i want id = array[]
 			$subcategory_count += 1;
 			var $subcat_id=$subcategory_count-1;
 			//add another item to subcategories array
-			subcategory_criteria_count[$subcat_id]=1;
+			subcategory_criteria_count[$subcat_id]=0;
 
 			var $input = 
-			'<div class="control-group"><label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
+			'<div class="control-group" id="control-group_'+$subcat_id+'">'+
+				'<label class="control-label" for="subcategory'+$subcat_id+'">'+'Subcategory Name:</label>'+
 				'<div class="controls inline" name="subcategory'+$subcat_id+'">'+
+					'<input type="hidden" name="subcategory['+$subcat_id+'][id]" value="'+db_id+'">'+
 					'<input type="text" value="'+subcat_name+'" placeholder="Content, Display, Oral, etc." name="subcategory['+$subcat_id+'][name]" class="input-large"/>'+
+					'<i class="icon-remove" onclick="delete_subcat('+db_id+')"></i>'+
 				'</div>'+
 			'</div>'+
 			'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
-				'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criteria</button>'+
+				'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criterion</button>'+
 			'</div>';
 
 			//append fields to the div with id dynamic_fields
 			$('#dynamic_fields').append($input);
 		};
 
+		function delete_subcat(subcat_id){
+			var initialURL = '<?php echo base_url()."settings/delete_subcategory/";?>';
+			window.location.href = initialURL + '<?php echo $this->uri->segment(4);?>' + '/' + subcat_id;
+		};
+
 		//used for populating criteria fields with what's already in the database when page loads
-		function populate_subcat_criteria(subcat_id, desc, points){
+		function populate_subcat_criteria(subcat_id, desc, points, db_criteria_id){
 			subcategory_criteria_count[subcat_id]+=1;
 
 			var $input = 
-			'<div class="control-group">'+
-				'<label class="control-label" for="subcategory'+subcat_id+'_criteria">Criteria:</label>'+
+			'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'">'+
+				'<label class="control-label" for="subcategory'+subcat_id+'_criteria">Criterion:</label>'+
 				'<div class="controls inline" name="subcategory['+subcat_id+'][criteria][]">'+
+					'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][id]" value="'+db_criteria_id+'">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][desc]" class="input-large" rows="3">'+desc+'</textarea>'+
+					'<i class="icon-remove" onclick="delete_criterion('+db_criteria_id+')"></i>'+
 					'<input type="number" value="'+points+'" placeholder="Points Possible" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
 
 			//append fields to the div with id dynamic_subcat[#]_criteria
 			$('#dynamic_subcat'+subcat_id+'_criteria').append($input);
+		};
+
+		function delete_criterion(crit_id){
+			var initialURL = '<?php echo base_url()."settings/delete_criteria/";?>';
+			window.location.href = initialURL + '<?php echo $this->uri->segment(4);?>' + '/' + crit_id;
 		};
 	</script>
 </head>
@@ -130,7 +156,7 @@
 						<a id="nav_scores" href="#">Scores</a>
 					</li>
 					<li>
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
 					</li>
 					<li class="active">
 						<a id="nav_systemsettings" href="<?php echo base_url()."settings/categories"?>">System Settings</a>
@@ -158,11 +184,11 @@
   			}
   			//If there are no errors, show "Fill out form" message
   			else{
-  				echo '<p class="span10 offset2">Fill out the form below to add a project category:</p>';
+  				echo '<p class="span10 offset2">Edit the form below to update the project category:</p>';
   			}
   		?>
 
-		<form class="form-horizontal" name="add_category" id="add_category" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/add_category_validation/$category->category";?>'>
+		<form class="form-horizontal" name="add_category" id="add_category" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/edit_category_validation/".$category->category."/".$category->cat_id.'"';?>'>
 			<div class="row-fluid">
 				<div class="span12">
 
@@ -180,7 +206,7 @@
 					<div class="row-fluid">
 						<div class="span6 offset3">
 
-							<hr><hr>
+							<hr>
 							
 							<div class="control-group">
 			    				<label class="control-label" for="category">Category Name:</label>
@@ -189,7 +215,7 @@
 			    				</div>
 			    			</div>
 
-			    			<hr><hr>
+			    			<hr>
 			    		
 			    	
 
@@ -209,7 +235,7 @@
 										{
 
 											echo '<script type="text/javascript">
-												populate_subcategory("'.$subcat->subcat_name.'");
+												populate_subcategory("'.$subcat->subcat_name.'",'.$subcat->subcat_id.');
 											  </script>';
 
 											foreach($subcat_criteria as $criteria)
@@ -217,7 +243,7 @@
 												if($criteria->subcat_id == $current_subcat_id)
 												{
 													echo '<script type="text/javascript">
-													populate_subcat_criteria('.$subcat_count.',"'.$criteria->criteria_description.'",'.$criteria->criteria_points.');
+													populate_subcat_criteria('.$subcat_count.',"'.$criteria->criteria_description.'",'.$criteria->criteria_points.','.$criteria->criteria_id.');
 											  		</script>';
 													$subcat_points += $criteria->criteria_points;
 													$total_points +=$criteria->criteria_points;

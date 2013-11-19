@@ -8,6 +8,18 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
+
+<script type="text/javascript">
+	function changeType(){
+		var dropdown = document.getElementById("type");
+		var selected = dropdown.options[dropdown.selectedIndex].value;
+
+		var hiddenInput = document.getElementById("hidden_type");
+		hiddenInput.value = selected;
+
+	}
+</script>
+
 </head>
 <body>
 	<div class="page-header" id="wsu_header">
@@ -31,7 +43,7 @@
 						<a id="nav_scores" href="#">Scores</a>
 					</li>
 					<li class="active">
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
 					</li>
 					<li>
 						<a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a>
@@ -44,6 +56,21 @@
 	<div class="hero-unit wsu_hero_unit">
 		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 
+		<?php
+		//If there are errors print them all in a bootstrap alert div
+			if($this->session->flashdata('errors')){
+				echo '<div class="alert text-center" id="wsu_alert">';
+				echo $this->session->flashdata('errors');
+				echo '</div>';
+  			}
+  			//If I successfully added a user, show success div
+  			if($this->session->flashdata('success')){
+  				echo '<div class="alert alert-success text-center" id="wsu_alert">';
+  				echo $this->session->flashdata('success');
+  				echo '</div>';
+  			}
+  		?>
+
 		<!--Invalid add-user forms redirect back to this page with errors-->
 		<?php		
 			//Get the type of add-user from the URL .../add?type=[whateverthisis] and store it in variable selected_option
@@ -54,16 +81,26 @@
 
 		 	//If type from URL is participant, make that the default selected dropdown option, else judge
 		 	if($selected_type == "participant"){
-		 		$options[0]="selected='selected'";
+		 		$dropdown_control = "disabled";
+		 		$options[0]='<option value="participant" selected="selected">Participant</option>';
 		 	}
 		 	elseif($selected_type == "judge"){
-		 		$options[1]="selected='selected'";
+		 		$dropdown_control = "";
+		 		$options[0]='<option value="judge" selected="selected">Judge</option>';
+		 		$options[1]='<option value="seu">Score Entry User</option>';
+		 		$options[2]='<option value="admin">Admin</option>';
 		 	}
 		 	elseif($selected_type == "seu"){
-		 		$options[2]="selected='selected'";
+		 		$dropdown_control = "";
+		 		$options[0]='<option value="judge">Judge</option>';
+		 		$options[1]='<option value="seu" selected="selected">Score Entry User</option>';
+		 		$options[2]='<option value="admin">Admin</option>';
 		 	}
 		 	else{
-		 		$options[3]="selected='selected'";
+		 		$dropdown_control = "";
+		 		$options[0]='<option value="judge">Judge</option>';
+		 		$options[1]='<option value="seu">Score Entry User</option>';
+		 		$options[2]='<option value="admin" selected="selected">Admin</option>';
 		 	}
 		?>
 
@@ -79,11 +116,12 @@
 					<div class="control-group">
 						<label class="control-label" for='type'> User's Type: </label>
 						<div class="controls">
-							<select name="type" id="type" onChange="this.form.submit()">
-								<option value="participant" <?php echo $options[0];?>>Participant</option>
-								<option value="judge" <?php echo $options[1];?>>Judge</option>
-								<option value="seu" <?php echo $options[2];?>>Score Entry User</option>
-								<option value="admin" <?php echo $options[3];?>>Admin</option>
+							<select name="type" id="type" <?php echo $dropdown_control;?> onChange="changeType()">
+								<?php
+									foreach($options as $option){
+										echo $option;
+									}
+								?>
 							</select>
 						</div>
 					</div>
@@ -91,21 +129,7 @@
 			</div>
 		</form><!--end add-user-type form-->
 		
-		<hr class="muted"/>
-		<?php
-		//If there are errors print them all in a bootstrap alert div
-			if($this->session->flashdata('errors')){
-				echo '<div class="alert text-center" id="wsu_alert">';
-				echo $this->session->flashdata('errors');
-				echo '</div>';
-  			}
-  			//If I successfully added a user, show success div
-  			if($this->session->flashdata('success')){
-  				echo '<div class="alert alert-success text-center" id="wsu_alert">';
-  				echo $this->session->flashdata('success');
-  				echo '</div>';
-  			}
-  		?>
+		<hr>
 
 		<!--
 			Actual Add user Submission Form
@@ -133,7 +157,7 @@
 						?>
 							<p class="text-center muted"><small>Basic Information: All Fields Are Required</small></p>
 
-							<input type="hidden" name="type" id="type" value="<?php echo $selected_type?>">
+							<input type="hidden" name="type" id="hidden_type" value="<?php echo $selected_type;?>">
 
 			    			<div class="control-group">
 			    				<label class="control-label" for="full_name">Name:</label>
@@ -192,7 +216,7 @@
 										<select name="category" id="category">
 											<option value="0">Select a Category</option>';
 											foreach($categories as $category){
-												if($user_data['category']==$category->category){
+												if($project_data->category==$category->category){
 													$selected = "selected='selected'";
 												}
 												else{
@@ -200,20 +224,20 @@
 												}
 												echo '<option value="'.$category->category.'"'.$selected.'>'. $category->category.'</option>';
 											}
-								echo	'</select>
+									echo'</select>
 									</div>
 								</div>
 
 								<div class="control-group">
 									<label class="control-label" for="project_title">Title:</label>
 									<div class="controls">
-										<input type="text" name="project_title" class="input-xlarge" id="title" placeholder="Title" value="';echo set_value("project_title",$user_data["title"]);echo'">
+										<input type="text" name="project_title" class="input-xlarge" id="title" placeholder="Title" value="'.set_value("project_title",$project_data->title).'">
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label" for="project_desc">Description:</label>
 									<div class="controls">
-										<textarea name="project_desc" class="input-xlarge" id="description" rows="10" placeholder="Abstract should not exceed 250 words">';echo $user_data["description"];echo'</textarea>
+										<textarea name="project_desc" class="input-xlarge" id="description" rows="10" placeholder="Abstract should not exceed 250 words">'. $project_data->description.'</textarea>
 									</div>
 								</div>
 							</div><!--close right column (participant only) span-->';

@@ -31,9 +31,9 @@
 			</a>
 			<div class = "nav-collapse collapse">
 				<ul class="nav text-center">
-					<li class="active"><a id="nav_projects" href="gerss/projects_participants">Projects</a></li>
+					<li class="active"><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
 					<li><a id="nav_scores" href="#">Scores</a></li>
-					<li><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a></li>
+					<li><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
 					<li><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
 				</ul>
 			</div>
@@ -76,11 +76,7 @@
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
-						Assigned</br>Project Title
-						<i class="pull-right icon-resize-vertical"></i>
-					</th>
-					<th>
-						Assigned</br>Project Category
+						Projects Assigned
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>Actions</th>
@@ -90,17 +86,23 @@
 				<?php
 					if(!empty($judge)){
 						foreach($judge as $row){
-							echo '<tr>';
 							
-							echo '<td>' . $row->lastname . '</td>';
-							echo '<td>' . $row->firstname . '</td>';
-							echo '<td>' . $row->department . '</td>';
-							echo '<td>' . $row->title . '</td>';
-							echo '<td>' . $row->category . '</td>';
-							echo '<td>
-							<a class="btn wsu_btn" href="'.base_url()."manage_users/edit/".$row->usertype."/".substr($row->email,0,-10).'"><i class="icon-pencil"></i></a>
-							<button class="btn wsu_btn" href="#"><i class="icon-print"></i></button>';
-						echo '</tr>';
+							$parts=explode("@",$row->email);
+							$username=$parts[0];
+							echo 
+							'<tr>
+								<td>' . $row->lastname . '</td>
+								<td>' . $row->firstname . '</td>
+								<td>' . $row->department . '</td>
+
+								
+								<td>' . $row->assignment_count . '</td>
+
+								<td>
+									<a class="btn wsu_btn" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" title="Edit User Info"><i class="icon-pencil"></i></a>
+									<button class="btn wsu_btn" href="#" title="Print Scorecard"><i class="icon-print"></i></button>
+								</td>
+							</tr>';
 						}
 					}
 					else{

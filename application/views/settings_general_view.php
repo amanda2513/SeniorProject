@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap-datepicker.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap-timepicker.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'spin.min.js');?>"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -32,6 +33,31 @@
 				defaultTime: false
 			});
 		});
+	</script>
+
+	<script type="text/javascript">
+		function spinner(){
+			var opts = {
+			  lines: 13, // The number of lines to draw
+			  length: 20, // The length of each line
+			  width: 10, // The line thickness
+			  radius: 30, // The radius of the inner circle
+			  corners: 1, // Corner roundness (0..1)
+			  rotate: 0, // The rotation offset
+			  direction: 1, // 1: clockwise, -1: counterclockwise
+			  color: '#000', // #rgb or #rrggbb or array of colors
+			  speed: 1, // Rounds per second
+			  trail: 60, // Afterglow percentage
+			  shadow: false, // Whether to render a shadow
+			  hwaccel: false, // Whether to use hardware acceleration
+			  className: 'spinner', // The CSS class to assign to the spinner
+			  zIndex: 2e9, // The z-index (defaults to 2000000000)
+			  top: 'auto', // Top position relative to parent in px
+			  left: 'auto' // Left position relative to parent in px
+			};
+			var target = document.getElementById('general_settings');
+			var spinner = new Spinner(opts).spin(target);
+		}
 	</script>
 
 </head>
@@ -57,7 +83,7 @@
 						<a id="nav_scores" href="#">Scores</a>
 					</li>
 					<li>
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
 					</li>
 					<li class="active">
 						<a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a>
@@ -177,14 +203,14 @@
 			if($reg_cutoff_date['input'] < date('m/d/y'))
 				$status = "";
 			else
-				$status = "disabled";
+				$status = "disabled='disabled' onclick='return false;'";
 		?>
 
 					<!--Assign Judges button-->
 					<div class="control-group">
 						<label class="control-label" for="">System Generated Assignment</label>
 						<div class="controls">
-							<a href="#" class="btn btn-medium wsu_btn" size="16" <?php echo $status;?>>Assign Judges</a>
+							<a class="btn btn-medium wsu_btn" size="16" onclick="spinner()" href="<?php echo base_url()."settings/assign_judges";?>" <?php echo $status;?>>Assign Judges</a>
 						</div>
 					</div>
 				

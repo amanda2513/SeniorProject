@@ -49,7 +49,7 @@
 						<a id="nav_scores" href="#">Scores</a>
 					</li>
 					<li>
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participants"?>">Manage Users</a>
+						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
 					</li>
 					<li class="active">
 						<a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a>
@@ -149,7 +149,7 @@
 
 							echo '<td>' . $total_points . '</td>';
 							echo '<td>
-							<a class="btn wsu_btn" href="'.base_url()."settings/categories/edit/".$row->category.'" disabled><i class="icon-pencil"></i></a>
+							<a class="btn wsu_btn" href="'.base_url()."settings/categories/edit/".$row->category.'"><i class="icon-pencil"></i></a>
 							<button class="btn wsu_btn" onClick="confirmModal('."'".$row->cat_id ."'".')"><i class="icon-trash"></i></button>							</td>';
 
 							echo '</tr>';

@@ -22,6 +22,20 @@ class Category_settings_model extends CI_Model {
 		return false;
 	}
 
+	public function update_category($category_id){
+		$data = array(
+				'category'=>$this->input->post('category_name'),
+				);
+		
+		$this->db->where('cat_id',$category_id);
+		$did_update_category = $this->db->update('categories', $data);
+
+		if($did_update_category){
+			return true;
+		}
+		return false;
+	}
+
 	public function delete_category($category_id){
 
 		$did_del_user = $this->db->delete('categories', array('cat_id' => $category_id));
@@ -48,6 +62,30 @@ class Category_settings_model extends CI_Model {
 		
 	}
 
+	public function update_subcategory($cat_id, $subcategory){
+		$data = array(
+				'subcat_name'=>$subcategory['name'],
+				);
+				
+		$this->db->where('subcat_id',$subcategory['id']);
+		$did_update_subcategory = $this->db->update('subcategories', $data);
+
+		if($did_update_subcategory){
+			return $subcategory['id'];
+		}
+	}
+
+	public function delete_subcategory($subcat_id){
+						
+		$this->db->where('subcat_id',$subcat_id);
+		$did_delete_subcategory = $this->db->delete('subcategories');
+
+		if($did_delete_subcategory){
+			return true;
+		}
+		return false;
+	}
+
 	public function add_criteria($criteria){
 
 		$data = array(
@@ -59,6 +97,33 @@ class Category_settings_model extends CI_Model {
 		$did_add_criteria = $this->db->insert('subcat_criteria', $data);
 
 		if($did_add_criteria){
+			return true;
+		}
+		return false;
+	}
+
+	public function update_criteria($criteria){
+
+		$data = array(
+				'criteria_description'=>$criteria['desc'],
+				'criteria_points'=>$criteria['points']
+				);
+				
+		$this->db->where('criteria_id',$criteria['criteria_id']);
+		$did_update_criteria = $this->db->update('subcat_criteria', $data);
+
+		if($did_update_criteria){
+			return true;
+		}
+		return false;
+	}
+
+	public function delete_criteria($criteria_id){
+						
+		$this->db->where('criteria_id',$criteria_id);
+		$did_delete_criteria = $this->db->delete('subcat_criteria');
+
+		if($did_delete_criteria){
 			return true;
 		}
 		return false;
@@ -76,8 +141,14 @@ class Category_settings_model extends CI_Model {
 	}
 
 	public function get_criteria($subcat_id){
-		$sql = $this->db->get_where('subcat_id', array('subcat_id'=>$subcat_id));
+		$sql = $this->db->get_where('subcat_criteria', array('subcat_id'=>$subcat_id));
 		return $sql -> result();
+	}
+
+	public function get_criteria_count($subcat_id){
+		$this->db->where('subcat_id',$subcat_id);
+		$this->db->from('subcat_criteria');
+		return $this->db->count_all_results();
 	}
 
 }

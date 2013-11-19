@@ -19,7 +19,7 @@
 		function confirmModal(id){
 			bootbox.confirm("Are you sure you delete this?",function(result){
 				if(result){
-					window.location.href='<?php echo base_url()."manage_users/delete/";?>'+id;
+					window.location.href='<?php echo base_url()."manage_users/delete/participant/";?>'+id;
 				}
 			});
 		}
@@ -43,7 +43,7 @@
 					<ul class="nav text-center">
 						<li><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
 						<li><a id="nav_scores" href="#">Scores</a></li>
-						<li class="active"><a id="nav_manageusers" href="#">Manage Users</a></li>
+						<li class="active"><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
 						<li><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
 					</ul>
 				</div>
@@ -62,21 +62,34 @@
 
 		<h2 class="wsu_h2 text-center">Graduate Exhibition Registration &amp; Scoring System</h2>
         
-<!----------------------------------------------------------Search Form---------------------------------------------------------------->
+		<?php
+		//If there are errors print them all in a bootstrap alert div
+			if($this->session->flashdata('errors')){
+				echo '<div class="alert text-center" id="wsu_alert">';
+				echo $this->session->flashdata('errors');
+				echo '</div>';
+  			}
+  			//If I successfully added/edited/deleted, show success div
+  			if($this->session->flashdata('success')){
+  				echo '<div class="alert alert-success text-center" id="wsu_alert">';
+  				echo $this->session->flashdata('success');
+  				echo '</div>';
+  			}
+  		?>
 		
 		<form class="form-search"  method="post" action='<?php $id=1; echo base_url()."manage_users/search_users_participant_view/$id"; ?>'>
 			<div class="input-append">
 				<input type="text" name="search_participant" id="search_participant" class="input-medium search-query" placeholder="Participant's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
-			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."manage_users/participants";?>">Clear</a>
+			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."manage_users/participant";?>">Clear</a>
 		</form>
 
 		
 
 		<ul class="nav nav-tabs">
-			<li class="active"><a href='<?php echo base_url()."manage_users/participants"?>'>Participants</a></li>
-			<li><a href='<?php echo base_url()."manage_users/judges"?>'>Judges</a></li>
+			<li class="active"><a href='<?php echo base_url()."manage_users/participant"?>'>Participants</a></li>
+			<li><a href='<?php echo base_url()."manage_users/judge"?>'>Judges</a></li>
 			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Score Entry Users</a></li>
 			<li><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
 			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("participant");?>" id="btn_add_participant"><i class="icon-plus"></i> Add Participant</a>
@@ -104,6 +117,10 @@
 				<?php 
 					if(!empty($participant)){
 						foreach($participant as $row){
+							
+							$parts=explode("@",$row->email);
+							$username=$parts[0];
+
 							echo 
 
 							'<tr>
@@ -113,7 +130,7 @@
 								<td> TODO </td>
 								<td>
 									<a class="btn wsu_btn" href="#"><i class="icon-lock"></i></a> 
-									<a class="btn wsu_btn" href="'.base_url()."manage_users/edit/".$row->usertype."/".substr($row->email,0,-10).'"><i class="icon-pencil"></i></a>
+									<a class="btn wsu_btn" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'"><i class="icon-pencil"></i></a>
 									<button class="btn wsu_btn" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
 								</td>
 

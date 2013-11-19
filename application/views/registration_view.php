@@ -87,7 +87,7 @@
 			</div>
 		</form><!--end registration-type form-->
 		
-		<hr class="muted"/>
+		<hr>
 		<?php
 		//If there are errors print them all in a bootstrap alert div
 			if($this->session->flashdata('errors')){
