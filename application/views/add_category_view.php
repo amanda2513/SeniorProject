@@ -36,7 +36,7 @@
 					'<i class="icon-remove" onclick="delete_subcat('+$subcat_id+')"></i>'+
 				'</div>'+
 				'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
-					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criteria</button>'+
+					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criterion</button>'+
 					'<div class="control-group">'+
 						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 						'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
@@ -173,7 +173,7 @@
 									</div>
 								</div>
 								<div id="dynamic_subcat0_criteria">
-									<button class="btn btn-medium wsu_btn" id="add_subcat0_criteria" onclick="add_subcat_criteria(0);return false;"><i class="icon-plus"></i> Add Criteria</button>
+									<button class="btn btn-medium wsu_btn" id="add_subcat0_criteria" onclick="add_subcat_criteria(0);return false;"><i class="icon-plus"></i> Add Criterion</button>
 
 									<div class="control-group">
 										<label class="control-label" for="subcategory0_criteria">Criterion:</label>

@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap-datepicker.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap-timepicker.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'bootbox.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'spin.min.js');?>"></script>
 	
 	<script type="text/javascript">
@@ -57,6 +58,10 @@
 			};
 			var target = document.getElementById('general_settings');
 			var spinner = new Spinner(opts).spin(target);
+		}
+
+		function not_yet_prompt(){
+			bootbox.alert('Sorry, judges cannot be assigned at this time. <br> Please verify that the settings have been saved and the registration cut-off date has passed.');
 		}
 	</script>
 
@@ -200,17 +205,17 @@
 						</div>
 					</div>
 		<?php
-			if($reg_cutoff_date['input'] < date('m/d/y'))
-				$status = "";
+			if($reg_cutoff_date['input'] && $reg_cutoff_date['input'] < date('m/d/y'))
+				$status = 'onclick="spinner()" href="'.base_url().'settings/assign_judges"';
 			else
-				$status = "disabled='disabled' onclick='return false;'";
+				$status = "disabled='disabled' onclick='not_yet_prompt()'";
 		?>
 
 					<!--Assign Judges button-->
 					<div class="control-group">
 						<label class="control-label" for="">System Generated Assignment</label>
 						<div class="controls">
-							<a class="btn btn-medium wsu_btn" size="16" onclick="spinner()" href="<?php echo base_url()."settings/assign_judges";?>" <?php echo $status;?>>Assign Judges</a>
+							<a class="btn btn-medium wsu_btn" size="16" <?php echo $status;?>>Assign Judges</a>
 						</div>
 					</div>
 				

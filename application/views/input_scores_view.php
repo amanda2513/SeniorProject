@@ -34,7 +34,7 @@
 			window.location.href = initialURL + judge_id +  '/' + participant_name[0]  + '/' +participant_name[1];
 		};
 
-		//Each category has 1 subcategory by default
+		
 		var $subcategory_count=0;
 		//Each subcategory has 1 set of criteria by default, this is incremented in add_subcat_criteria method
 		var subcategory_criteria_count = new Array();
@@ -48,19 +48,21 @@
 			//add another item to subcategories array
 			subcategory_criteria_count[$subcat_id]=0;
 
-			var $input =
-			'<div class="row-fluid border">'+
-				'<div class="span3">'+
-					'<div name="subcategory'+$subcat_id+'">'+
-						subcat_name +
-					'</div>'+
+			var $input = 
+			'<div class="row-fluid">' +
+				'<div class="span-center span3 text-center">' +
+					subcat_name +
+				'</div>' +
+				'<div class="span6">' +
+					'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
+						'<hr class="gray">' +
+					'</div>' +
 				'</div>'+
-				'<div class="span6" id="dynamic_subcat'+$subcat_id+'_criteria">'+
-
+				'<div class="span-center span2 offset1">' +
+					'<div id="subcat_'+$subcat_id+'_score">'+
+						
+					'</div>' +
 				'</div>'+
-				'<div class="span6" id="dynamic_subcat'+$subcat_id+'_criteria">'+
-					'<input type="text" '
-				'</div>'
 			'</div>';
 
 			//append fields to the div with id dynamic_fields
@@ -73,17 +75,50 @@
 
 			var $input = 
 			'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'">'+
-				'<div class="controls inline" name="subcategory['+subcat_id+'][criteria][]">'+
-					'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][id]" value="'+db_criteria_id+'">'+
-					desc + ' ' +
-					'<input type="text" class="input-mini">'+
-					'/'+ points +
+				'<div class="span4 offset3">' +
+					desc +
+				'</div>' +
+				'<div class="span5">' +
+					'<input class="input-mini" type="number" min="0" max="'+points+'" name="subcategory['+subcat_id+'][score]"" id="total_subcat'+subcat_id+'_criteria'+subcategory_criteria_count[subcat_id]+'_score" onchange="updateSubtotal('+subcat_id+')">/'+points+
 				'</div>'+
-			'</div>';
+			'</div>' +
+
+			'<hr class="gray">';
 
 			//append fields to the div with id dynamic_subcat[#]_criteria
 			$('#dynamic_subcat'+subcat_id+'_criteria').append($input);
 		};
+
+		function append_subtotal(subcat_id,subcat_points){
+			var field = '<input id="total_subcat_'+subcat_id+'_score" class="input-mini" type="text" disabled>/'+subcat_points;
+			$('#subcat_'+subcat_id+'_score').append(field);
+		};
+
+		function updateSubtotal(subcat_id){
+			var subtotal = 0;
+			for(var i=1;i<=subcategory_criteria_count[subcat_id];i++){
+				var criteria_value = document.getElementById('total_subcat'+subcat_id+'_criteria'+i+'_score').value;
+				if(criteria_value != "")
+					subtotal+= parseInt(criteria_value);
+			}
+			var subtotal_field = document.getElementById('total_subcat_'+subcat_id+'_score');
+			subtotal_field.value = subtotal;
+
+			updateTotal();
+		};
+
+		function updateTotal(){
+			var total = 0;
+			for(var i=0;i<$subcategory_count;i++){
+				var subcat_value = document.getElementById('total_subcat_'+i+'_score').value;
+				if(subcat_value != "")
+					total+= parseInt(subcat_value);
+			}
+			var total_field = document.getElementById('total_score');
+			total_field.value = total;
+		};
+
+
 	</script>
 	
 </head>
@@ -208,30 +243,44 @@
 
 		echo '
 
-			<form class="form-horizontal" name="add_category" id="add_category" method="post" accept-charset="utf-8" action='.base_url()."scores/score_validation".'>
-
-				<div class="control-group  border">
-					<label class="control-label" for="category">Category:</label>
-					<div class="controls inline" name="category">
-						'.$category->category.'
+			<form class="form-horizontal" name="score_entry" id="score_entry" method="post" accept-charset="utf-8" action='.base_url()."scores/score_validation".'>
+				<div class="row-fluid">
+					<div class="span12">
+						<strong>Category: </strong>'.$category->category.'
 					</div>
 				</div>
 
+				<hr>
+
+				<div class="row-fluid hidden-phone">
+					<div class="span3 text-center">
+						<strong>Subcategory</strong>
+					</div>
+					<div class="span6 text-center">
+						<strong class="text-center">Criteria Scores</strong>
+					</div>
+					<div class="span3 text-center">
+						<strong>Total Scores</strong>
+					</div>
+				</div>
+
+				<hr>
+
+
 				<div id="dynamic_fields">';
+				
 					$current_cat_id = $category->cat_id;
 					$total_points = 0;
 					$subcat_count = 0;
 					foreach($subcategory as $subcat)
 					{
-						
-
 						$subcat_points = 0;
 						$current_subcat_id = $subcat->subcat_id;
 
 						if($subcat->cat_id == $current_cat_id)
 						{
 
-							echo '<script type="text/javascript">
+						echo '<script type="text/javascript">
 								populate_subcategory("'.$subcat->subcat_name.'",'.$subcat->subcat_id.');
 							  </script>';
 
@@ -239,22 +288,57 @@
 							{
 								if($criteria->subcat_id == $current_subcat_id)
 								{
-									echo '<script type="text/javascript">
-									populate_subcat_criteria('.$subcat_count.',"'.$criteria->criteria_description.'",'.$criteria->criteria_points.','.$criteria->criteria_id.');
+									echo 
+									'<script type="text/javascript">
+										populate_subcat_criteria('.$subcat_count.',"'.$criteria->criteria_description.'",'.$criteria->criteria_points.','.$criteria->criteria_id.');
 							  		</script>';
 									$subcat_points += $criteria->criteria_points;
-									$total_points +=$criteria->criteria_points;
 								}
 							}
+							echo
+								'<script type="text/javascript">
+									append_subtotal('.$subcat_count.','.$subcat_points.');
+							  	</script>';
 							$subcat_count += 1;
+							$total_points +=$subcat_points;
+						echo '<hr>';
 						}
-					}		
-				echo '</div>
-
+					}
 				
+			
+		   echo '</div>
+		   		<div class="row-fluid hidden-phone">
+			   		<div class="span12">
+			   			<div class="span9 offset1 text-right">
+			   				Total Score:
+			   			</div>
+			   			<div class="span2">
+				   			<input type="text" name="total_score" id="total_score" class="input-mini" disabled>/'.$total_points.'
+				   		</div>
+			   		</div>	
+			   	</div>
 
-								
+
+		   		<div class="row-fluid visible-phone">
+			   		<div class="span12">
+		   				Total Score:
+			   			<input type="text" name="total_score" id="total_score" class="input-mini" disabled>/'.$total_points.'				   		
+			   		</div>	
+			   	</div>
+
+			   	<div class="row-fluid">
+			   		<div class="span12">
+			   		</div>
+			   	</div>
+
+			   	<div class="row-fluid">
+			   		<a  class="btn wsu_btn pull-left" href="'.base_url()."scores/input".'">Reset</a>
+			   		<a class="btn wsu_btn pull-right" href="'.base_url()."score_validation/".$project->project_id."/".$judge->id.'">Submit</a>
+			   	</div>
+
 			</form><!--close scores form-->';
+
+
 		}
 		?>
 
