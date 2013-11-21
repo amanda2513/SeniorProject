@@ -315,7 +315,7 @@ class Settings extends CI_Controller {
 			$subcat_id = $this->uri->segment(4);
 			$this->load->model("category_settings_model");
 			$this->category_settings_model->delete_subcategory($subcat_id);
-			$this->edit_category($category);
+			redirect(base_url().'settings/categories/edit/'.$category);
 		}
 		else{
 			redirect('gerss/home');
@@ -328,7 +328,7 @@ class Settings extends CI_Controller {
 			$criteria_id = $this->uri->segment(4);
 			$this->load->model("category_settings_model");
 			$this->category_settings_model->delete_criteria($criteria_id);
-			$this->edit_category($category);
+			redirect(base_url().'settings/categories/edit/'.$category);
 		}
 		else{
 			redirect('gerss/home');

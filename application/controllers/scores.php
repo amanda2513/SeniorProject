@@ -41,5 +41,18 @@ class Scores extends CI_Controller {
 		}
 	}
 
+	public function score_validation(){
+		foreach($subcategory['criteria'] as $criteria_index=>$subcat_criteria){
+			$data= array(
+				'subcat_id' => $subcat_id,
+				'desc' => $subcat_criteria['desc'],
+				'points' => $subcat_criteria['points']
+			);
+			if(!$this->category_settings_model->add_criteria($data)){
+				$redirect=$this->session->set_flashdata('errors','Database Error from '. $subcat_criteria['desc'] .' and '. $subcat_criteria['points'] . ' Please Try Again.');
+				redirect(base_url()."settings/categories/add",$this->input->post('redirect'));
+			}
+	}
+
 	
 }

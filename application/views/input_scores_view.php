@@ -79,7 +79,8 @@
 					desc +
 				'</div>' +
 				'<div class="span5">' +
-					'<input class="input-mini" type="number" min="0" max="'+points+'" name="subcategory['+subcat_id+'][score]"" id="total_subcat'+subcat_id+'_criteria'+subcategory_criteria_count[subcat_id]+'_score" onchange="updateSubtotal('+subcat_id+')">/'+points+
+					'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][id]" value="'+db_criteria_id+'">'+
+					'<input class="input-mini" type="number" min="0" max="'+points+'" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][score]" id="total_subcat'+subcat_id+'_criteria'+subcategory_criteria_count[subcat_id]+'_score" onchange="updateSubtotal('+subcat_id+')">/'+points+
 				'</div>'+
 			'</div>' +
 
@@ -160,7 +161,11 @@
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>
 			<li><a href="<?php echo base_url()."scores/view"?>">View Scores</a></li>
-			<a href="<?php echo base_url()."scores/input"?>" class="btn wsu_btn pull-right">Reset</a>
+			<?php
+				if($this->uri->segment(3)){
+					echo'<a href="'.base_url().'scores/input" class="btn wsu_btn pull-right">Change Judge & Participant</a>';
+				}
+			?>
 		</ul>
 
 		<?php
@@ -220,6 +225,9 @@
 							<select name="select_participant" id="select_participant" onChange="set_url()" disabled>
 								<option value="0"></option>
 								<?php
+									foreach($judges as $judge){
+										echo '<option value="'.$judge->id.'"></option>';
+									}
 									foreach($assignments as $assignment){
 										if($assignment->lastname==$this->uri->segment(4) && $assignment->firstname==$this->uri->segment(5)){
 											$selected = " selected='selected'";
@@ -332,7 +340,7 @@
 			   	</div>
 
 			   	<div class="row-fluid">
-			   		<a  class="btn wsu_btn pull-left" href="'.base_url()."scores/input".'">Reset</a>
+			   		<a  class="btn wsu_btn pull-left" href="'.base_url()."scores/input/".$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/">Clear Scorecard</a>
 			   		<a class="btn wsu_btn pull-right" href="'.base_url()."score_validation/".$project->project_id."/".$judge->id.'">Submit</a>
 			   	</div>
 
