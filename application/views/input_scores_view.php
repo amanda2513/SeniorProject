@@ -27,16 +27,15 @@
 	</script>
 	<script type="text/javascript">
 		function set_url(){
+
 			var initialURL = <?php echo "'".base_url()."scores/input/"."'";?>;
-			var judge_id = select_judge.options[select_judge.selectedIndex].value;
-			window.alert('here');
-			var participant = select_participant.options[select_participant.selectedIndex].text;
+			var judge_id = document.getElementById('select_judge').options[document.getElementById('select_judge').selectedIndex].value;
+			var participant = document.getElementById('select_participant').options[document.getElementById('select_participant').selectedIndex].text;
 			var participant_name = participant.split(', ');
 			var fullURL = initialURL + judge_id +  '/' + participant_name[0]  + '/' +participant_name[1];
 
 			
-			//window.location.href=encodeURIComponent(fullURL);
-			//return false;
+			window.location.href=fullURL;
 		};
 
 		
