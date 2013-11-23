@@ -28,7 +28,7 @@
 						<a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a>
 					</li>
 					<li>
-						<a id="nav_scores" href="#">Scores</a>
+						<a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a>
 					</li>
 					<li class="active">
 						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
@@ -41,7 +41,6 @@
 	</div><!--close nav-->
 
 	<div class="hero-unit wsu_hero_unit">
-		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 
 		<!--Invalid add-user forms redirect back to this page with errors-->
 		<?php		

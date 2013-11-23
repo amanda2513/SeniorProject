@@ -145,10 +145,31 @@ class Category_settings_model extends CI_Model {
 		return $sql -> result();
 	}
 
+	public function get_criteria_name($criteria_id){
+		$sql = $this->db->get_where('subcat_criteria', array('criteria_id'=>$criteria_id));
+		$result = $sql->row();
+		return $result -> criteria_description;
+	}
+
 	public function get_criteria_count($subcat_id){
 		$this->db->where('subcat_id',$subcat_id);
 		$this->db->from('subcat_criteria');
 		return $this->db->count_all_results();
+	}
+
+	public function get_category_pts_possible($cat_id){
+		$pts_possible = 0;
+		$subcategories = $this->get_subcategories($cat_id);
+
+		foreach($subcategories as $subcategory){
+			$criteria = $this->get_criteria($subcategory->subcat_id);
+
+			foreach($criteria as $criterion){
+				$pts_possible += $criterion->criteria_points;
+			}
+		}
+
+		return $pts_possible;
 	}
 
 }

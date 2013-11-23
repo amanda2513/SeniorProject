@@ -7,9 +7,9 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap-responsive.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
-
 	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'bootbox.min.js');?>"></script>
 
 	<script type="text/javascript">
 	$(window).load(function() {
@@ -29,28 +29,32 @@
 		function set_url(){
 			var initialURL = <?php echo "'".base_url()."scores/input/"."'";?>;
 			var judge_id = select_judge.options[select_judge.selectedIndex].value;
+			window.alert('here');
 			var participant = select_participant.options[select_participant.selectedIndex].text;
 			var participant_name = participant.split(', ');
-			window.location.href = initialURL + judge_id +  '/' + participant_name[0]  + '/' +participant_name[1];
+			var fullURL = initialURL + judge_id +  '/' + participant_name[0]  + '/' +participant_name[1];
+
+			
+			//window.location.href=encodeURIComponent(fullURL);
+			//return false;
 		};
 
 		
 		var $subcategory_count=0;
 		//Each subcategory has 1 set of criteria by default, this is incremented in add_subcat_criteria method
 		var subcategory_criteria_count = new Array();
-		subcategory_criteria_count[0]=1; 
 
 		//used for populating subcategory fields with what's already in database when page loads
 		function populate_subcategory(subcat_name,db_id){
-			//count is used to assign unique names to each element and is assigned to subcat_id for readability below. subtracting 1 because array is zerobased and i want id = array[]
-			$subcategory_count += 1;
-			var $subcat_id=$subcategory_count-1;
+
+			var $subcat_id=$subcategory_count;
 			//add another item to subcategories array
 			subcategory_criteria_count[$subcat_id]=0;
 
 			var $input = 
 			'<div class="row-fluid">' +
-				'<div class="span-center span3 text-center">' +
+				'<div class="span-center span3 text-center" name="subcategory'+$subcat_id+'">' +
+					'<input type="hidden" name="subcategory['+$subcat_id+'][id]" value="'+db_id+'">'+
 					subcat_name +
 				'</div>' +
 				'<div class="span6">' +
@@ -65,26 +69,65 @@
 				'</div>'+
 			'</div>';
 
+			$subcategory_count += 1;
+
 			//append fields to the div with id dynamic_fields
 			$('#dynamic_fields').append($input);
 		};
 
 		//used for populating criteria fields with what's already in the database when page loads
 		function populate_subcat_criteria(subcat_id, desc, points, db_criteria_id){
-			subcategory_criteria_count[subcat_id]+=1;
+			var options_selected = "<?php echo $this->uri->segment(3);?>";
+			<?php
+				if(isset($scores)){//php array to json object
+					$js_array = json_encode($scores);
+					echo "var scores = ".$js_array.";\n";
+				}
+				else
+					echo "var scores;"
+			?>
 
-			var $input = 
-			'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'">'+
-				'<div class="span4 offset3">' +
-					desc +
+			if(options_selected != "" && scores.length>0){//populate scores
+				
+					//get score from json object
+					for(i=0;i<scores.length;i++){
+						if(scores[i].criteria_id==db_criteria_id){
+							var criteria_score = scores[i].criteria_score;
+							break;
+						}
+					}
+
+					//fields with scores
+					var $input = 
+					'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'" name="subcategory['+subcat_id+'][criteria][]">'+
+						'<div class="span4 offset3">' +
+							desc +
+						'</div>' +
+						'<div class="span5">' +
+							'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][db_id]" value="'+db_criteria_id+'">'+
+							'<input value="'+criteria_score+'" class="input-mini" type="number" min="0" max="'+points+'" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][score]" id="total_subcat'+subcat_id+'_criteria'+subcategory_criteria_count[subcat_id]+'_score" onchange="updateSubtotal('+subcat_id+')">/'+points+
+						'</div>'+
+					'</div>' +
+
+					'<hr class="gray">';
+			}
+			else{//empty score fields
+				var $input = 
+				'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'" name="subcategory['+subcat_id+'][criteria][]">'+
+					'<div class="span4 offset3">' +
+						desc +
+					'</div>' +
+					'<div class="span5">' +
+						'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][db_id]" value="'+db_criteria_id+'">'+
+						'<input class="input-mini" type="number" min="0" max="'+points+'" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][score]" id="total_subcat'+subcat_id+'_criteria'+subcategory_criteria_count[subcat_id]+'_score" onchange="updateSubtotal('+subcat_id+')">/'+points+
+					'</div>'+
 				'</div>' +
-				'<div class="span5">' +
-					'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][id]" value="'+db_criteria_id+'">'+
-					'<input class="input-mini" type="number" min="0" max="'+points+'" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][score]" id="total_subcat'+subcat_id+'_criteria'+subcategory_criteria_count[subcat_id]+'_score" onchange="updateSubtotal('+subcat_id+')">/'+points+
-				'</div>'+
-			'</div>' +
 
-			'<hr class="gray">';
+				'<hr class="gray">';
+			}
+
+
+			subcategory_criteria_count[subcat_id]+=1;
 
 			//append fields to the div with id dynamic_subcat[#]_criteria
 			$('#dynamic_subcat'+subcat_id+'_criteria').append($input);
@@ -93,17 +136,21 @@
 		function append_subtotal(subcat_id,subcat_points){
 			var field = '<input id="total_subcat_'+subcat_id+'_score" class="input-mini" type="text" disabled>/'+subcat_points;
 			$('#subcat_'+subcat_id+'_score').append(field);
+
+			updateSubtotal(subcat_id);
 		};
 
 		function updateSubtotal(subcat_id){
 			var subtotal = 0;
-			for(var i=1;i<=subcategory_criteria_count[subcat_id];i++){
+			for(var i=0;i<subcategory_criteria_count[subcat_id];i++){
 				var criteria_value = document.getElementById('total_subcat'+subcat_id+'_criteria'+i+'_score').value;
 				if(criteria_value != "")
 					subtotal+= parseInt(criteria_value);
 			}
 			var subtotal_field = document.getElementById('total_subcat_'+subcat_id+'_score');
-			subtotal_field.value = subtotal;
+
+			if(subtotal_field)
+				subtotal_field.value = subtotal;
 
 			updateTotal();
 		};
@@ -116,7 +163,27 @@
 					total+= parseInt(subcat_value);
 			}
 			var total_field = document.getElementById('total_score');
-			total_field.value = total;
+			if(total_field)
+				total_field.value = total;
+		};
+
+		function confirmModal(){
+			bootbox.dialog("Scores Have Been Updated. What Would You Like To Do Now?",[{
+				"label": "View Scores",
+				"class":"btn wsu_btn",
+				"callback": function(){
+					window.location.href = "<?php echo base_url().'scores/view'?>";
+				}
+			}, {
+				"label": "Edit Previous Entry",
+				"class":"btn wsu_btn"
+			}, {
+				"label": "Enter Scores",
+				"class":"btn wsu_btn",
+				"callback": function(){
+					window.location.href = "<?php echo base_url().'scores/input'?>";
+				}
+			}]);
 		};
 
 
@@ -125,38 +192,37 @@
 </head>
 <body>
 	<div class="page-header" id="wsu_header">
-		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
-		<div class="wsu_sign_in_container pull-right">
-            <a class="btn btn-small wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="span3 pull-left">
+					<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
+				</div>
+				<div class="span5">
+				</div>
+				<div class="span2 offset2">
+		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+				</div>			
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="wsu_title text-center span12">
+				Graduate Exhibition Registration &amp; Scoring System
+			</div>
 		</div>
 	</div>
 
 	<div class="navbar wsu_navbar">
 		<div class="navbar-inner">
-			<a class="btn btn-navbar" id="collapsed_menu_btn" data-toggle="collapse" data-target=".nav-collapse">
-				<span class = "icon-th-list"></span>
-			</a>
-			<div class = "nav-collapse collapse">
-				<ul class="nav text-center">
-					<li>
-						<a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a>
-					</li>
-					<li class="active">
-						<a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a>
-					</li>
-					<li>
-						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
-					</li>
-					<li>
-						<a id="nav_systemsettings" href="<?php echo base_url()."settings/categories"?>">System Settings</a>
-					</li>
-				</ul>
-			</div>
+			<ul class="nav text-center">
+				<li><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
+				<li class="active"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
+				<li><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
+				<li><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
+			</ul>
 		</div>
-	</div><!--close nav-->
+	</div>
 
 	<div class="hero-unit wsu_hero_unit">
-		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 		
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>
@@ -177,9 +243,10 @@
   			}
   			//If I successfully added a user, show success div
   			if($this->session->flashdata('success')){
-  				echo '<div class="alert alert-success text-center" id="wsu_alert">';
-  				echo $this->session->flashdata('success');
-  				echo '</div>';
+  				echo 
+  				'<script type="text/javascript">'.
+  					'confirmModal();'.
+  				'</script>';
   			}
   			//If there are no errors, show "Fill out form" message
   			else{
@@ -198,47 +265,51 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="control-group span6">
-						<label class="control-label" for="judge">Judge:</label>
-						<div class="controls inline" name="judge">
-							<select name="select_judge" id="select_judge" <?php echo $option_selected;?>>
-								<option value="0">Select a Judge</option>
-								<?php
-									foreach($judges as $judge){
-										$parts=explode("@",$judge->email);
-										$username=$parts[0];
-										if($option_selected){
-											$selected = " selected='selected'";
+						<div class="pull-left">
+							<label class="control-label" for="judge">Judge:</label>
+							<div class="controls inline" name="judge">
+								<select  class="input-xlarge" name="select_judge" id="select_judge" <?php echo $option_selected;?>>
+									<option value="0">Select a Judge</option>
+									<?php
+										foreach($judges as $judge){
+											$parts=explode("@",$judge->email);
+											$username=$parts[0];
+											if($this->uri->segment(3) && $judge->id == $this->uri->segment(3)){
+												$selected = " selected='selected'";
+											}
+											else{
+												$selected = "";
+											}
+											echo '<option value="'.$judge->id.'"'.$selected.'>'.$judge->lastname.', '.$judge->firstname.' - '.$username.'</option>';
 										}
-										else{
-											$selected = "";
-										}
-										echo '<option value="'.$judge->id.'"'.$selected.'>'.$judge->lastname.', '.$judge->firstname.' - '.$username.'</option>';
-									}
-								?>
-							</select>
+									?>
+								</select>
+							</div>
 						</div>
 					</div>
 
 					<div class="control-group span6">
-						<label class="control-label" for="participant">Participant:</label>
-						<div class="controls inline" name="judge">
-							<select name="select_participant" id="select_participant" onChange="set_url()" disabled>
-								<option value="0"></option>
-								<?php
-									foreach($judges as $judge){
-										echo '<option value="'.$judge->id.'"></option>';
-									}
-									foreach($assignments as $assignment){
-										if($assignment->lastname==$this->uri->segment(4) && $assignment->firstname==$this->uri->segment(5)){
-											$selected = " selected='selected'";
+						<div class="pull-left">
+							<label class="control-label" for="participant">Participant:</label>
+							<div class="controls inline" name="judge">
+								<select class="input-xlarge" name="select_participant" id="select_participant" onChange="set_url()" disabled>
+									<option value="0"></option>
+									<?php
+										foreach($judges as $judge){
+											echo '<option value="'.$judge->id.'">Select a Participant</option>';
 										}
-										else{
-											$selected = "";
+										foreach($assignments as $assignment){
+											if($assignment->lastname==$this->uri->segment(4) && $assignment->firstname==$this->uri->segment(5)){
+												$selected = " selected='selected'";
+											}
+											else{
+												$selected = "";
+											}
+											echo '<option value="'.$assignment->judge_id.'"'.$selected.'>'.$assignment->lastname.', '.$assignment->firstname.'</option>';
 										}
-										echo '<option value="'.$assignment->judge_id.'"'.$selected.'>'.$assignment->lastname.', '.$assignment->firstname.'</option>';
-									}
-								?>
-							</select>
+									?>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -251,7 +322,7 @@
 
 		echo '
 
-			<form class="form-horizontal" name="score_entry" id="score_entry" method="post" accept-charset="utf-8" action='.base_url()."scores/score_validation".'>
+			<form class="form-horizontal" name="score_entry" id="score_entry" method="post" accept-charset="utf-8" action='.base_url()."scores/score_validation/".$project->project_id."/".$project->judge_id.'/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'>
 				<div class="row-fluid">
 					<div class="span12">
 						<strong>Category: </strong>'.$category->category.'
@@ -307,6 +378,7 @@
 								'<script type="text/javascript">
 									append_subtotal('.$subcat_count.','.$subcat_points.');
 							  	</script>';
+
 							$subcat_count += 1;
 							$total_points +=$subcat_points;
 						echo '<hr>';
@@ -334,14 +406,16 @@
 			   		</div>	
 			   	</div>
 
+			   	<script>updateTotal()</script>
+
 			   	<div class="row-fluid">
 			   		<div class="span12">
 			   		</div>
 			   	</div>
 
 			   	<div class="row-fluid">
-			   		<a  class="btn wsu_btn pull-left" href="'.base_url()."scores/input/".$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'/">Clear Scorecard</a>
-			   		<a class="btn wsu_btn pull-right" href="'.base_url()."score_validation/".$project->project_id."/".$judge->id.'">Submit</a>
+			   		<a class="btn wsu_btn pull-left" href="'.base_url()."scores/input/".$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'">Clear Scorecard</a>
+			   		<input type="submit" id="submit_score" class="btn wsu_btn pull-right" value="Submit">
 			   	</div>
 
 			</form><!--close scores form-->';

@@ -40,7 +40,7 @@
 						<a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a>
 					</li>
 					<li>
-						<a id="nav_scores" href="#">Scores</a>
+						<a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a>
 					</li>
 					<li class="active">
 						<a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a>
