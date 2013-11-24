@@ -53,7 +53,6 @@
 	</div>
 
 	<div class="hero-unit wsu_hero_unit">
-		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 
 		<?php
 		//If there are errors print them all in a bootstrap alert div
@@ -240,6 +239,7 @@
 									</div>
 								</div>
 							</div><!--close right column (participant only) span-->';
+
 						}
 						else{
 						//If the registration type is a non-participant, add these fields
@@ -255,6 +255,10 @@
 				</div><!--close span12-->
 			</div><!--close form's row-fluid-->
 		</form><!--close registration form-->
+
+		<hr>
+
+		Manually Assign Judges
 	</div><!--close hero-unit-->
 </body>
 </html>

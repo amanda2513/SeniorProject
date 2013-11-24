@@ -161,7 +161,7 @@
 			</p>
 			<br>
 		<?php
-			if(!$logged_in){
+			if(!$logged_in && $in_registration_period){
 				echo'
 				<div class="reg_button_container row-fluid">
              		<div class="span6 offset3">

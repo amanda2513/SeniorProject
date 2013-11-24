@@ -14,6 +14,7 @@ class Gerss extends CI_Controller {
 		$this->load->model('general_settings_model');
 		$data['logged_in'] = $this->session->userdata('is_logged_in');
 		$data['settings']=$this->general_settings_model->get_settings();
+		$data['in_registration_period'] = $data['settings']['reg_cutoff_date'] < date('m/d/y');
 		$this->load->view('home_view',$data);
 	}
 
