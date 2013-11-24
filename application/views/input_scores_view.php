@@ -99,7 +99,7 @@
 					//fields with scores
 					var $input = 
 					'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'" name="subcategory['+subcat_id+'][criteria][]">'+
-						'<div class="span4 offset3">' +
+						'<div class="span5 offset2">' +
 							desc +
 						'</div>' +
 						'<div class="span5">' +
@@ -113,7 +113,7 @@
 			else{//empty score fields
 				var $input = 
 				'<div class="control-group" id="control-group_'+subcat_id+'_'+subcategory_criteria_count[subcat_id]+'" name="subcategory['+subcat_id+'][criteria][]">'+
-					'<div class="span4 offset3">' +
+					'<div class="span5 offset2">' +
 						desc +
 					'</div>' +
 					'<div class="span5">' +
@@ -168,6 +168,12 @@
 
 		function confirmModal(){
 			bootbox.dialog("Scores Have Been Updated. What Would You Like To Do Now?",[{
+				"label": "Enter Scores",
+				"class":"btn wsu_btn",
+				"callback": function(){
+					window.location.href = "<?php echo base_url().'scores/input'?>";
+				}
+			},{
 				"label": "View Scores",
 				"class":"btn wsu_btn",
 				"callback": function(){
@@ -176,12 +182,6 @@
 			}, {
 				"label": "Edit Previous Entry",
 				"class":"btn wsu_btn"
-			}, {
-				"label": "Enter Scores",
-				"class":"btn wsu_btn",
-				"callback": function(){
-					window.location.href = "<?php echo base_url().'scores/input'?>";
-				}
 			}]);
 		};
 
@@ -413,7 +413,7 @@
 			   	</div>
 
 			   	<div class="row-fluid">
-			   		<a class="btn wsu_btn pull-left" href="'.base_url()."scores/input/".$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'">Clear Scorecard</a>
+			   		<a class="btn wsu_btn pull-left" href="'.base_url()."scores/input/".$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$this->uri->segment(5).'">Reload Scorecard</a>
 			   		<input type="submit" id="submit_score" class="btn wsu_btn pull-right" value="Submit">
 			   	</div>
 

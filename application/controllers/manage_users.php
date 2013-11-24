@@ -130,7 +130,8 @@ class Manage_users extends CI_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim');
 		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
-		
+		$this->form_validation->set_rules('category', 'Category', 'required|trim');
+
 		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
 		if ($this->form_validation->run()){

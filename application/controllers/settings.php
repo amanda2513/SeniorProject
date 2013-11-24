@@ -11,6 +11,8 @@ class Settings extends CI_Controller {
 
 			$data['exhib_date']=$this->general_settings_model->format_date($data['settings']['exhib_date']);
 			$data['reg_cutoff_date']=$this->general_settings_model->format_date($data['settings']['reg_cutoff_date']);
+
+			$data['scoring_started']=$this->general_settings_model->scores_are_entered();
 					
 			$this->load->view('settings_general_view', $data);
 		}
@@ -273,40 +275,47 @@ class Settings extends CI_Controller {
 
 	public function assign_judges(){
 		$this->load->model("judge_assignment_model");
+		$this->load->model("general_settings_model");
 
 		$assigned_judges = $this->judge_assignment_model->get_all_from('assigned_judges');
 
-		if(count($assigned_judges)!=0){
-			$this->judge_assignment_model->truncate_table('assigned_judges');
-		}
+		$scoring_started=$this->general_settings_model->scores_are_entered();
 
-		$settings = $this->judge_assignment_model->get_assignment_settings();
+		if($scoring_started == false)
+		{
+			if(count($assigned_judges)!=0){
+				$this->judge_assignment_model->truncate_table('assigned_judges');
+			}
 
-		$project = $this->judge_assignment_model->get_all_from('projects');
-		$judge_type = $this->judge_assignment_model->get_judges();
+			$settings = $this->judge_assignment_model->get_assignment_settings();
 
-		foreach($project as $proj){
-			$participant_department = $this->judge_assignment_model->get_participant_department($proj->project_id);
+			$project = $this->judge_assignment_model->get_all_from('projects');
+			$judge_type = $this->judge_assignment_model->get_judges();
 
-			foreach($judge_type as $judge){
+			foreach($project as $proj){
+				$participant_department = $this->judge_assignment_model->get_participant_department($proj->project_id);
 
-				$assigned_judges_count = $this->judge_assignment_model->count_assigned_judges($proj->project_id);
-				
-				if($assigned_judges_count < $settings['judges_per_project']){
+				foreach($judge_type as $judge){
 
-					echo 'judge ' . $judge->id . ': ' . $judge->department;
-					if($judge->department != $participant_department){
-						$judge_project_count = $this->judge_assignment_model->count_assigned_projects($judge->id);
-						if($judge_project_count < $settings['projects_per_judge']){
-							$this->judge_assignment_model->assign_judge($proj->project_id, $judge->id);
+					$assigned_judges_count = $this->judge_assignment_model->count_assigned_judges($proj->project_id);
+					
+					if($assigned_judges_count < $settings['judges_per_project']){
+						if($judge->department != $participant_department){
+							$judge_project_count = $this->judge_assignment_model->count_assigned_projects($judge->id);
+							if($judge_project_count < $settings['projects_per_judge']){
+								$this->judge_assignment_model->assign_judge($proj->project_id, $judge->id);
+							}
 						}
 					}
 				}
 			}
+			$redirect=$this->session->set_flashdata('success','Judges Have Been Assigned');
+			redirect(base_url()."settings/general",$this->input->post('redirect'));
 		}
-
-		$redirect=$this->session->set_flashdata('success','Judges Have Been Assigned');
-		redirect(base_url()."settings/general",$this->input->post('redirect'));
+		else{
+			$redirect=$this->session->set_flashdata('errors','Automatic Judge Assignment Disabled. Scoring Has Started.');
+			redirect(base_url()."settings/general",$this->input->post('redirect'));
+		}
 	}
 
 	public function delete_subcategory(){

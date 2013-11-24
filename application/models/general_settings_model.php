@@ -69,4 +69,13 @@ class General_settings_model extends CI_Model {
 		return $data;
 		}
 	}
+
+	public function scores_are_entered(){
+		$rows=$this->db->count_all_results('criteria_scores');
+
+		if($rows>=1){
+			return true;
+		}
+		return false;
+	}
 }

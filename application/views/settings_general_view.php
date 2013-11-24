@@ -60,8 +60,13 @@
 			var spinner = new Spinner(opts).spin(target);
 		}
 
-		function not_yet_prompt(){
-			bootbox.alert('Sorry, judges cannot be assigned at this time. <br> Please verify that the settings have been saved and the registration cut-off date has passed.');
+		function not_yet_prompt(scoring_started){
+			if(scoring_started){
+				bootbox.alert('Sorry, scores have already been entered. Automatic judge assignment is disabled. Please assign judges manually from the Manage Users page.');
+			}
+			else{
+				bootbox.alert('Sorry, judges cannot be assigned at this time. <br> Please verify that the settings have been saved and the registration cut-off date has passed.');
+			}
 		}
 	</script>
 
@@ -108,9 +113,7 @@
 		<?php
 		//If there are errors print them all in a bootstrap alert div
 			if($this->session->flashdata('errors')){
-				echo '<div class="alert text-center" id="wsu_alert">';
-				echo $this->session->flashdata('errors');
-				echo '</div>';
+				echo '<script>not_yet_prompt(true);</script>';
   			}
   			//If I successfully added a user, show success div
   			if($this->session->flashdata('success')){
@@ -127,8 +130,17 @@
 		<form class="form-horizontal" name="general_settings" id="general_settings" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/general_settings_form";?>'>
 			<div class="row-fluid">
 				<div class="span6 offset3">
-					
-					<hr class="muted">
+
+					<div class="row-fluid">
+						<div class="span2">
+							<a class="btn btn-medium wsu_btn" href="<?php echo base_url()."settings/general"?>">Cancel</a>
+						</div>
+						<div class="span2 offset7">
+							<input type="submit" name="general_settings_submit" class="btn btn-medium wsu_btn" name="save_settings_btn" value="Save Settings"/>
+						</div>
+					</div>
+
+					<hr>
 					<small class="muted text-center">Exhibition Date, Time &amp; Location</small>
 					<!--bootstrap-datepicker for exhibition date-->
 	    			<div class="control-group">
@@ -174,7 +186,7 @@
 						</div>
 					</div>
 
-					<hr class="muted">
+					<hr>
 					<small class="muted text-center">Registration &amp; Judge Assignment</small>
 
 					<!--bootstrap-datepicker for registration cutoff date-->
@@ -204,10 +216,10 @@
 						</div>
 					</div>
 		<?php
-			if($reg_cutoff_date['input'] && $reg_cutoff_date['input'] < date('m/d/y'))
+			if($reg_cutoff_date['input'] && $reg_cutoff_date['input'] < date('m/d/y') && $scoring_started==false)
 				$status = 'onclick="spinner()" href="'.base_url().'settings/assign_judges"';
 			else
-				$status = "disabled='disabled' onclick='not_yet_prompt()'";
+				$status = "disabled='disabled' onclick='not_yet_prompt(".$scoring_started.")'";
 		?>
 
 					<!--Assign Judges button-->
@@ -231,7 +243,7 @@
 		 	}
 		?>
 
-					<hr class="muted">
+					<hr>
 					<small class="muted text-center">Restrict Access</small>
 					<!--Restrict access to only admin and score entry users on/off dropdown-->
 					<div class="control-group">
@@ -244,9 +256,12 @@
 						</div>
 					</div>
 
-					<hr class="muted">
+					<hr>
 					<div class="row-fluid">
-						<div class="span2 offset5">
+						<div class="span2">
+							<a class="btn btn-medium wsu_btn" href="<?php echo base_url()."settings/general"?>">Cancel</a>
+						</div>
+						<div class="span2 offset7">
 							<input type="submit" name="general_settings_submit" class="btn btn-medium wsu_btn" name="save_settings_btn" value="Save Settings"/>
 						</div>
 					</div>

@@ -182,13 +182,13 @@
 							//open right column - span6 - participant only
 							'<div class="span6" id="project_info_span">
 
-								<p class="text-center muted"><small>Project Information: All Fields are Optional</small></p>
+								<p class="text-center muted"><small>Project Information: Category Field is Required</small></p>
 
 								<div class="control-group">
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="0">Select a Category</option>';
+											<option value="">Select a Category</option>';
 											foreach($categories as $category){
 												echo '<option value="'.$category->category.'">'. $category->category.'</option>';
 											}

@@ -120,12 +120,19 @@
 									$judge_count+=1;
 								}
 							}
-							echo '<td>' .$judge_count. '</td>';
-							echo '<td>
-							<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>
-							<button class="btn wsu_btn wsu_tooltip" href="#" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>';
+							echo 
+							'<td>' . $judge_count;
+								if($judge_count==0){
+									echo '<i class="icon-exclamation-sign pull-right wsu_tooltip" rel="tooltip" title="No Judges Assigned"></i>';
+								}
+							echo'
+							</td>
+							<td>
+								<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>
+								<button class="btn wsu_btn wsu_tooltip" href="#" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
+							</td>
 							
-						echo '</tr>';
+						</tr>';
 						}
 					}
 					else{

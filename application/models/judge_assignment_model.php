@@ -51,6 +51,7 @@ class Judge_assignment_model extends CI_Model {
 			);
 
 		$this->db->insert('assigned_judges',$data);
+
 	}
 
 	public function get_judge_projects($judge_id){
@@ -64,7 +65,12 @@ class Judge_assignment_model extends CI_Model {
 	}
 
 	public function truncate_table($table_name){
+		$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+
 		$this->db->truncate($table_name);
+
+		$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+
 	}
 
 }

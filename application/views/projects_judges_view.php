@@ -101,7 +101,12 @@
 								<td>' . $row->department . '</td>
 
 								
-								<td>' . $row->assignment_count . '</td>
+								<td>' . $row->assignment_count;
+									if($row->assignment_count==0){
+											echo ' <i class="icon-exclamation-sign pull-right wsu_tooltip" rel="tooltip" title="No Assigned Projects"></i>';
+										}
+									echo'
+								</td>
 
 								<td>
 									<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>

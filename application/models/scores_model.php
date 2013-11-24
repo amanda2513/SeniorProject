@@ -2,6 +2,49 @@
 
 class Scores_model extends CI_Model {
 
+	public function is_scoring_open(){
+		//the exhibition has to start to open scoring (date & start time from settings)
+		$sql = $this->db->get('system_settings');
+		$exhib_info = $sql->result_array();
+
+		date_default_timezone_set('EST');
+		
+		foreach($exhib_info as $info)
+			if( ($info['exhib_date'] <= date('Y-m-d'))){
+				$exhibition_started = true;
+			}
+			else{
+				$exhibition_started = false;
+			}
+		//all projects must have at least one judge assigned to it
+		$sql = $this->db->get('projects');
+		$projects = $sql -> result_array();
+
+		$sql = $this->db->get('assigned_judges');
+		$assigned_projects = $sql -> result_array();
+
+		$all_projects_assigned = true;
+
+		foreach($projects as $project){
+			$judge_count = 0;
+			foreach($assigned_projects as $assigned){
+				if($project['project_id']==$assigned['project_id']){
+					$judge_count+=1;
+					break;
+				}
+			}
+			if($judge_count == 0){
+				$all_projects_assigned = false;
+				break;
+			}
+		}
+
+		if($all_projects_assigned && $exhibition_started){
+			return true;
+		}
+		return false;
+	}
+
 	public function get_assigned_projects(){
 		$this->db->select('*');
 		$this->db->from('assigned_judges');
