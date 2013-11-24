@@ -52,7 +52,7 @@
 			<ul class="nav text-center">
 				<li class="span1"><a id="nav_home" href="<?php echo base_url()."gerss/home"?>"><img alt="home" src="<?php echo (IMG.'home.png');?>"></img></a></li>
 				<li class="span2"><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
-				<li class="span2"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
+				<li class="active span2"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
 				<li class="span3"><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
 				<li class="span3"><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
 			</ul>
@@ -99,7 +99,7 @@
 							<li>
 								The page will be automatically enabled on the day of the exhibition.
 								<br>
-								<em>Ensure the date of the event is corrent in the System Settings page.</em>
+								<em>Ensure the date of the event is correct on the System Settings page.</em>
 							</li>
 							<br>
 							<li>
