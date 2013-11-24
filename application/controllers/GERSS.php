@@ -12,6 +12,7 @@ class Gerss extends CI_Controller {
 	public function home(){
 		$data['title']="WSU-GERSS :: Home";
 		$this->load->model('general_settings_model');
+		$data['logged_in'] = $this->session->userdata('is_logged_in');
 		$data['settings']=$this->general_settings_model->get_settings();
 		$this->load->view('home_view',$data);
 	}

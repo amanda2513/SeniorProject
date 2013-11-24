@@ -9,43 +9,92 @@
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
 </head>
-<body>
+<body>		
 	<div class="page-header" id="wsu_header">
-		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
-		<div class="wsu_sign_in_container pull-right">
-			<?php 
-				if($this->session->flashdata('errors')){
-					echo '<div class="alert" id="wsu_alert">
-					<strong>Could not validate your credentials.</div>';
-					//echo validation_errors();
-	  			}
-	  			else{
-	  				echo '<p class="text-center" id="wsu_login_message">Already Registered?</p>';
-	  			}
-  			?>
-  			
-			<?php 
-				$form_attributes = 
-					array('name'=>'signinform','class'=>'form-inline pull-right','id'=>'sign_in_form');
-				echo form_open('gerss/login_validation', $form_attributes);
+		
+			<?php
+				if($logged_in){
+				echo'
+				<div class="row-fluid">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="span3 pull-left">
+								<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
+							</div>
+							<div class="span2 offset7">
+			            		<a class="btn wsu_btn" id="sign_out_btn" href='.base_url(). "gerss/logout".'>Sign Out</a>
+							</div><!--end sign-out div-->		
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="wsu_title text-center span12">
+							Graduate Exhibition Registration &amp; Scoring System
+						</div>
+					</div>
+				</div><!--End Header Row-fluid-->
+			</div><!--End Header-->
 
-				$username_attributes = 
-					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');
-				echo form_input($username_attributes);
+			<div class="navbar wsu_navbar row-fluid">
+				<div class="navbar-inner span12">
+					<ul class="nav text-center">
+						<li class=" active span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+						<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+						<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+						<li class="span3"><a id="nav_manageusers" href="'.base_url()."manage_users/participant".'">Manage Users</a></li>
+						<li class="span3"><a id="nav_systemsettings" href="'.base_url()."settings/general".'">System Settings</a></li>
+					</ul>
+				</div>
+			</div><!--End Navbar-->
+
+			';
+
+				}
+				else{
+					echo'
+					<div class="row-fluid">
+						<div class="span7">
+							<div class="row-fluid">
+								<div class="span12 pull-left">
+									<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
+								</div>
+							</div>
+						</div>
+							<div class="span5">';
+		
+					if($this->session->flashdata('errors')){
+						echo '
+								<div class="alert text-center span10 offset2 wsu_sign_in_alert" id="wsu_alert">
+									<strong>Could not validate your credentials.
+								</div>';
+		  			}
+		  			else{
+		  				echo '<p class="text-center" id="wsu_login_message">Already Registered?</p>';
+		  			}
 			
-				$password_attributes = 
-					array('name'=>'password','class'=>'input-medium','id'=>'password','placeholder'=>'Password');
-				echo form_password($password_attributes);
-				
-				$submit_attributes = 
-					array('name'=>'signin','class'=>'btn btn-small wsu_btn','id'=>'sign_in_btn');
-				echo form_submit($submit_attributes,'Sign In');
+					$form_attributes = 
+						array('name'=>'signinform','class'=>'span10 offset2 form-inline','id'=>'sign_in_form');
+					echo form_open('gerss/login_validation', $form_attributes);
 
-				form_close();
+					$username_attributes = 
+						array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');
+					echo form_input($username_attributes);
+				
+					$password_attributes = 
+						array('name'=>'password','class'=>'input-medium','id'=>'password','placeholder'=>'Password');
+					echo form_password($password_attributes);
+					
+					$submit_attributes = 
+						array('name'=>'signin','class'=>'btn btn-small wsu_btn','id'=>'sign_in_btn');
+					echo form_submit($submit_attributes,'Sign In');
+
+					form_close();
+					echo'
+						</div>
+					</div><!--End Header row-fluid-->';
+				}
 				
 			?>
-		</div>
-	</div>
+	</div><!--End Header-->
 
 	<div class="hero-unit wsu_hero_unit">
 		<?php
@@ -58,10 +107,14 @@
   		?>
 
   		<div class="content">
-			<h2 class="wsu_h2 text-center hidden-phone">Graduate Exhibition Registration &amp; Scoring System</h2>
-			<h4 class="wsu_h2 text-center visible-phone">Graduate Exhibition Registration &amp; Scoring System</h4>
-			
-
+  			<?php
+  			if(!$logged_in){
+  				echo'
+				<h4 class="wsu_h2 text-center visible-phone">Graduate Exhibition Registration &amp; Scoring System</h4>
+				<h2 class="wsu_h2 text-center hidden-phone">Graduate Exhibition Registration &amp; Scoring System</h2>
+				';
+			}
+			?>
 			<p>The Graduate School is pleased to invite the campus community to the third annual Graduate Exhibition to celebrate the achievements of Wayne State University graduate students across our campus. The event will include an exhibition of graduate student research and scholarship from all disciplines, and will feature 100 posters and art exhibits and six oral presentations.</p>
 			<br>
 			<p class="text-center">We hope many will join us for this wonderful event!</p></br>
@@ -107,12 +160,16 @@
 				</div>
 			</p>
 			<br>
-			
-			<div class="reg_button_container row-fluid">
-             	<div class="span6 offset3">
-					<a class="btn btn-lg wsu_btn span6 offset3" id="participant_register_btn" href='<?php echo base_url()."gerss/registration?type=",urlencode("participant")?>'><strong>Participants</strong></br>Register Here</a>
-				</div>
-			</div>
+		<?php
+			if(!$logged_in){
+				echo'
+				<div class="reg_button_container row-fluid">
+             		<div class="span6 offset3">
+						<a class="btn btn-lg wsu_btn span6 offset3" id="participant_register_btn" href="'.base_url().'gerss/registration?type=participant'.'"><strong>Participants</strong></br>Register Here</a>
+					</div>
+				</div>';
+			}
+		?>
 		</div>
 	</div>
 </body>

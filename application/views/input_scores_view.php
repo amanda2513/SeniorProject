@@ -210,13 +210,14 @@
 		</div>
 	</div>
 
-	<div class="navbar wsu_navbar">
-		<div class="navbar-inner">
+	<div class="navbar wsu_navbar row-fluid">
+		<div class="navbar-inner span12">
 			<ul class="nav text-center">
-				<li><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
-				<li class="active"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
-				<li><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
-				<li><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
+				<li class="span1"><a id="nav_home" href="<?php echo base_url()."gerss/home"?>"><img alt="home" src="<?php echo (IMG.'home.png');?>"></img></a></li>
+				<li class="span2"><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
+				<li class="active span2"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
+				<li class="span3"><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
+				<li class="span3"><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
 			</ul>
 		</div>
 	</div>
@@ -271,15 +272,13 @@
 									<option value="0">Select a Judge</option>
 									<?php
 										foreach($judges as $judge){
-											$parts=explode("@",$judge->email);
-											$username=$parts[0];
 											if($this->uri->segment(3) && $judge->id == $this->uri->segment(3)){
 												$selected = " selected='selected'";
 											}
 											else{
 												$selected = "";
 											}
-											echo '<option value="'.$judge->id.'"'.$selected.'>'.$judge->lastname.', '.$judge->firstname.' - '.$username.'</option>';
+											echo '<option value="'.$judge->id.'"'.$selected.'>'.$judge->lastname.', '.$judge->firstname.'</option>';
 										}
 									?>
 								</select>
