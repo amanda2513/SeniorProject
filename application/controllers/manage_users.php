@@ -163,14 +163,33 @@ class Manage_users extends CI_Controller {
 			$data['title']="WSU-GERSS :: Edit User";
 
 			$this->load->model("users_model");
+			$this->load->model("judge_assignment_model");
+			$this->load->model("general_settings_model");
 			
 			$user=$this->uri->segment(4);
+
+			$data['logged_in_as']=$this->session->userdata('role');
 			
 			$data['user_data']=$this->users_model->get_user_by_username($user);
 
+			//for populating participant project info for editing
 			if($data['user_data']['usertype']=='participant'){
 				$project_id=$this->users_model->get_project_id($data['user_data']['id']);
 				$data['project_data']=$this->users_model->get_project_data($project_id);
+			
+
+				//for manual judge assignment
+				if($data['logged_in_as']=='admin'){
+					$data['assigned_judges']=$this->judge_assignment_model->get_assigned_judges($project_id);
+					$data['all_judges']=$this->judge_assignment_model->get_judges();
+					$data['settings']=$this->general_settings_model->get_settings();
+					$data['judges_per_project']=$data['settings']['judges_per_project'];
+					$data['projects_per_judge']=$data['settings']['projects_per_judge'];
+
+					foreach($data['all_judges'] as $key=>$judge){
+						$data['all_judges'][$key]->assignment_count=$this->judge_assignment_model->count_assigned_projects($judge->id);
+					}
+				}
 			}
 
 			$this->load->model("category_settings_model");
@@ -218,6 +237,37 @@ class Manage_users extends CI_Controller {
 			
 			$redirect=$this->session->set_flashdata('errors',validation_errors());
 			redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+		}
+	}
+
+	public function manual_assignment_validation(){
+		if ($this->session->userdata('is_logged_in') && $this->session->userdata('role')=='admin'){
+			$this->load->model('judge_assignment_model');
+			$project_id = $_POST['project_id'];
+			$prev_judges = $this->judge_assignment_model->get_assigned_judges($_POST['project_id']);
+			$prev_assigned=array();
+
+			foreach($prev_judges as $key=>$previous){
+				$prev_assigned[$key]=$previous->judge_id;
+			}
+			
+			$posted_assignments = $_POST['assign_judge'];
+			$additional_judges = array_diff($posted_assignments,$prev_assigned);
+			$removed_judges = array_diff($prev_assigned,$posted_assignments);
+
+			foreach($additional_judges as $new_judge_id){
+				$this->judge_assignment_model->assign_judge($project_id,$new_judge_id);
+			}
+
+			foreach($removed_judges as $old_judge_id){
+				$this->judge_assignment_model->remove_assignment($project_id,$old_judge_id);
+			}
+
+			$redirect=$this->session->set_flashdata('success','Judge Assignments Have Been Updated');
+			redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+		}
+		else{
+			redirect('gerss/home');
 		}
 	}
 }

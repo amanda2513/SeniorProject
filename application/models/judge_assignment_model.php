@@ -54,6 +54,16 @@ class Judge_assignment_model extends CI_Model {
 
 	}
 
+	public function remove_assignment($project_id,$judge_id){
+		$data = array(
+			'project_id' => $project_id,
+			'judge_id' => $judge_id
+			);
+
+		$this->db->where($data);
+		$this->db->delete('assigned_judges');
+	}
+
 	public function get_judge_projects($judge_id){
 		$this->db->select('*');
 		$this->db->from('assigned_judges');
@@ -71,6 +81,11 @@ class Judge_assignment_model extends CI_Model {
 
 		$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
 
+	}
+
+	public function get_assigned_judges($project_id){
+		$sql= $this->db->get_where('assigned_judges',array('project_id'=>$project_id));
+		return $sql->result();
 	}
 
 }

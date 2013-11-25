@@ -111,7 +111,7 @@ class AuthLDAP {
          */
 
         $user_info = $this->_authenticate($username,$password);
-        print_r($user_info);
+        print_r('<br> User Info --- '.$user_info);
         /*if(empty($user_info['role_level'])) {
             log_message('info', $username." has no role to play.");
             show_error($username.' succssfully authenticated, but is not allowed because the username was not found in an allowed access group.');
@@ -238,7 +238,7 @@ class AuthLDAP {
             show_error('Unable to bind to server: Invalid credentials for '.$username);
         }
         $cn = $entries[0]['cn'][0];
-        echo $cn;
+        print_r($entries);
         $dn = stripslashes($entries[0]['dn']);
         $id = $entries[0][$this->login_attribute][0];
         

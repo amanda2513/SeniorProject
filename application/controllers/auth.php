@@ -56,7 +56,7 @@ class Auth extends CI_Controller {
                 if($this->session->flashdata('tried_to')) {
                     redirect($this->session->flashdata('tried_to'));
                 }else {
-                $this->load->view('auth/success_view', array(
+                /*$this->load->view('auth/success_view', array(
                     'username' => $this->session->userdata('username'), 
                     'role_name' => $this->session->userdata('role_name'),
                     'role_level' => $this->session->userdata('role_level'),
@@ -65,7 +65,7 @@ class Auth extends CI_Controller {
                     'id' => $this->session->userdata('session_id'),
                     'user_agent' => $this->session->userdata('user_agent')
                   )
-                );
+                );*/
                 }
             }else {
                 // Login FAIL

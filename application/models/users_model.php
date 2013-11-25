@@ -9,7 +9,7 @@ class Users_model extends CI_Model {
 		$data = array (
 				'email'=>$email,
 				'is_logged_in' => 1,
-				'user_type'=>$user_type
+				'role'=>$user_type
 			);
 		$this->session->set_userdata($data);
 	}
@@ -100,7 +100,8 @@ class Users_model extends CI_Model {
 
 
 	public function get_user_by_username($username){
-		$this->db->like('email',$username);
+		$email=$username."@";
+		$this->db->like('email',$email);
 		$sql = $this->db->get('users');
 		return $sql->row_array();
 	}

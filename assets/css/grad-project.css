@@ -300,7 +300,7 @@ background-color: #e6e6e6;
 	resize:vertical;
 }
 
-#register_btn, #save_settings_btn{
+#register_btn, #save_settings_btn, #manual_assign_submit{
 	width:25%;
 	margin-right:37.5%;
 	margin-left:37.5%;
