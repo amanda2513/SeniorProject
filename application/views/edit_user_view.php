@@ -274,7 +274,7 @@
 					<small class="muted">Current Settings:  Max Judges Per Project='.$judges_per_project.'  &amp;  Max Projects Per Judge='.$projects_per_judge.' </small> <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Manual assignment allows you to disregard these settings. Please use your best judgement."></i>
 				</p>
 			</div>
-			<form method="post" accept-charset="utf-8" action="'.base_url()."manage_users/manual_assignment_validation/".$this->uri->segment(3).'/'.$this->uri->segment(4).'">
+			<form method="post" accept-charset="utf-8" action="'.base_url()."manage_users/manual_assignment_participant_validation/".$this->uri->segment(3).'/'.$this->uri->segment(4).'">
 			<input type="hidden" name="project_id" value="'.$project_data->project_id.'">
 			<table id="assign_judges" class="table table-bordered table-striped tablesorter">
 				<thead>
@@ -296,7 +296,7 @@
 							<i class="pull-right icon-resize-vertical"></i>
 						</th>
 						<th>
-							Assigned
+							Assign?
 							<i class="pull-right icon-resize-vertical"></i>
 						</th>
 					</tr>
@@ -330,6 +330,97 @@
 
 					if($judge->department == $user_data['department']){
 						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant are from the same department. Consider assigning a different judge."></i>';
+					}
+
+					echo'
+						</td>
+					</tr>';
+				}
+				echo'
+				</tbody>
+			</table>
+			<div class="row-fluid">
+				<div class="span8 offset2">
+					<input type="submit" class="btn wsu_btn span2 offset5" name="manual_assign_submit" id="manual_assign_submit" value="Assign Judges">
+				</div>
+			</div>
+			</form>';
+		}
+		?>
+
+		<?php
+		if($logged_in_as == 'admin' && $selected_type=='judge'){
+
+			echo '
+			<div class="row-fluid">
+				<p class="span6 text-left"><strong>Manually Assign Judges</strong></p>
+				<p class="span6 text-right">
+					<small class="muted">Current Settings:  Max Judges Per Project='.$judges_per_project.'  &amp;  Max Projects Per Judge='.$projects_per_judge.' </small> <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Manual assignment allows you to disregard these settings. Please use your best judgement."></i>
+				</p>
+			</div>
+			<form method="post" accept-charset="utf-8" action="'.base_url()."manage_users/manual_assignment_judge_validation/".$this->uri->segment(3).'/'.$this->uri->segment(4).'">
+			<input type="hidden" name="judge_id" value="'.$user_data['id'].'">
+			<table id="assign_judges" class="table table-bordered table-striped tablesorter">
+				<thead>
+					<tr>
+						<th>
+							Last Name
+							<i class="pull-right icon-resize-vertical"></i>
+						</th>
+						<th>
+							First Name
+							<i class="pull-right icon-resize-vertical"></i>
+						</th>
+						<th>
+							Department
+							<i class="pull-right icon-resize-vertical"></i>
+						</th>
+						<th>
+							Judges Assigned
+							<i class="pull-right icon-resize-vertical"></i>
+						</th>
+						<th>
+							Assign?
+							<i class="pull-right icon-resize-vertical"></i>
+						</th>
+					</tr>
+				</thead>
+				<tbody>';
+
+				foreach($all_participants as $participant){
+					$judge_count=0;
+					foreach($judge_assignment as $assigned){
+						if($assigned->project_id == $participant->project_id){
+							$judge_count+=1;
+						}
+					}
+					echo
+					'<tr>
+						<td>'.
+							$participant->lastname.'
+						</td>
+						<td>'.
+							$participant->firstname.'
+						</td>
+						<td>'.
+							$participant->department.'
+						</td>
+						<td>'.
+							$judge_count.'
+						</td>
+						<td>
+							<input type="checkbox" name="assign_project[]" value="'.$participant->project_id.'" ';
+
+					foreach($judge_assignment as $assigned){
+						if($assigned->project_id == $participant->project_id && $assigned->judge_id == $user_data['id']){
+							echo'checked';
+							break;
+						}
+					}
+					echo'>';
+
+					if($participant->department == $user_data['department']){
+						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant are from the same department. Consider assigning the judge to a different project."></i>';
 					}
 
 					echo'
