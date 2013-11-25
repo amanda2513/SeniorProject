@@ -130,7 +130,9 @@ class Manage_users extends CI_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim');
 		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
-		$this->form_validation->set_rules('category', 'Category', 'required|trim');
+		if($this->input->post('type')=='participant'){
+			$this->form_validation->set_rules('category', 'Category', 'required|trim');
+		}
 
 		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
@@ -319,6 +321,23 @@ class Manage_users extends CI_Controller {
 
 			$redirect=$this->session->set_flashdata('success','Judge Assignments Have Been Updated');
 			redirect(base_url()."manage_users/edit/".$this->uri->segment(3).'/'.$this->uri->segment(4),$this->input->post('redirect'));
+		}
+		else{
+			redirect('gerss/home');
+		}
+	}
+
+	public function change_user_status(){
+		if ($this->session->userdata('is_logged_in') && $this->session->userdata('role')=='admin'){
+			$user_type=$this->uri->segment(3);
+			$new_status=$this->uri->segment(4);
+			$user_id=$this->uri->segment(5);
+
+			$this->load->model('users_model');
+			$this->users_model->change_user_status($user_id,$new_status);
+
+			redirect(base_url()."manage_users/".$user_type);
+
 		}
 		else{
 			redirect('gerss/home');

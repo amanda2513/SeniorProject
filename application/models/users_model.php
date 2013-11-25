@@ -324,4 +324,9 @@ class Users_model extends CI_Model {
 		$sql = $this->db->get('projects');
 		return $sql->row();
 	}
+
+	public function change_user_status($user_id, $status){
+		$this->db->where('id',$user_id);
+		$this->db->update('users', array('status'=>$status));
+	}
 }

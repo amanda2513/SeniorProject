@@ -93,6 +93,7 @@
 			<li><a href='<?php echo base_url()."manage_users/judge"?>'>Judges</a></li>
 			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Score Entry Users</a></li>
 			<li class="active"><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
+			
 			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("admin");?>" id="btn_add_admin"><i class="icon-plus"></i> Add Admin</a>
 		</ul>
 
@@ -108,7 +109,7 @@
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
-						Status
+						Access
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>Actions</th>
@@ -126,10 +127,20 @@
 
 							'<tr>
 								<td>' . $row->lastname . '</td>
-								<td>' . $row->firstname . '</td>
-								<td> TODO</td>
-								<td>
-									<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Restrict User Access" href="#"><i class="icon-lock"></i></a> 
+								<td>' . $row->firstname . '</td>';
+								if($row->status=="Enabled"){
+									echo'
+									<td>' . $row->status .'</td>
+									<td>
+										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Disable User Access" href="'.base_url()."manage_users/change_user_status/admin/Disabled/".$row->id.'"><i class="icon-lock"></i></a>';
+								}
+								else{
+									echo'
+									<td>' . $row->status .' <i class="icon-lock"></i></td>
+									<td>
+										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Enable User Access" href="'.base_url()."manage_users/change_user_status/admin/Enabled/".$row->id.'"><i class="icon-lock"></i></a>';
+								}
+								echo'
 									<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Edit User Info" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'"><i class="icon-pencil"></i></a>
 									<button class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Delete User" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
 								</td>
