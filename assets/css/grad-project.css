@@ -60,6 +60,14 @@ hr{
 	/*border-bottom-color:#FFCC33;*/
 }
 
+.hiddenRow{
+	padding:0 !important;
+}
+
+.score_breakdown{
+	background-color:#CEDDDB;
+}
+
 
 /**------HEADER------**/
 #wsu_header{
@@ -309,4 +317,8 @@ background-color: #e6e6e6;
 .span-center{
 	margin-top:3%;
 	margin-bottom:3%;
+}
+
+#filter_score_results{
+	margin-bottom:0;
 }

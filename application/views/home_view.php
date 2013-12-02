@@ -169,6 +169,14 @@
 					</div>
 				</div>';
 			}
+			elseif (!$logged_in && !$in_registration_period){
+				echo'
+				<div class="text-center row-fluid">
+             		<div class="span6 offset3">
+             			<strong class="muted"><small>Registration Period Has Ended</small></strong>
+					</div>
+				</div>';
+			}
 		?>
 		</div>
 	</div>

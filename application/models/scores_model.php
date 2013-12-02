@@ -156,12 +156,12 @@ class Scores_model extends CI_Model {
 		return $sql->result();
 	}
 
-	public function average_criterion_score($criteria_id){
-		$this->db->select_avg('criteria_score','average_score');
-		$this->db->where('criteria_id',$criteria_id);
+	public function average_criterion_score($criteria_id,$project_id){
+		$this->db->select_avg('criteria_score','avg_score');
+		$this->db->where(array('criteria_id'=>$criteria_id,'project_id'=>$project_id));
 		$sql = $this->db->get('criteria_scores');
 
-		return $sql -> result_array();
+		return $sql -> row('avg_score');
 	}
 
 }

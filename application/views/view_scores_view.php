@@ -9,12 +9,13 @@
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.mod.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {		
-			$("#scores_table").tablesorter( {sortList: [[0,0]]});
+			$("#scores_table").tablesorter({sortList: [[2,0],[3,1],[0,0]]});
 
-			$("[rel=tooltip]").tooltip({ placement:'right'});
+			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});	
 	</script>
 </head>
@@ -52,14 +53,36 @@
 	</div>
 
 	<div class="hero-unit wsu_hero_unit">
+
+		<form class="form-search" method="post" action='<?php echo base_url()."scores/view/";?>'>
+			<div class="input-append">
+				<input type="text" name="search_participants" id="search_participants" class="input-large search-query" placeholder="Participants's Last Name">
+				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
+			</div>
+			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."scores/view";?>">Clear</a>
+		</form>
 		
 		<ul class="nav nav-tabs">
 			<li><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>
 			<li class="active"><a href="<?php echo base_url()."scores/view"?>">View Scores</a></li>
+			<li class="pull-right">
+				<form class="form-horizontal" id="filter_score_results" method="post" action="<?php base_url().'scores/view/filter/';?>">
+					<select name="category" id="category_filter">
+					<?php
+						echo' <option value="all">Category</option>';
+						foreach($categories as $category){
+							echo '<option value="'.$category->category.'">'. $category->category.'</option>';
+						}
+					?>
+					</select>
+					<input type="number" class="input-mini" name="top_n" id="top_n_filter" placeholder="Top N">
+					<input type="submit" value="Filter Results" class="btn wsu_btn" id="filter_score_results">
+				</form>
+			</li>
 		</ul>
 
 		
-		<table id="scores_table" class="table wsu_table table-bordered table-striped tablesorter">
+		<table id="scores_table" class="table wsu_table table-bordered table-striped tablesorter table-condensed" style="border-collapse:collapse;">
 			<thead>
 				<tr>
 					<th>
@@ -89,7 +112,7 @@
 				<?php 
 					if(!empty($projects)){
 						foreach($projects as $project){
-
+							$id = $project->project_id;
 							echo 
 
 							'<tr>
@@ -104,14 +127,68 @@
 									echo $project->judge_entry_count.' / '.$project->judge_count.'
 								</td>
 								<td>
-									<div >'.
-										$project->total_averaged_score.' / '.$project->category_pts_possible.'</td>
+									<div>'.
+										$project->total_averaged_score.' / '.$project->category_pts_possible.'
 									</div>
+								</td>
 								<td>
-									<a class="btn wsu_btn wsu_tooltip" href="#"  rel="tooltip" title="View More"><i class="icon-eye-open"></i></a>
+									<button data-toggle="collapse" data-target="#scores_'.$project->lastname.'" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Score Breakdown"><i class="icon-eye-open"></i></a>
 								</td>
 
-							</tr>';
+							</tr>
+							<tr class="expand-child">
+								<td colspan="6" class="hiddenRow">
+									<div class="accordian-body collapse score_breakdown" id="scores_'.$project->lastname.'">
+										<div class="row-fluid hidden-phone">
+											<div class="span3 text-center">
+												<em>Subcategory</em>
+											</div>
+											<div class="span6 text-center">
+												<em class="text-center">Criteria Scores</em>
+											</div>
+											<div class="span3 text-center">
+												<em>Subcategory Total</em>
+											</div>
+										</div>
+										<hr>';
+										foreach($project->subcategories as $subcat){
+										echo'<div class="row-fluid">';
+											echo 
+												'<div class="span3 text-center">'.
+													$subcat->subcat_name . '
+												</div>
+												<div class="span6">';
+												$subcat_pts_possible=0;
+												$subcat_pts_earned=0;
+											foreach($subcat->criteria as $criterion){
+												echo ' 
+													<div class="row-fluid">
+														<div class="span5 offset2">'.
+															$criterion->criteria_description . ': '.'
+														</div>
+														<div class="span5">'.
+															 round($criterion->avg_points,2) . ' / '. $criterion->criteria_points
+														 .'
+														 </div>
+													</div>';
+												$subcat_pts_earned+=round($criterion->avg_points,2);
+												$subcat_pts_possible+=$criterion->criteria_points;
+											}
+										  echo '</div>
+											  	<div class="span2 offset1">'.
+											  		$subcat_pts_earned. ' / ' . $subcat_pts_possible .'
+											  	</div>
+											</div>
+											<hr>';
+										}
+										
+										/*echo '<pre>';
+										print_r($project);
+										echo '<pre>';*/
+								echo'</div>
+								</td>
+							<tr>';
+
 						}
 					}else{
 						echo "<td>No results found.</td>";

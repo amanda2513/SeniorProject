@@ -1,0 +1,50 @@
+html{
+	width:100%;
+}
+
+img{
+	max-width:10%;
+	width:10%;
+	min-width:75px;
+	margin-right:2%;
+}
+
+#scorecard_title{
+	font-size: 24pt;
+}
+
+.wsu_btn{
+	background: #e6e6e6;
+}
+
+.wsu_btn:hover{
+	background-color: #dbdddd;
+	color: #000000;
+}
+
+.wsu_btn[disabled]:hover{
+	background: #e6e6e6 !important;
+	color: #333333;
+}
+
+.wsu_tooltip + .tooltip > .tooltip-inner{
+	background-color:#0C5449;
+}
+
+.tooltip.in{
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.tooltip .tooltip-arrow {
+	/*border-bottom-color:#FFCC33;*/
+}
+
+#print_btn{
+	margin-top:0;
+	margin-bottom:10%;
+}
+
+#print_header{
+	margin-bottom:1%;
+}

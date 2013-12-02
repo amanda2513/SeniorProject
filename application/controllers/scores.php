@@ -9,7 +9,7 @@ class Scores extends CI_Controller {
 				$this->load->model('scores_model');
 
 				$scoring_open=$this->scores_model->is_scoring_open();
-				$data['user_type'] = $this->session->userdata('user_type');
+				$data['user_type'] = $this->session->userdata('role');
 
 			if($scoring_open)
 			{
@@ -51,16 +51,24 @@ class Scores extends CI_Controller {
 				$this->load->model('scores_model');
 
 				$scoring_open=$this->scores_model->is_scoring_open();
-				$data['user_type'] = $this->session->userdata('user_type');
+				$data['user_type'] = $this->session->userdata('role');
 
 			if($scoring_open)
 			{
+				$search_participant = $this->input->post('search_participants');
+
 				$this->load->model('users_model');
 				$this->load->model('judge_assignment_model');
 				$this->load->model('category_settings_model');
+
+				$data['categories']=$this->category_settings_model->get_all('categories');
 				
-				$data['projects']=$this->users_model->get_participant_info();
-				//$data['scores'] =$this->scores_model->get_project_scores();
+				if($search_participant){
+					$data['projects']=$this->users_model->filter_participant_info($search_participant);
+				}
+				else{
+					$data['projects']=$this->users_model->get_participant_info();
+				}
 
 				foreach($data['projects'] as $project){
 					$project->judge_count=$this->judge_assignment_model->count_assigned_judges($project->project_id);
@@ -68,20 +76,22 @@ class Scores extends CI_Controller {
 					$project->category_pts_possible = $this->category_settings_model->get_category_pts_possible($category->cat_id);
 
 					$project->judge_entry_count = $this->scores_model->get_judge_entry_count($project->project_id);
-
-					$criteria=$this->scores_model->get_distinct_criteria_ids($project->project_id);
-					
 					$project->total_averaged_score = 0;
-
-					foreach($criteria as $key=>$criterion){
-						$project->criterion[$key]['criteria_id']=$criterion->criteria_id;
-						$project->criterion[$key]['desc']=$this->category_settings_model->get_criteria_name($criterion->criteria_id);
-						$avg_scores = $this->scores_model->average_criterion_score($criterion->criteria_id);
-						$project->criterion[$key]['avg_score'] = $avg_scores[0]['average_score'];
-						$project->total_averaged_score += floatval($project->criterion[$key]['avg_score']);
+					$project->subcategories=$this->category_settings_model->get_subcategories($category->cat_id);
+					foreach($project->subcategories as $scat_key=>$subcat){
+						$criteria_count = 0;
+						$subcat_score=0;
+						$subcat->criteria = $this->category_settings_model->get_criteria($subcat->subcat_id);
+						foreach($subcat->criteria as $crit_key=>$criterion){
+							$criterion->avg_points = $this->scores_model->average_criterion_score($criterion->criteria_id,$project->project_id);
+							$project->total_averaged_score+=$criterion->avg_points;
+						}
 					}
+					/*$data['project']=$project;
+					echo'<pre>';
+					print_r($data['project']);
+					echo'<pre>';*/
 				}
-
 				$this->load->view('view_scores_view',$data);
 			}
 			else{
@@ -138,7 +148,7 @@ class Scores extends CI_Controller {
 					}
 				}
 				$redirect=$this->session->set_flashdata('success','Scores Have Been Updated');
-				redirect(base_url()."scores/input/".$judge_id.'/'.$participant_ln.'/'.$participant_fn,$this->input->post('redirect'));
+				redirect(base_url()."scores/input",$this->input->post('redirect'));
 			}
 			else{
 				//errors in form
@@ -148,6 +158,52 @@ class Scores extends CI_Controller {
 		}
 		else{
 			//lacking permissions
+			redirect('gerss/home');
+		}
+	}
+
+	public function scorecard(){
+		if ($this->session->userdata('is_logged_in')){
+			$data['title']="WSU-GERSS :: Scorecard";
+
+			$participant_id = $this->uri->segment(3);
+
+			$this->load->model('scores_model');
+
+			$this->load->model('users_model');
+			$this->load->model('judge_assignment_model');
+			$this->load->model('category_settings_model');
+			
+			$project_id = $this->users_model->get_project_id($participant_id);
+			$project=$this->users_model->get_selected_project_info($project_id);
+
+			$category = $this->category_settings_model->get_category($project->category);
+			$project->category_pts_possible = $this->category_settings_model->get_category_pts_possible($category->cat_id);
+
+			$data['subcategories']=$this->category_settings_model->get_subcategories($category->cat_id);
+			$scats=array();
+			foreach($data['subcategories'] as $scat_key=>$subcat){
+				$criteria_count = 0;
+				$subcat_score=0;
+				$scats[$scat_key]['name']=$subcat->subcat_name;
+				$criteria = $this->category_settings_model->get_criteria($subcat->subcat_id);
+				$scats[$scat_key]['crits']=array();
+				foreach($criteria as $crit_key=>$criterion){
+					$scats[$scat_key]['crits'][$crit_key]['desc']=$criterion->criteria_description;
+					$scats[$scat_key]['crits'][$crit_key]['points'] = $criterion->criteria_points;
+					$criteria_count+=1;
+					$subcat_score+=$criterion->criteria_points;
+				}
+				$scats[$scat_key]['criteria_count']=$criteria_count;
+				$scats[$scat_key]['subcat_score']=$subcat_score;
+			}
+			$data['project']=$project;
+			$data['category']=$category;
+			$data['subcats']=$scats;
+			$this->load->view('scorecard_view',$data);
+		}
+		else
+		{
 			redirect('gerss/home');
 		}
 	}

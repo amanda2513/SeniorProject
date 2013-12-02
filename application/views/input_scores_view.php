@@ -243,10 +243,9 @@
   			}
   			//If I successfully added a user, show success div
   			if($this->session->flashdata('success')){
-  				echo 
-  				'<script type="text/javascript">'.
-  					'confirmModal();'.
-  				'</script>';
+  				echo '<div class="alert alert-success text-center" id="wsu_success">';
+				echo $this->session->flashdata('success');
+				echo '</div>';
   			}
   			//If there are no errors, show "Fill out form" message
   			else{

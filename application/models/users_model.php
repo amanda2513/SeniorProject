@@ -20,10 +20,14 @@ class Users_model extends CI_Model {
 		$query = $this->db->get('users');
 
 		if($query->num_rows==1){
-			return true;
-		} else {
-			return false;
+			$user_record=$query->row();
+			if($user_record->status=='Enabled')
+				return true;
+			else
+				return false;
 		}
+		else
+			return false;
 	}
 
 	public function add_temp_user($key){
@@ -283,6 +287,17 @@ class Users_model extends CI_Model {
 		$sql = $this->db->get();
 
 		return $sql->result();
+	}
+
+	public function get_selected_project_info($project_id){
+		$this->db->where('projects.project_id',$project_id);
+		$this->db->from('projects');
+		$this->db->join('participants', 'participants.project_id = projects.project_id');
+		$this->db->join('users', 'participants.participant_id = users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->row();
 	}
 
 	public function filter_participant_info($search){

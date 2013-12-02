@@ -14,7 +14,7 @@
 	<script type="text/javascript">	
 		$(document).ready(function() {		
 			$("#assign_judges").tablesorter( {sortList: [[0,0]]});
-			$("[rel=tooltip]").tooltip({ placement:'right'});
+			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});	
 	</script>
 	<script type="text/javascript">
@@ -135,7 +135,7 @@
 		</form><!--end add-user-type form-->
 		
 		<hr>
-		<p><strong>Edit User Info</strong></p>
+		<p><strong>Edit <?php echo ucfirst($selected_type);?> Info</strong></p>
 		<!--
 			Actual Add user Submission Form
 			Name, Department, Email, Password
@@ -269,8 +269,8 @@
 
 			echo '
 			<div class="row-fluid">
-				<p class="span6 text-left"><strong>Manually Assign Judges</strong></p>
-				<p class="span6 text-right">
+				<p class="span4 text-left"><strong>Manually Assign Judges</strong></p>
+				<p class="span8 text-right">
 					<small class="muted">Current Settings:  Max Judges Per Project='.$judges_per_project.'  &amp;  Max Projects Per Judge='.$projects_per_judge.' </small> <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Manual assignment allows you to disregard these settings. Please use your best judgement."></i>
 				</p>
 			</div>
@@ -353,8 +353,8 @@
 
 			echo '
 			<div class="row-fluid">
-				<p class="span6 text-left"><strong>Manually Assign Judges</strong></p>
-				<p class="span6 text-right">
+				<p class="span4 text-left"><strong>Manually Assign Judge</strong></p>
+				<p class="span8 text-right">
 					<small class="muted">Current Settings:  Max Judges Per Project='.$judges_per_project.'  &amp;  Max Projects Per Judge='.$projects_per_judge.' </small> <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Manual assignment allows you to disregard these settings. Please use your best judgement."></i>
 				</p>
 			</div>

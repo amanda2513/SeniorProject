@@ -15,6 +15,10 @@
 
 			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});	
+
+		function printScorecard(id){
+			window.open('<?php echo base_url()."scores/scorecard/";?>'+id, 'Scorecard', 'width=700, height=800');
+		}
 	</script>
 </head>
 <body>
@@ -128,7 +132,7 @@
 							</td>
 							<td>
 								<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>
-								<button class="btn wsu_btn wsu_tooltip" href="#" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
+								<button class="btn wsu_btn wsu_tooltip" onClick="printScorecard('.$row->id.')" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
 							</td>
 							
 						</tr>';
@@ -143,4 +147,5 @@
 	</div>
 
 </body>
+<!--value="-->
 </html>
