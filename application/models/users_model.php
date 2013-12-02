@@ -311,6 +311,17 @@ class Users_model extends CI_Model {
 		return $sql->result();
 	}
 
+	public function filter_projects_by_category($category_name){
+		$this->db->where('category',$category_name);
+		$this->db->from('projects');
+		$this->db->join('participants', 'participants.project_id = projects.project_id');
+		$this->db->join('users', 'participants.participant_id = users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
 	public function get_judge_info(){
 		$this->db->where('usertype','judge');
 		$sql = $this->db->get('users');

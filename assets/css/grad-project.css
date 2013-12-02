@@ -258,15 +258,15 @@ hr{
 
 /*--------TABLES----------------*/
 table {
-	margin-top: 0px;
+	margin-top: 0px !important;
 }
 
-table.tablesorter thead tr .header {
-	cursor: pointer;
+.tablesorter .header, .tablesorter .tablesorter-header {
+	cursor: pointer !important;
 }
 
-table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
-background-color: #e6e6e6;
+.tablesorter .tablesorter-headerAsc, .tablesorter .tablesorter-headerDesc{
+background-color: #e6e6e6 !important;
 }
 
 #group_by_text {
@@ -274,6 +274,10 @@ background-color: #e6e6e6;
 	padding-bottom: 1%;
 	font-size: .85em;
 	line-height:50%;
+}
+
+.filter{
+	padding-right:2%;
 }
 /*----------------REGISTRATION / FORMS---------------------*/
 @media (min-width:768px) and (max-width:1199px){

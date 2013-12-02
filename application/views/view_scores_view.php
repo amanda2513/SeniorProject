@@ -5,18 +5,34 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap-responsive.css');?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
-	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.mod.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.pager.js');?>"></script>
+	<script type="text/javascript" src="<?php echo (JS.'jquery.metadata.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<script type="text/javascript">	
 		$(document).ready(function() {		
-			$("#scores_table").tablesorter({sortList: [[2,0],[3,1],[0,0]]});
+			$("#scores_table").tablesorter({
+				sortForce: [[5,1]],
+				sortList: [[5,1]]
+			});
+
+			var row_count= ($('#scores_table tr').length-1)/2;
+
+			$('#top_n_filter').attr('max',row_count);
+
+			initializePager(row_count);
 
 			$("[rel=tooltip]").tooltip({ placement:'top'});
-		});	
+		});
+
+		function initializePager(row_count){
+			$("#scores_table").tablesorterPager({
+				container: $("#pager"), size: row_count})
+		}	
 	</script>
 </head>
 <body>
@@ -53,32 +69,51 @@
 	</div>
 
 	<div class="hero-unit wsu_hero_unit">
-
-		<form class="form-search" method="post" action='<?php echo base_url()."scores/view/";?>'>
-			<div class="input-append">
-				<input type="text" name="search_participants" id="search_participants" class="input-large search-query" placeholder="Participants's Last Name">
-				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
+		<div class="row-fluid">
+			<div class="span6">
+				<form class="form-search" method="post" action='<?php echo base_url()."scores/view/";?>'>
+					<div class="input-append">
+						<input type="text" name="search_participants" id="search_participants" class="input-large search-query" placeholder="Participants's Last Name">
+						<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
+					</div>
+					<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."scores/view";?>">Clear</a>
+				</form>
 			</div>
-			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."scores/view";?>">Clear</a>
-		</form>
-		
+			<div class="span6">
+				<div class="row-fluid">
+					<div class="span4">
+						<form class="form-horizontal" id="filter_score_results" method="post" action="<?php echo base_url().'scores/view/filter';?>">
+							<select name="category" id="category_filter" onChange="this.form.submit()">
+							<?php
+								echo' <option value="0">Filter by Category</option>';
+								foreach($categories as $category){
+									if($selected_category&&$selected_category==$category->category){
+										$selected = 'selected="selected"';
+									}
+									else{
+										$selected = '';
+									}
+									echo '<option value="'.$category->category.'" '.$selected.'>'. $category->category.'</option>';
+								}
+							?>
+							</select>
+						</form>
+					</div>
+					<div class="span4 offset1">
+						<div id="pager">
+							Top <input type="number" min="1" class="pagesize input-mini text-center" placeholder="Top N" name="top_n" id="top_n_filter"> Results
+						</div>
+					</div>
+					<div class="span3">
+						<a class="btn wsu_btn" id="clear_filter" href="<?php echo base_url()."scores/view";?>">Show All</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<ul class="nav nav-tabs">
 			<li><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>
 			<li class="active"><a href="<?php echo base_url()."scores/view"?>">View Scores</a></li>
-			<li class="pull-right">
-				<form class="form-horizontal" id="filter_score_results" method="post" action="<?php base_url().'scores/view/filter/';?>">
-					<select name="category" id="category_filter">
-					<?php
-						echo' <option value="all">Category</option>';
-						foreach($categories as $category){
-							echo '<option value="'.$category->category.'">'. $category->category.'</option>';
-						}
-					?>
-					</select>
-					<input type="number" class="input-mini" name="top_n" id="top_n_filter" placeholder="Top N">
-					<input type="submit" value="Filter Results" class="btn wsu_btn" id="filter_score_results">
-				</form>
-			</li>
 		</ul>
 
 		
@@ -97,12 +132,16 @@
 						Category
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
-					<th>
+					<th class="{sorter:'digit'}">
 						Scores Entered
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
-					<th>
+					<th class="{sorter:'digit'}">
 						Total Score
+						<i class="pull-right icon-resize-vertical"></i>
+					</th>
+					<th class="{sorter: 'digit'}">
+						Percent
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>Actions</th>
@@ -124,11 +163,15 @@
 									if($project->judge_entry_count!=$project->judge_count){
 										echo ' <i class="icon-exclamation-sign pull-right wsu_tooltip" rel="tooltip" title="Missing Judge Scores"></i>';
 									}
-									echo $project->judge_entry_count.' / '.$project->judge_count.'
+									echo $project->judge_entry_count.'/'.$project->judge_count.'
 								</td>
 								<td>
 									<div>'.
-										$project->total_averaged_score.' / '.$project->category_pts_possible.'
+										$project->total_averaged_score. ' / ' . $project->category_pts_possible.'
+									</div>
+								</td>
+								<td>'.
+										round($project->total_averaged_score/$project->category_pts_possible*100,2) .'%
 									</div>
 								</td>
 								<td>
@@ -136,8 +179,8 @@
 								</td>
 
 							</tr>
-							<tr class="expand-child">
-								<td colspan="6" class="hiddenRow">
+							<tr class="tablesorter-childRow">
+								<td colspan="7" class="hiddenRow">
 									<div class="accordian-body collapse score_breakdown" id="scores_'.$project->lastname.'">
 										<div class="row-fluid hidden-phone">
 											<div class="span3 text-center">
@@ -181,14 +224,9 @@
 											</div>
 											<hr>';
 										}
-										
-										/*echo '<pre>';
-										print_r($project);
-										echo '<pre>';*/
 								echo'</div>
 								</td>
-							<tr>';
-
+							</tr>';
 						}
 					}else{
 						echo "<td>No results found.</td>";
@@ -198,6 +236,7 @@
 
 			</tbody>
 		</table>
+
 
 
 	</div><!--close hero-unit-->

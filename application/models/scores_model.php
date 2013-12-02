@@ -161,7 +161,7 @@ class Scores_model extends CI_Model {
 		$this->db->where(array('criteria_id'=>$criteria_id,'project_id'=>$project_id));
 		$sql = $this->db->get('criteria_scores');
 
-		return $sql -> row('avg_score');
+		return $sql->row('avg_score');
 	}
 
 }

@@ -56,6 +56,18 @@ class Scores extends CI_Controller {
 			if($scoring_open)
 			{
 				$search_participant = $this->input->post('search_participants');
+				$filtered = $this->uri->segment(3);
+
+				if($filtered){
+					if($this->input->post('category')){
+						$category = $this->input->post('category');
+						$data['selected_category']=$category;
+					}
+					
+					if($this->input->post('top_n')){
+						$data['top_n']=$this->input->post('top_n');
+					}
+				}
 
 				$this->load->model('users_model');
 				$this->load->model('judge_assignment_model');
@@ -65,6 +77,9 @@ class Scores extends CI_Controller {
 				
 				if($search_participant){
 					$data['projects']=$this->users_model->filter_participant_info($search_participant);
+				}
+				elseif(isset($category)){
+					$data['projects']=$this->users_model->filter_projects_by_category($category);
 				}
 				else{
 					$data['projects']=$this->users_model->get_participant_info();
@@ -87,10 +102,6 @@ class Scores extends CI_Controller {
 							$project->total_averaged_score+=$criterion->avg_points;
 						}
 					}
-					/*$data['project']=$project;
-					echo'<pre>';
-					print_r($data['project']);
-					echo'<pre>';*/
 				}
 				$this->load->view('view_scores_view',$data);
 			}
