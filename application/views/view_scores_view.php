@@ -17,22 +17,23 @@
 		$(document).ready(function() {		
 			$("#scores_table").tablesorter({
 				sortForce: [[5,1]],
-				sortList: [[5,1]]
+				sortList: [[5,1]],
+				cssChildRow: "tablesorter-childRow"
 			});
 
 			var row_count= ($('#scores_table tr').length-1)/2;
 
 			$('#top_n_filter').attr('max',row_count);
 
-			initializePager(row_count);
+			$("#scores_table")
+		    .bind("pagerChange pagerComplete pagerInitialized pageMoved",function(e, table) {
+		      	var visible_rows= document.getElementById('top_n_filter').value;
+				$("tr").eq(visible_rows*2).removeAttr("style");
+		    }).tablesorterPager({
+				container: $("#pager"), size: row_count});;
 
 			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});
-
-		function initializePager(row_count){
-			$("#scores_table").tablesorterPager({
-				container: $("#pager"), size: row_count})
-		}	
 	</script>
 </head>
 <body>
