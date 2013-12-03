@@ -62,13 +62,14 @@ hr{
 
 .hiddenRow{
 	padding:0 !important;
-}
-
-.score_breakdown{
 	background-color:#CEDDDB;
 }
 
-.score_breakdown_headers{
+.score_breakdown{
+	
+}
+
+.hidden_row_headers{
 	padding:1%;
 }
 

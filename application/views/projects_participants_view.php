@@ -11,7 +11,10 @@
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {		
-			$("#project_participants_table").tablesorter( {sortList: [[0,0]]});
+			$("#project_participants_table").tablesorter( {
+				sortList: [[0,0]],
+				cssChildRow: "tablesorter-childRow"
+			});
 
 			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});	
@@ -71,7 +74,7 @@
 			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("participant");?>" id="btn_add_participant"><i class="icon-plus"></i> Add Participant</a>
 		</ul>
 
-		<table id="project_participants_table" class="table wsu_table table-bordered table-striped tablesorter">
+		<table id="project_participants_table" class="table wsu_table table-bordered table-striped tablesorter" style="border-collapse:collapse;">
 			<thead>
 				<tr>
 					<th>
@@ -84,14 +87,6 @@
 					</th>
 					<th>
 						Project Category
-						<i class="pull-right icon-resize-vertical"></i>
-					</th>
-					<th>
-						Project Title
-						<i class="pull-right icon-resize-vertical"></i>
-					</th>
-					<th>
-						Project Description
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
@@ -114,8 +109,6 @@
 							echo '<td>' . $row->lastname . '</td>';
 							echo '<td>' . $row->firstname . '</td>';
 							echo '<td>' . $row->category . '</td>';
-							echo '<td>' . $row->title . '</td>';
-							echo '<td>' . $row->description . '</td>';
 
 							$judge_count=0;
 							foreach($judge_assignment as $judge){
@@ -131,10 +124,35 @@
 							echo'
 							</td>
 							<td>
+								<button data-toggle="collapse" data-target="#project_'.$row->project_id.'_info" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Project Info"><i class="icon-eye-open"></i></button>
 								<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>
 								<button class="btn wsu_btn wsu_tooltip" onClick="printScorecard('.$row->id.')" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
 							</td>
 							
+						</tr>
+						<tr class="tablesorter-childRow">
+							<td colspan="5" class="hiddenRow">'.'
+								<div class="accordian-body collapse" id="project_'.$row->project_id.'_info">
+									<div class="row-fluid hidden_row_headers">
+										<div class="span3 offset1 text-center">
+											<em>Project Title</em>
+										</div>
+										<div class="span6 offset1 text-center">
+											<em>Project Description</em>
+										</div>
+									</div>
+									<hr>
+									<div class="row-fluid">
+										<div class="span3 offset1 text-center">'.
+											$row->title .'
+										</div>
+										<div class="span6 offset1 text-center">'.
+											$row->description .'
+										</div>
+									</div>
+									<hr>
+								</div>
+							</td>
 						</tr>';
 						}
 					}

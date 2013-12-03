@@ -175,14 +175,14 @@
 									</div>
 								</td>
 								<td>
-									<button data-toggle="collapse" data-target="#scores_'.$project->lastname.'" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Score Breakdown"><i class="icon-eye-open"></i></a>
+									<button data-toggle="collapse" data-target="#scores_'.$project->lastname.'" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Score Breakdown"><i class="icon-eye-open"></i></button>
 								</td>
 
 							</tr>
 							<tr class="tablesorter-childRow">
 								<td colspan="7" class="hiddenRow">
 									<div class="accordian-body collapse score_breakdown" id="scores_'.$project->lastname.'">
-										<div class="row-fluid hidden-phone score_breakdown_headers">
+										<div class="row-fluid hidden-phone hidden_row_headers">
 											<div class="span3 text-center">
 												<em>Subcategory</em>
 											</div>
