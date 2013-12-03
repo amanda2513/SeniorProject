@@ -142,6 +142,16 @@
 					</div>
 
 					<hr>
+					<small class="muted text-center">Site - Home Page</small>
+					<!--message that will display on the home screen-->
+	    			<div class="control-group">
+						<label class="control-label" for="welcome">Welcome Message: </label>
+						<div class="controls" name="welcome">
+							<textarea size="16" rows="5" type="text" id="home_msg" name="home_msg"><?php echo set_value('exhib_location',$settings['homepage_message']);?></textarea>
+						</div>
+					</div>
+
+					<hr>
 					<small class="muted text-center">Exhibition Date, Time &amp; Location</small>
 					<!--bootstrap-datepicker for exhibition date-->
 	    			<div class="control-group">

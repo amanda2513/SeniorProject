@@ -16,7 +16,14 @@ class Scores extends CI_Controller {
 				$this->load->model('users_model');
 				$this->load->model('judge_assignment_model');
 				$this->load->model('category_settings_model');
-				$data['judges']=$this->users_model->get_all_user_type('users','judge');
+				$judges=$this->users_model->get_all_user_type('users','judge');
+
+				foreach($judges as $judge){
+					$judge->scores_entered=$this->scores_model->get_score_entry_count($judge->id);
+					$judge->projects_assigned = $this->judge_assignment_model->count_assigned_projects($judge->id);
+				}
+
+				$data['judges']=$judges;
 				$data['assignments']=$this->scores_model->get_assigned_projects();
 
 				if($this->uri->segment(3)){

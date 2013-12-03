@@ -115,8 +115,7 @@
 				';
 			}
 			?>
-			<p>The Graduate School is pleased to invite the campus community to the third annual Graduate Exhibition to celebrate the achievements of Wayne State University graduate students across our campus. The event will include an exhibition of graduate student research and scholarship from all disciplines, and will feature 100 posters and art exhibits and six oral presentations.</p>
-			<br>
+			<p><?php echo $settings['homepage_message'];?></p>
 			<p class="text-center">We hope many will join us for this wonderful event!</p></br>
 			<p class="text-center">
 				Event Information:

@@ -182,7 +182,7 @@
 							<tr class="tablesorter-childRow">
 								<td colspan="7" class="hiddenRow">
 									<div class="accordian-body collapse score_breakdown" id="scores_'.$project->lastname.'">
-										<div class="row-fluid hidden-phone">
+										<div class="row-fluid hidden-phone score_breakdown_headers">
 											<div class="span3 text-center">
 												<em>Subcategory</em>
 											</div>
@@ -209,7 +209,7 @@
 														<div class="span5 offset2">'.
 															$criterion->criteria_description . ': '.'
 														</div>
-														<div class="span5">'.
+														<div class="span2 text-center">'.
 															 round($criterion->avg_points,2) . ' / '. $criterion->criteria_points
 														 .'
 														 </div>
@@ -218,7 +218,7 @@
 												$subcat_pts_possible+=$criterion->criteria_points;
 											}
 										  echo '</div>
-											  	<div class="span2 offset1">'.
+											  	<div class="span3 text-center">'.
 											  		$subcat_pts_earned. ' / ' . $subcat_pts_possible .'
 											  	</div>
 											</div>

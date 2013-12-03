@@ -147,6 +147,15 @@ class Scores_model extends CI_Model {
 		return $sql->num_rows();
 	}
 
+	public function get_score_entry_count($judge_id){
+		$this->db->select('DISTINCT(project_id)');
+		$this->db->where('judge_id',$judge_id);
+		$this->db->from('criteria_scores');
+		$sql = $this->db->get();
+
+		return $sql->num_rows();
+	}
+
 	public function get_distinct_criteria_ids($project_id){
 		$this->db->select('DISTINCT(criteria_id)');
 		$this->db->where('project_id',$project_id);

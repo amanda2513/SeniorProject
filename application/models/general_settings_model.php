@@ -3,7 +3,15 @@
 class General_settings_model extends CI_Model {
 	
 	public function update_settings(){
+
+		$settings=$this->get_settings();
+
+		if($settings['restrict_access']!=$this->input->post('restrict_access')){
+			$this->restrict_access($this->input->post('restrict_access'));
+		}
+
 		$data = array(
+				'homepage_message'=>$this->input->post('home_msg'),
 				'exhib_date'=>date('Y-m-d',strtotime($this->input->post('exhib_date'))),
 				'exhib_location'=>$this->input->post('exhib_location'),
 				'exhib_start' =>$this->input->post('exhib_start'),
@@ -27,6 +35,7 @@ class General_settings_model extends CI_Model {
 
 		//insert default data into settings db
 		$data = array(
+				'homepage_msg'=>NULL,
 				'exhib_date'=>'0000-00-00',
 				'exhib_location'=>NULL,
 				'exhib_start' =>NULL,
@@ -77,5 +86,24 @@ class General_settings_model extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	public function restrict_access($status){
+		$this->load->model('users_model');
+		$users=$this->users_model->get_all_users('users');
+		if($status==0){
+			$status='Enabled';
+		}
+		else{
+			$status='Disabled';
+		}
+
+		foreach($users as $user){
+			if($user->usertype == 'participant' || $user->usertype == 'judge'){
+				if($user->status != $status){
+					$this->users_model->change_user_status($user->id,$status);
+				}
+			}
+		}
 	}
 }

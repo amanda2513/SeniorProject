@@ -277,7 +277,7 @@
 											else{
 												$selected = "";
 											}
-											echo '<option value="'.$judge->id.'"'.$selected.'>'.$judge->lastname.', '.$judge->firstname.'</option>';
+											echo '<option value="'.$judge->id.'"'.$selected.'>'.$judge->lastname.', '.$judge->firstname.' - '.$judge->scores_entered.'/'.$judge->projects_assigned.' </option>';
 										}
 									?>
 								</select>

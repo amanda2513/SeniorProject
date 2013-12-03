@@ -68,6 +68,10 @@ hr{
 	background-color:#CEDDDB;
 }
 
+.score_breakdown_headers{
+	padding:1%;
+}
+
 
 /**------HEADER------**/
 #wsu_header{
@@ -227,7 +231,7 @@ hr{
 .content{
 	margin-left:10%;
 	margin-right:10%;
-	margin-top:5%;
+	margin-top:2%;
 	text-align:justify;
 }
 
