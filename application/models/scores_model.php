@@ -39,10 +39,10 @@ class Scores_model extends CI_Model {
 			}
 		}
 
-		if($all_projects_assigned && $exhibition_started){
-			return true;
-		}
-		return false;
+		$requirements['all_projects_assigned'] = $all_projects_assigned;
+		$requirements['exhibition_started'] = $exhibition_started;
+
+		return $requirements;
 	}
 
 	public function get_assigned_projects(){

@@ -5,14 +5,13 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap-responsive.css');?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
 	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.pager.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'jquery.metadata.js');?>"></script>
 	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
-
-	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'grad-project.css');?>">
 	<script type="text/javascript">	
 		$(document).ready(function() {		
 			$("#scores_table").tablesorter({

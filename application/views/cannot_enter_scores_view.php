@@ -12,17 +12,8 @@
 	<script type="text/javascript" src="<?php echo (JS.'bootbox.min.js');?>"></script>
 
 	<script type="text/javascript">
-	$(window).load(function() {
-		$("#select_judge").change(function() {
-			if($(this).data('options') == undefined){
-				$(this).data('options',$('#select_participant option').clone());
-			}
-			var id = $(this).val();
-			var options = $(this).data('options').filter('[value=' + id + ']');
-			$('#select_participant').html(options);
-
-			document.getElementById('select_participant').disabled = false;
-		});
+	$(document).ready(function() {
+		$("[rel=tooltip]").tooltip({ placement:'right'});
 	});
 	</script>
 </head>
@@ -67,51 +58,22 @@
 		<div class="text-center row-fluid">
 			<div class="row-fluid">
 				<em><strong>Sorry, scores cannot be entered at this time.</strong></em>
-			</div>
+			
 		<?php
-			if($user_type=='seu'){
-				echo
-				'<div class="row-fluid">
-					<div class="span12 text-center">
-						-----
-					</div>
-				</div>
-				<div class="row-fluid">
-					<div class="span12 text-center">
-						Check back on the day of the exhibition and when all projects have been assigned judges.
-					</div>
-				</div>
-				<div class="row-fluid
-					<div class="span12 text-center">
-						-----<br>
-						Contact an admin if you believe this is an error.
-					</div>
-				</div>';
-			}
-			if($user_type=='admin'){
-				echo
-				'<div class="row-fluid text-center">
-					-----
-				</div>
-				<div class="row-fluid">
-					<div class="span6 offset3">
-						<ul class="text-left">
-							<li>
-								The page will be automatically enabled on the day of the exhibition.
-								<br>
-								<em>Ensure the date of the event is correct on the System Settings page.</em>
-							</li>
-							<br>
-							<li>
-								All projects must have at least one judge assigned to it at the start of the exhibition.
-								<br>
-								<em>Automatically assign judges on the System Settings page or edit participant info on the Manage Users page to manually assign judges.</em>
-							</li>
-						</ul>
-					</div>
-				</div>';
+			if($user_type=='seu'||$user_type=='admin'){
+				$message="";
+				if($scoring_requirements['all_projects_assigned']!=1){
+					$message=$message." Not all projects have been assigned. ";
+				}
+				if($scoring_requirements['exhibition_started']!=1){
+					$message=$message." The exhibition has not started.";
+				}
+				echo'
+				<i class="icon icon-exclamation-sign wsu_tooltip" rel="tooltip" title="'.$message.'"></i>'
+				;
 			}
 		?>
+			</div>
 		</div>
 	</div><!--close hero-unit-->
 </body>
