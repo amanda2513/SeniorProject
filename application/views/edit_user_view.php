@@ -92,19 +92,19 @@
 		 	elseif($selected_type == "judge"){
 		 		$dropdown_control = "";
 		 		$options[0]='<option value="judge" selected="selected">Judge</option>';
-		 		$options[1]='<option value="seu">Score Entry User</option>';
+		 		$options[1]='<option value="seu">Scorer</option>';
 		 		$options[2]='<option value="admin">Admin</option>';
 		 	}
 		 	elseif($selected_type == "seu"){
 		 		$dropdown_control = "";
 		 		$options[0]='<option value="judge">Judge</option>';
-		 		$options[1]='<option value="seu" selected="selected">Score Entry User</option>';
+		 		$options[1]='<option value="seu" selected="selected">Scorer</option>';
 		 		$options[2]='<option value="admin">Admin</option>';
 		 	}
 		 	else{
 		 		$dropdown_control = "";
 		 		$options[0]='<option value="judge">Judge</option>';
-		 		$options[1]='<option value="seu">Score Entry User</option>';
+		 		$options[1]='<option value="seu">Scorer</option>';
 		 		$options[2]='<option value="admin" selected="selected">Admin</option>';
 		 	}
 		?>
@@ -135,6 +135,7 @@
 		</form><!--end add-user-type form-->
 		
 		<hr>
+		<?php if($selected_type=='seu'){$selected_type="Scorer";}?>
 		<p><strong>Edit <?php echo ucfirst($selected_type);?> Info</strong></p>
 		<!--
 			Actual Add user Submission Form

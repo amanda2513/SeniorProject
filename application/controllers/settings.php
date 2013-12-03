@@ -11,6 +11,7 @@ class Settings extends CI_Controller {
 
 			$data['exhib_date']=$this->general_settings_model->format_date($data['settings']['exhib_date']);
 			$data['reg_cutoff_date']=$this->general_settings_model->format_date($data['settings']['reg_cutoff_date']);
+			$data['reg_start_date']=$this->general_settings_model->format_date($data['settings']['reg_start_date']);
 
 			$data['scoring_started']=$this->general_settings_model->scores_are_entered();
 					
@@ -24,11 +25,12 @@ class Settings extends CI_Controller {
 	public function general_settings_form(){
 		$this->load->library('form_validation');
 
-
+		$this->form_validation->set_rules('home_msg','Welcome Message','required|trim|xss_clean');
 		$this->form_validation->set_rules('exhib_date','Exhibition Date','required|trim');
 		$this->form_validation->set_rules('exhib_start','Exhibition Start Time','required|trim');
 		$this->form_validation->set_rules('exhib_end','Exhibition End Time','required|trim');
 		$this->form_validation->set_rules('exhib_location','Exhibition Location','required|trim|xss_clean');
+		$this->form_validation->set_rules('reg_start_date','Registration Start Date','required|trim');
 		$this->form_validation->set_rules('reg_cutoff_date','Registration Cutoff Date','required|trim');
 		$this->form_validation->set_rules('judges_per_project','Judges Per Project','required|numeric|trim');
 		$this->form_validation->set_rules('projects_per_judge','Projects Per Judge','required|numeric|trim|xss_clean');

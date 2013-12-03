@@ -99,7 +99,7 @@
 		<ul class="nav nav-tabs">
 			<li><a href='<?php echo base_url()."manage_users/participant"?>'>Participants</a></li>
 			<li class="active"><a href='<?php echo base_url()."manage_users/judge"?>'>Judges</a></li>
-			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Score Entry Users</a></li>
+			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Scorers</a></li>
 			<li><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
 			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("judge");?>" id="btn_add_judge"><i class="icon-plus"></i> Add Judge</a>
 		</ul>
@@ -139,17 +139,17 @@
 									echo'
 									<td>' . $row->status .'</td>
 									<td>
-										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Disable User Access" href="'.base_url()."manage_users/change_user_status/judge/Disabled/".$row->id.'"><i class="icon-lock"></i></a>';
+										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Disable Judge Access" href="'.base_url()."manage_users/change_user_status/judge/Disabled/".$row->id.'"><i class="icon-lock"></i></a>';
 								}
 								else{
 									echo'
 									<td>' . $row->status .' <i class="icon-lock"></i></td>
 									<td>
-										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Enable User Access" href="'.base_url()."manage_users/change_user_status/judge/Enabled/".$row->id.'"><i class="icon-lock"></i></a>';
+										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Enable Judge Access" href="'.base_url()."manage_users/change_user_status/judge/Enabled/".$row->id.'"><i class="icon-lock"></i></a>';
 								}
 								echo'
-									<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Edit User Info" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'"><i class="icon-pencil"></i></a>
-									<button class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Delete User" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
+									<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Edit Judge Info" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'"><i class="icon-pencil"></i></a>
+									<button class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Delete Judge" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
 								</td>
 							</tr>';
 						}

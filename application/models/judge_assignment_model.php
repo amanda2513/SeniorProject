@@ -78,6 +78,8 @@ class Judge_assignment_model extends CI_Model {
 		$this->db->where('judge_id',$judge_id);
 		$this->db->from('assigned_judges');
 		$this->db->join('projects','assigned_judges.project_id = projects.project_id');
+		$this->db->join('participants','projects.project_id=participants.project_id');
+		$this->db->join('users','participants.participant_id=users.id');
 
 		$sql = $this->db->get();
 

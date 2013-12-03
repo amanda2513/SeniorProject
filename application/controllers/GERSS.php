@@ -173,6 +173,7 @@ if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
 			$data['judge']=$this->users_model->get_judge_info();
 			foreach($data['judge'] as $judge){
 				$judge->assignment_count=$this->judge_assignment_model->count_assigned_projects($judge->id);
+				$judge->assignments=$this->judge_assignment_model->get_assigned_projects($judge->id);
 			}
 			$data['projects']=$this->judge_assignment_model->get_judge_projects($judge->id);
 			$data['title']="WSU-GERSS :: Projects";

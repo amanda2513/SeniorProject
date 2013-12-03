@@ -200,6 +200,17 @@
 					<hr>
 					<small class="muted text-center">Registration &amp; Judge Assignment</small>
 
+					<!--bootstrap-datepicker for registration start date-->
+					<div class="control-group">
+						<label class="control-label" for="reg_start_date">Registration Start: </label>
+						<div class="controls" name="reg_start_date">
+							<div class="input-append date" id="reg_start_datepicker" data-date="<?php echo $reg_start_date['cal_selected'];?>" data-date-format="m/d/yy">
+								<input size="16" type="text" id="reg_start_date" name="reg_start_date" value="<?php echo set_value('reg_start_date',$reg_start_date['input']);?>"  readonly>
+								<span class="add-on"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+					</div>
+
 					<!--bootstrap-datepicker for registration cutoff date-->
 					<div class="control-group">
 						<label class="control-label" for="reg_cutoff_date">Registration Cut-Off: </label>

@@ -110,8 +110,49 @@
 								</td>
 
 								<td>
+									<button data-toggle="collapse" data-target="#judge_'.$row->id.'_assignments" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Assigned Projects"><i class="icon-eye-open"></i></button>
 									<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>
 									<button class="btn wsu_btn wsu_tooltip" href="#" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
+								</td>
+							</tr>
+							<tr class="tablesorter-childRow">
+								<td colspan="5" class="hiddenRow">'.'
+									<div class="accordian-body collapse" id="judge_'.$row->id.'_assignments">
+										<div class="row-fluid hidden_row_headers">
+											<div class="span3">
+												<em>Participant Name</em>
+											</div>
+											<div class="span2">
+												<em>Project Category</em>
+											</div>
+											<div class="span3">
+												<em>Project Title</em>
+											</div>
+											<div class="span4">
+												<em>Project Description</em>
+											</div>
+										</div>
+										<hr>';
+									foreach($row->assignments as $assigned){
+										echo'
+										<div class="row-fluid">
+											<div class="span3">'.
+												$assigned->lastname.', '.$assigned->firstname.'
+											</div>
+											<div class="span2">'.
+												$assigned->category.'
+											</div>
+											<div class="span3">'.
+												$assigned->title.'
+											</div>
+											<div class="span4">'.
+												$assigned->description.'
+											</div>
+										</div>
+										<hr>';
+										}
+								echo'
+									</div>
 								</td>
 							</tr>';
 						}

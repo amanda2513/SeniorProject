@@ -88,7 +88,7 @@
 
 		<form class="form-search" method="post" action='<?php $id=3; echo base_url()."manage_users/search_users_participant_view/$id"; ?>'>
 			<div class="input-append">
-				<input type="text" name="search_seu" id="search_seu" class="input-medium search-query" placeholder="SEU's Last Name">
+				<input type="text" name="search_seu" id="search_seu" class="input-medium search-query" placeholder="Scorer's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
 			<a class="btn wsu_btn" id="clear" href='<?php echo base_url()."manage_users/seu";?>'>Clear</a>
@@ -99,9 +99,9 @@
 		<ul class="nav nav-tabs">
 			<li><a href='<?php echo base_url()."manage_users/participant"?>'>Participants</a></li>
 			<li><a href='<?php echo base_url()."manage_users/judge"?>'>Judges</a></li>
-			<li class="active"><a href='<?php echo base_url()."manage_users/seu"?>'>Score Entry Users</a></li>
+			<li class="active"><a href='<?php echo base_url()."manage_users/seu"?>'>Scorers</a></li>
 			<li><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
-			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("seu");?>" id="btn_add_seu"><i class="icon-plus"></i> Add SEU</a>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("seu");?>" id="btn_add_seu"><i class="icon-plus"></i> Add Scorer</a>
 		</ul>
 
 		<table id="users_scoreentry_table" class="table wsu_table table-bordered table-striped tablesorter">
@@ -141,17 +141,17 @@
 									echo'
 									<td>' . $row->status .'</td>
 									<td>
-										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Disable User Access" href="'.base_url()."manage_users/change_user_status/seu/Disabled/".$row->id.'"><i class="icon-lock"></i></a>';
+										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Disable Scorer Access" href="'.base_url()."manage_users/change_user_status/seu/Disabled/".$row->id.'"><i class="icon-lock"></i></a>';
 								}
 								else{
 									echo'
 									<td>' . $row->status .' <i class="icon-lock"></i></td>
 									<td>
-										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Enable User Access" href="'.base_url()."manage_users/change_user_status/seu/Enabled/".$row->id.'"><i class="icon-lock"></i></a>';
+										<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Enable Scorer Access" href="'.base_url()."manage_users/change_user_status/seu/Enabled/".$row->id.'"><i class="icon-lock"></i></a>';
 								}
 								echo'
-									<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Edit User Info" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'"><i class="icon-pencil"></i></a>
-									<button class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Delete User" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
+									<a class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Edit Scorer Info" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'"><i class="icon-pencil"></i></a>
+									<button class="btn wsu_btn wsu_tooltip" rel="tooltip" title="Delete Scorer" onClick="confirmModal('."'".$row->id ."'".')"><i class="icon-trash"></i></button>
 								</td>
 							</tr>';
 						}
