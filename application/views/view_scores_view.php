@@ -33,6 +33,10 @@
 
 			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});
+
+		function printScores(){
+			window.open('<?php echo base_url()."scores/view/print";?>', 'Scores', 'width=900, height=700');
+		}
 	</script>
 </head>
 <body>
@@ -70,7 +74,7 @@
 
 	<div class="hero-unit wsu_hero_unit">
 		<div class="row-fluid">
-			<div class="span6">
+			<div class="span4">
 				<form class="form-search" method="post" action='<?php echo base_url()."scores/view/";?>'>
 					<div class="input-append">
 						<input type="text" name="search_participants" id="search_participants" class="input-large search-query" placeholder="Participants's Last Name">
@@ -79,7 +83,7 @@
 					<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."scores/view";?>">Clear</a>
 				</form>
 			</div>
-			<div class="span6">
+			<div class="span7">
 				<div class="row-fluid">
 					<div class="span4">
 						<form class="form-horizontal" id="filter_score_results" method="post" action="<?php echo base_url().'scores/view/filter';?>">
@@ -99,13 +103,13 @@
 							</select>
 						</form>
 					</div>
-					<div class="span4 offset1">
+					<div class="span3 ">
 						<div id="pager">
 							Top <input type="number" min="1" class="pagesize input-mini text-center" placeholder="Top N" name="top_n" id="top_n_filter"> Results
 						</div>
 					</div>
-					<div class="span3">
-						<a class="btn wsu_btn" id="clear_filter" href="<?php echo base_url()."scores/view";?>">Show All</a>
+					<div class="span4">
+						<a class="btn wsu_btn" id="clear_filter" href="<?php echo base_url()."scores/view";?>">Clear Filters</a>
 					</div>
 				</div>
 			</div>
@@ -114,6 +118,7 @@
 		<ul class="nav nav-tabs">
 			<li><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>
 			<li class="active"><a href="<?php echo base_url()."scores/view"?>">View Scores</a></li>
+			<li class="pull-right"><button class="btn wsu_btn" onclick="printScores()"><i class="icon-print"></i> Print Scores</button>
 		</ul>
 
 		

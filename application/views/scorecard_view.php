@@ -70,8 +70,8 @@
 						<th>Criteria</th>
 						<th>Criteria Scores</th>
 						<th>Subtotals</th>
-					<tr>
-				<thead>
+					</tr>
+				</thead>
 				<tbody>';
 				for($i=0;$i<count($subcats);$i++){
 

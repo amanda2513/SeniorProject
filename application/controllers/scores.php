@@ -64,16 +64,14 @@ class Scores extends CI_Controller {
 			if($scoring_open)
 			{
 				$search_participant = $this->input->post('search_participants');
-				$filtered = $this->uri->segment(3);
+				if($this->uri->segment(3)=='filter'){
+					$filtered = $this->uri->segment(3);
+				}
 
-				if($filtered){
+				if(isset($filtered)){
 					if($this->input->post('category')){
 						$category = $this->input->post('category');
 						$data['selected_category']=$category;
-					}
-					
-					if($this->input->post('top_n')){
-						$data['top_n']=$this->input->post('top_n');
 					}
 				}
 
@@ -111,7 +109,12 @@ class Scores extends CI_Controller {
 						}
 					}
 				}
-				$this->load->view('view_scores_view',$data);
+				if($this->uri->segment(3)=='print'){
+					$this->load->view('print_scores_view',$data);
+				}
+				else{
+					$this->load->view('view_scores_view',$data);
+				}
 			}
 			else{
 				$this->load->view('cannot_enter_scores_view',$data);
@@ -225,6 +228,5 @@ class Scores extends CI_Controller {
 		{
 			redirect('gerss/home');
 		}
-	}
-	
+	}	
 }
