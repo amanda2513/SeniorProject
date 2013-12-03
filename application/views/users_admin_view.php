@@ -93,8 +93,8 @@
 			<li><a href='<?php echo base_url()."manage_users/judge"?>'>Judges</a></li>
 			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Scorers</a></li>
 			<li class="active"><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
-			
-			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("admin");?>" id="btn_add_admin"><i class="icon-plus"></i> Add Admin</a>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("admin");?>" id="btn_add_admin"><i class="icon-plus"></i> Add Admin</a>&nbsp;&nbsp;
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/enable_all/admin";?>" id="enable_all_admin"><i class="icon-lock"></i> Enable All</a>
 		</ul>
 
 		<table id="users_admin_table" class="table wsu_table table-bordered table-striped tablesorter">

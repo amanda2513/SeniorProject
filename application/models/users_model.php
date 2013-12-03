@@ -355,4 +355,9 @@ class Users_model extends CI_Model {
 		$this->db->where('id',$user_id);
 		$this->db->update('users', array('status'=>$status));
 	}
+
+	public function change_role_status($role, $status){
+		$this->db->where('usertype',$role);
+		$this->db->update('users', array('status'=>$status));
+	}
 }

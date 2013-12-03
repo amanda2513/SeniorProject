@@ -106,6 +106,8 @@
 			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Scorers</a></li>
 			<li><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
 			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("participant");?>" id="btn_add_participant"><i class="icon-plus"></i> Add Participant</a>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/disable_all/participant";?>" id="disable_all_participant"><i class="icon-lock"></i> Disable All</a>
+			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/enable_all/participant";?>" id="enable_all_participant"><i class="icon-lock"></i> Enable All</a>
 		</ul>
 
 		<table id="users_participants_table" class="table wsu_table table-bordered table-striped tablesorter">

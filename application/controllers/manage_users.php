@@ -343,4 +343,32 @@ class Manage_users extends CI_Controller {
 			redirect('gerss/home');
 		}
 	}
+
+	public function enable_all(){
+		if ($this->session->userdata('is_logged_in') && $this->session->userdata('role')=='admin'){
+			$role = $this->uri->segment(3);
+
+			$this->load->model('users_model');
+			$this->users_model->change_role_status($role,'Enabled');
+			
+			redirect(base_url()."manage_users/".$role);
+		}
+		else{
+			redirect('gerss/home');
+		}
+	}
+
+	public function disable_all(){
+		if ($this->session->userdata('is_logged_in') && $this->session->userdata('role')=='admin'){
+			$role = $this->uri->segment(3);
+
+			$this->load->model('users_model');
+			$this->users_model->change_role_status($role,'Disabled');
+
+			redirect(base_url()."manage_users/".$role);
+		}
+		else{
+			redirect('gerss/home');
+		}
+	}
 }
