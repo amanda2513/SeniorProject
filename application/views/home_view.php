@@ -115,7 +115,7 @@
 				';
 			}
 			?>
-			<p><?php echo $settings['homepage_message'];?></p>
+			<p class="text-center"><?php echo $settings['homepage_message'];?></p>
 			<p class="text-center">We hope many will join us for this wonderful event!</p></br>
 			<p class="text-center">
 				Event Information:
