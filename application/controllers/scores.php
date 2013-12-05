@@ -74,10 +74,10 @@ class Scores extends CI_Controller {
 
 				$this->load->model('scores_model');
 
-				$scoring_open=$this->scores_model->is_scoring_open();
+				$scoring_requirements=$this->scores_model->is_scoring_open();
 				$data['user_type'] = $this->session->userdata('role');
 
-			if($scoring_open)
+			if($scoring_requirements['all_projects_assigned'] && $scoring_requirements['exhibition_started'])
 			{
 				$search_participant = $this->input->post('search_participants');
 				if($this->uri->segment(3)=='filter'){
@@ -133,6 +133,7 @@ class Scores extends CI_Controller {
 				}
 			}
 			else{
+				$data['scoring_requirements']=$scoring_requirements;
 				$this->load->view('cannot_enter_scores_view',$data);
 			}
 		}

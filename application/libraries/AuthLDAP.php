@@ -173,7 +173,7 @@ class AuthLDAP {
         }
 
         if(empty($binddn)) {
-            $redirect=$this->ci->session->set_flashdata('credentials_error','Could not validate your credentials');
+            $redirect=$this->ci->session->set_flashdata('credentials_error','Not a valid WSU Access ID');
             redirect(base_url()."gerss/home".$this->ci->input->post('redirect'));
         }
         // Now actually try to bind as the user

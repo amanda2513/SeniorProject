@@ -148,6 +148,10 @@
 		 	}
 		?>
 
+		<hr>
+
+		<?php if($selected_type=='seu'){$selected_type="Scorer";}?>
+		<p><strong>Edit <?php echo ucfirst($selected_type);?> Info</strong></p>
 		<!--
 			Form for registration type = Drop down with user type options defined above
 			When it submits, it will change the URL to manage_users/add?type=[selected dropdown option]
@@ -173,9 +177,8 @@
 			</div>
 		</form><!--end add-user-type form-->
 		
-		<hr>
-		<?php if($selected_type=='seu'){$selected_type="Scorer";}?>
-		<p><strong>Edit <?php echo ucfirst($selected_type);?> Info</strong></p>
+		
+		
 		<!--
 			Actual Add user Submission Form
 			Name, Department, Email, Password
@@ -199,7 +202,7 @@
 								echo '<div class="span6 offset3">';
 							}
 						?>
-							<p class="text-center muted"><small>Basic Information: All Fields Are Required</small></p>
+							<p class="text-center muted"><small>Basic Information: Cannot Edit</small></p>
 
 							<input type="hidden" name="type" id="hidden_type" value="<?php echo $selected_type;?>">
 

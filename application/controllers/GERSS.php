@@ -21,7 +21,9 @@ class Gerss extends CI_Controller {
 		$this->load->model('general_settings_model');
 		$data['logged_in'] = $this->session->userdata('is_logged_in');
 		$data['settings']=$this->general_settings_model->get_settings();
-		$data['in_registration_period'] = $data['settings']['reg_cutoff_date'] < date('m/d/y');
+		$today = date('Y-m-d');
+		$data['in_registration_period'] = date('Y-m-d',strtotime($data['settings']['reg_cutoff_date'])) >= date('Y-m-d',strtotime($today)) && date('Y-m-d',strtotime($data['settings']['reg_start_date'])) <= date('Y-m-d',strtotime($today));
+		$data['reg_cutoff']=$data['settings']['reg_cutoff_date'];
 		$this->load->view('home_view',$data);
 	}
 	
@@ -30,7 +32,11 @@ class Gerss extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->library('authldap');
 		$this->load->model('users_model');
-		
+		$this->load->model('general_settings_model');
+
+		$settings=$this->general_settings_model->get_settings();
+		$today = date('Y-m-d');
+
 		$rules = $this->form_validation;
 		$rules->set_rules('username', '', 'required|trim|xss_clean');
 		$rules->set_rules('password','','required|trim');
@@ -55,8 +61,12 @@ class Gerss extends CI_Controller {
 					redirect(base_url()."gerss/home",$this->input->post('redirect'));
 				}
 			}
-			else{
+			elseif( date('Y-m-d',strtotime($settings['reg_cutoff_date'])) >= date('Y-m-d',strtotime($today)) && date('Y-m-d',strtotime($settings['reg_start_date'])) <= date('Y-m-d',strtotime($today))){
 				redirect(base_url().'gerss/registration?type=0');
+			}
+			else{
+				$redirect=$this->session->set_flashdata('credentials_error','Not a valid user. Registration has ended.');
+				redirect(base_url()."gerss/home",$this->input->post('redirect'));
 			}
 		}
 		else {
@@ -107,7 +117,6 @@ class Gerss extends CI_Controller {
 			}
 		}
 		else{
-			
 			$redirect=$this->session->set_flashdata('errors',validation_errors());
 			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
 		}

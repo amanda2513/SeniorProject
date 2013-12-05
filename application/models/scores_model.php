@@ -8,14 +8,16 @@ class Scores_model extends CI_Model {
 		$exhib_info = $sql->result_array();
 
 		date_default_timezone_set('EST');
-		
-		foreach($exhib_info as $info)
-			if( ($info['exhib_date'] <= date('Y-m-d'))){
+		$today = date('Y-m-d');
+
+		foreach($exhib_info as $info){
+			if( date('Y-m-d',strtotime($info['exhib_date'])) <= date('Y-m-d',strtotime($today))){
 				$exhibition_started = true;
 			}
 			else{
 				$exhibition_started = false;
 			}
+		}
 		//all projects must have at least one judge assigned to it
 		$sql = $this->db->get('projects');
 		$projects = $sql -> result_array();

@@ -19,7 +19,7 @@
 				<div class="span5">
 				</div>
 				<div class="span2 offset2">
-		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Back</a>
 				</div>			
 			</div>
 		</div>		
@@ -50,7 +50,7 @@
 		 		$options[2]="selected='selected'";
 		 	}
 		?>
-
+		<p class="span10 offset2">Fill out the form below to register:</p>
 		<!--
 			Form for registration type = Drop down with Judge & Participant options defined above
 			When it submits, it will change the URL to registration?type=[selected dropdown option]
@@ -84,7 +84,6 @@
   			}
   			//If there are no errors, show "Fill out form" message
   			else{
-  				echo '<p class="span10 offset2">Fill out the form below to register:</p>';
   			}
   		?>
 
@@ -107,12 +106,12 @@
 								echo '<div class="span6 offset3">';
 							}
 						?>
-							<p class="text-center muted"><small>Basic Information: All Fields Are Required</small></p>
+							<p class="text-center muted"><small>Basic Information: Cannot Edit</small></p>
 
 							<input type="hidden" name="type" id="type" value="<?php echo $selected_type?>">
 
 			    			<div class="control-group">
-								<label class="control-label" for="userid">User ID:</label>
+								<label class="control-label" for="userid">WSU Access ID:</label>
 								<div class="controls">
 									<input type="text" name="userid" class="input-large" id="userid" placeholder="UserID" value="<?php echo $this->session->userdata('username');?>" readonly>
 								</div>

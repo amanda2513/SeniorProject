@@ -98,7 +98,7 @@
 					if($this->session->flashdata('credentials_error')){
 						echo '
 							<div class="alert text-center span10 offset2 wsu_sign_in_alert" id="wsu_alert">
-								<strong>Could not validate your credentials.
+								<strong>'.$this->session->flashdata('credentials_error').'</strong>
 							</div>';
 		  			}
 		  			else{
@@ -204,9 +204,9 @@
 		<?php
 			if(!$logged_in && $in_registration_period){
 				echo'
-				<div class="reg_button_container row-fluid">
-             		<div class="span6 offset3">
-						<a class="btn btn-lg wsu_btn span6 offset3" id="participant_register_btn" href="'.base_url().'gerss/registration?type=participant'.'"><strong>Participants</strong></br>Register Here</a>
+				<div class="row-fluid">
+             		<div class="text-center">
+						<strong class="muted"><small>Registration Ends: '. date("D, M d".","." Y",strtotime($reg_cutoff)).'<br>Enter your WSU credentials at the top of the page to register.</small></strong>
 					</div>
 				</div>';
 			}
