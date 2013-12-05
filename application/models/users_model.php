@@ -71,7 +71,7 @@ class Users_model extends CI_Model {
 				'firstname'=>$this->input->post('firstname'),
 				'lastname' =>$this->input->post('lastname'),
 				'department'=>$this->input->post('department'),
-				'username' => $this->input->post('username')
+				'username' => $this->input->post('userid')
 				);
 				
 		$did_add_user = $this->db->insert('users', $data);
