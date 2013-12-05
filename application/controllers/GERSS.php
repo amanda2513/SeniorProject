@@ -65,7 +65,7 @@ class Gerss extends CI_Controller {
 				redirect(base_url().'gerss/registration?type=0');
 			}
 			else{
-				$redirect=$this->session->set_flashdata('credentials_error','Not a valid user. Registration has ended.');
+				$redirect=$this->session->set_flashdata('credentials_error','Sorry, registration has ended.');
 				redirect(base_url()."gerss/home",$this->input->post('redirect'));
 			}
 		}
