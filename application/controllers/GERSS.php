@@ -93,7 +93,7 @@ class Gerss extends CI_Controller {
 	public function registration_validation(){
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('type','Type','required|trim');
+		$this->form_validation->set_rules('type','Type','required|trim|callback_is_type');
 		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
@@ -121,6 +121,16 @@ class Gerss extends CI_Controller {
 			redirect(base_url()."gerss/registration?type=".$this->input->post('type'),$this->input->post('redirect'));
 		}
 	}
+
+	public function is_type($type){
+		if($type == 'participant' || $type == 'judge'){
+			return TRUE;
+		}
+		else{
+			$this->form_validation->set_message('is_type', 'Please Select a Registration Type');
+			return FALSE;
+		}
+	}
 //----------------REGISTER USER----------------------------//	
 	public function register_user(){
 		$this->load->model('users_model'); 
@@ -129,7 +139,7 @@ class Gerss extends CI_Controller {
 			$this->load->model('users_model');
 			$user_type = $this->users_model->get_single_user_type('users',$this->session->userdata('username'));
 			$this->session->set_userdata('role',$user_type);
-
+			$this->session->set_userdata('is_logged_in',TRUE);
 			$redirect=$this->session->set_flashdata('success','You have been registered.');
 			redirect($this->input->post('redirect'));
 		}
@@ -147,7 +157,7 @@ class Gerss extends CI_Controller {
 			$this->load->model('users_model');
 			$user_type = $this->users_model->get_single_user_type('users',$this->session->userdata('username'));
 			$this->session->set_userdata('role',$user_type);
-
+			$this->session->set_userdata('is_logged_in',TRUE);
 			$redirect=$this->session->set_flashdata('success','You have been registered.');
 			redirect($this->input->post('redirect'));
 		}

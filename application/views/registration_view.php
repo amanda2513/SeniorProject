@@ -50,7 +50,20 @@
 		 		$options[2]="selected='selected'";
 		 	}
 		?>
+		<hr>
+		<?php
+		//If there are errors print them all in a bootstrap alert div
+			if($this->session->flashdata('errors')){
+				echo '<div class="alert text-center" id="wsu_alert">';
+				echo $this->session->flashdata('errors');
+				echo '</div>';
+  			}
+  			//If there are no errors, show "Fill out form" message
+  			else{
+  			}
+  		?>
 		<p class="span10 offset2">Fill out the form below to register:</p>
+
 		<!--
 			Form for registration type = Drop down with Judge & Participant options defined above
 			When it submits, it will change the URL to registration?type=[selected dropdown option]
@@ -74,18 +87,8 @@
 			</div>
 		</form><!--end registration-type form-->
 		
-		<hr>
-		<?php
-		//If there are errors print them all in a bootstrap alert div
-			if($this->session->flashdata('errors')){
-				echo '<div class="alert text-center" id="wsu_alert">';
-				echo $this->session->flashdata('errors');
-				echo '</div>';
-  			}
-  			//If there are no errors, show "Fill out form" message
-  			else{
-  			}
-  		?>
+		
+
 
 		<!--
 			Actual Registration Submission Form
@@ -188,6 +191,7 @@
 				</div><!--close span12-->
 			</div><!--close form's row-fluid-->
 		</form><!--close registration form-->
+		<hr>
 	</div><!--close hero-unit-->
 </body>
 </html>

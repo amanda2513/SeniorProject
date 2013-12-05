@@ -207,7 +207,7 @@
 							<input type="hidden" name="type" id="hidden_type" value="<?php echo $selected_type;?>">
 
 			    			<div class="control-group">
-								<label class="control-label" for="userid">User ID:</label>
+								<label class="control-label" for="userid">WSU Access ID:</label>
 								<div class="controls">
 									<input type="text" name="userid" class="input-large" id="userid" placeholder="UserID" value="<?php echo set_value('userid',$user_data['username']);?>" readonly>
 								</div>
