@@ -117,4 +117,14 @@ class Judge_assignment_model extends CI_Model {
 		return $sql->result();
 	}
 
+	public function get_project_judges($project_id){
+		$this->db->where('project_id',$project_id);
+		$this->db->from('assigned_judges');
+		$this->db->join('users','assigned_judges.judge_id=users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
 }

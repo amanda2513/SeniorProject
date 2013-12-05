@@ -359,12 +359,12 @@ class Scores extends CI_Controller {
 			$this->load->model('judge_assignment_model');
 			$this->load->model('category_settings_model');
 
-			$assignments = $this->scores_model->get_assigned_projects();
+			$projects = $this->users_model->get_participant_info();
 			
-			foreach($assignments as $assigned){			
-				$data['judge'] = $this->users_model->get_user_by_id($assigned->judge_id);
-				$project_id = $this->users_model->get_project_id($assigned->participant_id);
-				$project=$this->users_model->get_selected_project_info($project_id);
+			foreach($projects as $project){			
+				//$data['judge'] = $this->users_model->get_user_by_id($assigned->judge_id);
+				$project_id = $this->users_model->get_project_id($project->participant_id);
+				//$project=$this->users_model->get_selected_project_info($project_id);
 
 				$category = $this->category_settings_model->get_category($project->category);
 				$project->category_pts_possible = $this->category_settings_model->get_category_pts_possible($category->cat_id);
@@ -389,7 +389,12 @@ class Scores extends CI_Controller {
 				$data['project']=$project;
 				$data['category']=$category;
 				$data['subcats']=$scats;
-				$this->load->view('scorecard_view',$data);
+
+				$judges=$this->judge_assignment_model->get_project_judges($project->project_id);
+				foreach($judges as $judge){
+					$data['judge'] = $judge;
+					$this->load->view('scorecard_view',$data);
+				}
 			}
 		}
 		else{
