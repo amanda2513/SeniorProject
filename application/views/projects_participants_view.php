@@ -21,7 +21,11 @@
 
 		function printScorecard(id){
 			window.open('<?php echo base_url()."scores/participant_scorecard/";?>'+id, 'Scorecard', 'width=700, height=800');
-		}
+		};
+
+		function printAllScorecards(){
+			window.open('<?php echo base_url()."scores/all_participant_scorecards";?>', 'Scorecard', 'width=700, height=800');
+		};
 	</script>
 </head>
 <body>
@@ -105,6 +109,8 @@
 			<li class="active"><a href="<?php echo base_url()."gerss/projects_participants"?>">Participants</a></li>
 			<?php if($this->session->userdata('role')!='participant'){echo '<li><a href="'.base_url()."gerss/projects_judges".'">Judges</a></li>';}?>
 			<?php if($this->session->userdata('role')=='admin'){echo '<a class="btn wsu_btn pull-right" href="'.base_url()."manage_users/add?type=".urlencode("participant").'" id="btn_add_judge"><i class="icon-plus"></i> Add Participant</a>';}?>
+			<?php if($this->session->userdata('role')=='admin'){echo '<button class="btn wsu_btn pull-right enable_buttons" onclick="printAllScorecards();" id="btn_print_scorecards"><i class="icon-print"></i> Print All Scorecards</button>';}?>
+
 		</ul>
 
 		<table id="project_participants_table" class="table wsu_table table-bordered table-striped tablesorter" style="border-collapse:collapse;">
