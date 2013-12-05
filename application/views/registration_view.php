@@ -148,9 +148,11 @@
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="Poster">Poster</option>
-											<option value="Oral Presentation">Oral Presentation</option>
-										</select>
+											<option value="0">Select a Category</option>';
+											foreach($categories as $category){
+												echo '<option value="'.$category->category.'">'. $category->category.'</option>';
+											}
+								echo	'</select>
 									</div>
 								</div>
 
