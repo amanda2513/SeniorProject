@@ -86,30 +86,30 @@
 			else{
 				echo'
 				<div class="row-fluid">
-					<div class="span7">
+					<div class="span5">
 						<div class="row-fluid">
 							<div class="span12 pull-left">
 								<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
 							</div>
 						</div>
 					</div>
-						<div class="span5">';
+						<div class="span7">';
 		
 					if($this->session->flashdata('credentials_error')){
 						echo '
-							<div class="alert text-center span10 offset2 wsu_sign_in_alert" id="wsu_alert">
+							<div class="alert text-center span6 offset5 wsu_sign_in_alert" id="wsu_alert">
 								<strong>'.$this->session->flashdata('credentials_error').'</strong>
 							</div>';
 		  			}
 		  			else{
 		  				echo '
-		  					<div class="span10" id="wsu_login_message">
+		  					<div class="span7 text-center pull-right" id="wsu_login_message">
 		  						Register / Sign In
 		  					</div>';
 		  			}
-			
+					echo' <div class="pull-right">';
 					$form_attributes = 
-						array('name'=>'signinform','class'=>'span10 offset2 form-inline','id'=>'sign_in_form');
+						array('name'=>'signinform','class'=>'span12 form-inline','id'=>'sign_in_form');
 					echo form_open('gerss/login_validation', $form_attributes);
 
 					$username_attributes = 
@@ -126,6 +126,7 @@
 
 					form_close();
 					echo'
+							</div>
 						</div>
 					</div><!--End Header row-fluid-->';
 				}

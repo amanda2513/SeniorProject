@@ -16,11 +16,11 @@
 		});	
 
 		function printScorecard(id){
-			window.open('<?php echo base_url()."scores/judge_scorecard/";?>'+id, 'Scorecard', 'width=700, height=800');
+			window.open('<?php echo base_url()."scores/judge_scorecard/";?>'+id, 'Scorecard', 'width=700, height=700');
 		};
 
 		function printAllScorecards(){
-			window.open('<?php echo base_url()."scores/all_judge_scorecards";?>', 'Scorecard', 'width=700, height=800');
+			window.open('<?php echo base_url()."scores/all_judge_scorecards";?>', 'Scorecard', 'width=700, height=700');
 		};
 	</script>
 </head>

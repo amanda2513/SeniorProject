@@ -20,11 +20,11 @@
 		});	
 
 		function printScorecard(id){
-			window.open('<?php echo base_url()."scores/participant_scorecard/";?>'+id, 'Scorecard', 'width=700, height=800');
+			window.open('<?php echo base_url()."scores/participant_scorecard/";?>'+id, 'Scorecard', 'width=700, height=700');
 		};
 
 		function printAllScorecards(){
-			window.open('<?php echo base_url()."scores/all_participant_scorecards";?>', 'Scorecard', 'width=700, height=800');
+			window.open('<?php echo base_url()."scores/all_participant_scorecards";?>', 'Scorecard', 'width=700, height=700');
 		};
 	</script>
 </head>
@@ -165,7 +165,7 @@
 							<td>
 								<button data-toggle="collapse" data-target="#project_'.$row->project_id.'_info" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Project Info"><i class="icon-eye-open"></i> </button> ';
 								if($this->session->userdata('role')=='admin' || $this->session->userdata('role')=='participant'){
-									echo ' <a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit Participant Info"><i class="icon-pencil"></i> </a>';
+									echo ' <a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit Project Info"><i class="icon-pencil"></i> </a>';
 								}
 								if($this->session->userdata('role')!='participant'){
 									echo' <button class="btn wsu_btn wsu_tooltip" onClick="printScorecard('.$row->id.')" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>';

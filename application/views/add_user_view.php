@@ -154,9 +154,17 @@
 								<div class="controls">
 									<select name="department">
 										<option value="">Select User's Department</option>
-										<option value="Computer Science">Computer Science</option>
-										<option value="English">English</option>
-										<option value="Science">Science</option>
+										<option value="Business Administration">Business Administration</option>
+										<option value="Education">Education</option>
+										<option value="Engineering">Engineering</option>
+										<option value="Fine, Performing &amp; Communication Arts">Fine, Performing &amp; Communication Arts</option>
+										<option value="Law">Law</option>
+										<option value="Liberal Arts and Sciences">Liberal Arts and Sciences</option>
+										<option value="Library &amp; Information Science">Library &amp; Information Science</option>
+										<option value="Medicine">Medicine</option>
+										<option value="Nursing">Nursing</option>
+										<option value="Social Work">Social Work</option>
+										<option value="Other">Other</option>
 									</select>
 								</div>
 							</div>

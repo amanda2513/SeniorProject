@@ -61,9 +61,6 @@
 						Project Title
 					</th>
 					<th>
-						Project Description
-					</th>
-					<th>
 						Category
 					</th>
 					<th>
@@ -85,7 +82,6 @@
 							
 								<td>' . $project->lastname. ', '. $project->firstname . '</td>
 								<td>' . $project->title . '</td>
-								<td>' . $project->description . '</td>
 								<td>' . $project->category . '</td>
 								<td>
 									<div>'.

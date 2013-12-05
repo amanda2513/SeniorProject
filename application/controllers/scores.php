@@ -354,7 +354,6 @@ class Scores extends CI_Controller {
 			$data['title']="WSU-GERSS :: Scorecard";
 
 			$this->load->model('scores_model');
-
 			$this->load->model('users_model');
 			$this->load->model('judge_assignment_model');
 			$this->load->model('category_settings_model');
@@ -362,10 +361,6 @@ class Scores extends CI_Controller {
 			$projects = $this->users_model->get_participant_info();
 			
 			foreach($projects as $project){			
-				//$data['judge'] = $this->users_model->get_user_by_id($assigned->judge_id);
-				$project_id = $this->users_model->get_project_id($project->participant_id);
-				//$project=$this->users_model->get_selected_project_info($project_id);
-
 				$category = $this->category_settings_model->get_category($project->category);
 				$project->category_pts_possible = $this->category_settings_model->get_category_pts_possible($category->cat_id);
 
