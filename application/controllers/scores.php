@@ -3,7 +3,7 @@
 class Scores extends CI_Controller {
 
 	public function input(){
-		if ($this->session->userdata('is_logged_in')){
+		if ($this->session->userdata('is_logged_in') && (($this->session->userdata('role')=='admin')||($this->session->userdata('role')=='seu')||($this->session->userdata('role')=='judge'))){
 				$data['title']="WSU-GERSS :: Scores";
 
 				$this->load->model('scores_model');
@@ -16,7 +16,13 @@ class Scores extends CI_Controller {
 				$this->load->model('users_model');
 				$this->load->model('judge_assignment_model');
 				$this->load->model('category_settings_model');
-				$judges=$this->users_model->get_all_user_type('users','judge');
+				if($this->session->userdata('role')=='judge'){
+					$judges=$this->users_model->get_logged_in_judge();
+				}
+				else
+				{
+					$judges=$this->users_model->get_all_user_type('users','judge');
+				}
 
 				foreach($judges as $judge){
 					$judge->scores_entered=$this->scores_model->get_score_entry_count($judge->id);
@@ -48,12 +54,13 @@ class Scores extends CI_Controller {
 			}
 		}
 		else{
-			redirect('gerss/home');
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}
 
 	public function view(){
-		if ($this->session->userdata('is_logged_in')){
+		if ($this->session->userdata('is_logged_in')&& (($this->session->userdata('role')=='admin')||($this->session->userdata('role')=='seu')||($this->session->userdata('role')=='judge'))){
 				$data['title']="WSU-GERSS :: Scores";
 
 				$this->load->model('scores_model');
@@ -121,12 +128,13 @@ class Scores extends CI_Controller {
 			}
 		}
 		else{
-			redirect('gerss/home');
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}
 
 	public function score_validation(){
-		if ($this->session->userdata('is_logged_in')){
+		if ($this->session->userdata('is_logged_in')&& (($this->session->userdata('role')=='admin')||($this->session->userdata('role')=='seu')||($this->session->userdata('role')=='judge'))){
 			$project_id = $this->uri->segment(3);
 			$judge_id = $this->uri->segment(4);
 			$participant_ln = $this->uri->segment(5);
@@ -179,13 +187,13 @@ class Scores extends CI_Controller {
 			}
 		}
 		else{
-			//lacking permissions
-			redirect('gerss/home');
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}
 
 	public function scorecard(){
-		if ($this->session->userdata('is_logged_in')){
+		if ($this->session->userdata('is_logged_in')&& (($this->session->userdata('role')=='admin')||($this->session->userdata('role')=='seu')||($this->session->userdata('role')=='judge'))){
 			$data['title']="WSU-GERSS :: Scorecard";
 
 			$participant_id = $this->uri->segment(3);
@@ -226,7 +234,8 @@ class Scores extends CI_Controller {
 		}
 		else
 		{
-			redirect('gerss/home');
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}	
 }

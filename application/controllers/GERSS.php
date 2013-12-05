@@ -37,7 +37,7 @@ class Gerss extends CI_Controller {
 		
 		
 		if($rules->run() && $this->authldap->login($rules->set_value('username'), $rules->set_value('password'))){
-			if(	$this->users_model->can_log_in()){
+			if(	$this->users_model->can_log_in() || $this->session->userdata('coll')=='Master'){
 				redirect('gerss/projects_participants');
 			}else{
 				redirect('gerss/registration?type=0');
@@ -101,6 +101,10 @@ class Gerss extends CI_Controller {
 		$this->load->model('users_model'); 
 		
 		if($this->users_model->admin_add_user()){
+			$this->load->model('users_model');
+			$user_type = $this->users_model->get_single_user_type('users',$this->session->userdata('username'));
+			$this->session->set_userdata('role',$user_type);
+
 			$redirect=$this->session->set_flashdata('success','You have been registered.');
 			redirect($this->input->post('redirect'));
 		}
@@ -115,6 +119,10 @@ class Gerss extends CI_Controller {
 		$this->load->model('users_model'); 
 		
 		if($this->users_model->add_participant()){
+			$this->load->model('users_model');
+			$user_type = $this->users_model->get_single_user_type('users',$this->session->userdata('username'));
+			$this->session->set_userdata('role',$user_type);
+
 			$redirect=$this->session->set_flashdata('success','You have been registered.');
 			redirect($this->input->post('redirect'));
 		}
@@ -137,22 +145,38 @@ class Gerss extends CI_Controller {
 	public function projects_participants(){
 		if ($this->session->userdata('is_logged_in')){
 			$this->load->model('users_model');
-			$this->load->model('judge_assignment_model');		
-			$data['participant']=$this->users_model->get_participant_info();
+			$this->load->model('judge_assignment_model');
+			$role = $this->session->userdata('role');
+			if($role=='participant'){
+				$data['participant']=$this->users_model->get_project_by_username($this->session->userdata('username'));
+			}
+			elseif($role=='seu'||$role=='judge'||$role=='admin'){
+				$data['participant']=$this->users_model->get_participant_info();
+			}
+			else{
+				$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+				redirect(base_url()."gerss/home",$this->input->post('redirect'));	
+			}
 			$data['judge_assignment']=$this->judge_assignment_model->get_all_from('assigned_judges');
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_participants_view',$data);
 		}
 		else{
-			redirect('gerss/home');
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));	
 		}
 	}
 
 	public function projects_judges(){
-		if ($this->session->userdata('is_logged_in')){
+		if ($this->session->userdata('is_logged_in')&&$this->session->userdata('role')!='participant'){
 			$this->load->model('users_model');
-			$this->load->model('judge_assignment_model');		
-			$data['judge']=$this->users_model->get_judge_info();
+			$this->load->model('judge_assignment_model');
+			if($this->session->userdata('role')=='judge'){
+				$data['judge'] = $this->users_model->get_logged_in_judge();
+			}
+			else{
+				$data['judge']=$this->users_model->get_judge_info();
+			}
 			foreach($data['judge'] as $judge){
 				$judge->assignment_count=$this->judge_assignment_model->count_assigned_projects($judge->id);
 				$judge->assignments=$this->judge_assignment_model->get_assigned_projects($judge->id);
@@ -162,7 +186,8 @@ class Gerss extends CI_Controller {
 			$this->load->view('projects_judges_view',$data);
 		}
 		else{
-			redirect('gerss/home');
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}
 	

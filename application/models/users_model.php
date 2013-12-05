@@ -276,8 +276,27 @@ class Users_model extends CI_Model {
 		return $sql->result();
 	}
 
+	public function get_project_by_username($username){
+		$this->db->where('username',$username);
+		$this->db->from('participants');
+		$this->db->join('projects', 'participants.project_id = projects.project_id');
+		$this->db->join('users', 'participants.participant_id = users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
 	public function get_judge_info(){
 		$this->db->where('usertype','judge');
+		$sql = $this->db->get('users');
+
+		return $sql->result();
+	}
+
+	public function get_logged_in_judge(){
+		$username=$this->session->userdata('username');
+		$this->db->where('username',$username);
 		$sql = $this->db->get('users');
 
 		return $sql->result();

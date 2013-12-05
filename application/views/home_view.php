@@ -68,7 +68,7 @@
 								</div>';
 		  			}
 		  			else{
-		  				echo '<p class="text-center" id="wsu_login_message">Already Registered?</p>';
+		  				echo '<p class="text-center" id="wsu_login_message">Register / Sign In</p>';
 		  			}
 			
 					$form_attributes = 
@@ -103,6 +103,11 @@
   				echo '<div class="alert alert-success text-center" id="wsu_alert">';
   				echo $this->session->flashdata('success');
   				echo '</div>';
+  			}
+  			if($this->session->flashdata('errors')){
+				echo '<div class="alert text-center" id="wsu_alert">';
+				echo $this->session->flashdata('errors');
+				echo '</div>';
   			}
   		?>
 
