@@ -193,6 +193,11 @@ class Users_model extends CI_Model {
 		return $user_record -> usertype;
 	}
 
+	public function get_user_by_id($id){
+		$sql = $this->db->get_where('users',array('id'=>$id));
+		return $sql -> row();
+	}
+
 	//Returns a user's type (participant, judge, admin, score_entry) based on their id.
 	public function get_user_type($user_id){
 		$sql = $this->db->get_where('users',array('id'=>$user_id));

@@ -14,6 +14,10 @@
 			$("#project_judges_table").tablesorter( {sortList: [[0,0]]});
 			$("[rel=tooltip]").tooltip({ placement:'top'});
 		});	
+
+		function printScorecard(id){
+			window.open('<?php echo base_url()."scores/judge_scorecard/";?>'+id, 'Scorecard', 'width=700, height=800');
+		}
 	</script>
 </head>
 <body>
@@ -144,8 +148,8 @@
 
 								<td>
 									<button data-toggle="collapse" data-target="#judge_'.$row->id.'_assignments" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Assigned Projects"><i class="icon-eye-open"></i></button>';
-									if($this->session->userdata('role')=='admin'){echo ' <a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>';}
-									echo' <button class="btn wsu_btn wsu_tooltip" href="#" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
+									if($this->session->userdata('role')=='admin'){echo ' <a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit Judge Info"><i class="icon-pencil"></i></a>';}
+									echo' <button class="btn wsu_btn wsu_tooltip" onclick="printScorecard('.$row->id.');" rel="tooltip" title="Print Scorecards"><i class="icon-print"></i></button>
 								</td>
 							</tr>
 							<tr class="tablesorter-childRow">

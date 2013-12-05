@@ -202,7 +202,7 @@ class Scores extends CI_Controller {
 		}
 	}
 
-	public function scorecard(){
+	public function participant_scorecard(){
 		if ($this->session->userdata('is_logged_in')&& (($this->session->userdata('role')=='admin')||($this->session->userdata('role')=='seu')||($this->session->userdata('role')=='judge'))){
 			$data['title']="WSU-GERSS :: Scorecard";
 
@@ -247,5 +247,57 @@ class Scores extends CI_Controller {
 			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
 			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
-	}	
+	}
+
+	public function judge_scorecard(){
+		if ($this->session->userdata('is_logged_in')&& (($this->session->userdata('role')=='admin')||($this->session->userdata('role')=='seu')||($this->session->userdata('role')=='judge'))){
+			$data['title']="WSU-GERSS :: Scorecard";
+
+			$judge_id = $this->uri->segment(3);
+
+			$this->load->model('scores_model');
+
+			$this->load->model('users_model');
+			$this->load->model('judge_assignment_model');
+			$this->load->model('category_settings_model');
+
+			$data['judge'] = $this->users_model->get_user_by_id($judge_id);
+
+			$assignments = $this->judge_assignment_model->get_assigned_projects($judge_id);
+			
+			foreach($assignments as $assigned){			
+				$project_id = $this->users_model->get_project_id($assigned->participant_id);
+				$project=$this->users_model->get_selected_project_info($project_id);
+
+				$category = $this->category_settings_model->get_category($project->category);
+				$project->category_pts_possible = $this->category_settings_model->get_category_pts_possible($category->cat_id);
+
+				$data['subcategories']=$this->category_settings_model->get_subcategories($category->cat_id);
+				$scats=array();
+				foreach($data['subcategories'] as $scat_key=>$subcat){
+					$criteria_count = 0;
+					$subcat_score=0;
+					$scats[$scat_key]['name']=$subcat->subcat_name;
+					$criteria = $this->category_settings_model->get_criteria($subcat->subcat_id);
+					$scats[$scat_key]['crits']=array();
+					foreach($criteria as $crit_key=>$criterion){
+						$scats[$scat_key]['crits'][$crit_key]['desc']=$criterion->criteria_description;
+						$scats[$scat_key]['crits'][$crit_key]['points'] = $criterion->criteria_points;
+						$criteria_count+=1;
+						$subcat_score+=$criterion->criteria_points;
+					}
+					$scats[$scat_key]['criteria_count']=$criteria_count;
+					$scats[$scat_key]['subcat_score']=$subcat_score;
+				}
+				$data['project']=$project;
+				$data['category']=$category;
+				$data['subcats']=$scats;
+				$this->load->view('scorecard_view',$data);
+			}
+		}
+		else{
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
+		}
+	}
 }

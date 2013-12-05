@@ -48,3 +48,7 @@ img{
 #print_header{
 	margin-bottom:1%;
 }
+
+@page { size 8.5in 11in; margin: 2cm }
+
+div.page { page-break-after: always }
