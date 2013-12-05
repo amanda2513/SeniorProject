@@ -82,7 +82,7 @@
 							<select name="type" id="type" onChange="this.form.submit()">
 								<option value="participant" <?php echo $options[0];?>>Participant</option>
 								<option value="judge" <?php echo $options[1];?>>Judge</option>
-								<option value="seu" <?php echo $options[2];?>>Score Entry User</option>
+								<option value="seu" <?php echo $options[2];?>>Scorer</option>
 								<option value="admin" <?php echo $options[3];?>>Admin</option>
 							</select>
 						</div>
