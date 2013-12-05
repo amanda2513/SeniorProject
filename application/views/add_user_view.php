@@ -140,34 +140,6 @@
 			    					<input type="text" name="userid" class="input-large" placeholder="UserID"/>
 			    				</div>
 			    			</div>
-
-			    			<div class="control-group">
-			    				<label class="control-label" for="full_name">Name:</label>
-			    				<div class="controls inline" name="full_name">
-			    					<input type="text" name="firstname" class="input-large" placeholder="First Name"/>
-			    					<input type="text" name="lastname" class="input-large" placeholder="Last Name"/>
-			    				</div>
-			    			</div>
-
-							<div class="control-group">
-								<label class="control-label" for="department">Department:</label>
-								<div class="controls">
-									<select name="department">
-										<option value="">Select User's Department</option>
-										<option value="Business Administration">Business Administration</option>
-										<option value="Education">Education</option>
-										<option value="Engineering">Engineering</option>
-										<option value="Fine, Performing &amp; Communication Arts">Fine, Performing &amp; Communication Arts</option>
-										<option value="Law">Law</option>
-										<option value="Liberal Arts and Sciences">Liberal Arts and Sciences</option>
-										<option value="Library &amp; Information Science">Library &amp; Information Science</option>
-										<option value="Medicine">Medicine</option>
-										<option value="Nursing">Nursing</option>
-										<option value="Social Work">Social Work</option>
-										<option value="Other">Other</option>
-									</select>
-								</div>
-							</div>
 						</div><!--close left span-->
 
 					<?php

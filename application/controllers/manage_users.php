@@ -142,33 +142,39 @@ class Manage_users extends CI_Controller {
 			$this->load->library('form_validation');
 
 			$this->form_validation->set_rules('type','Type','required|trim');
-			$this->form_validation->set_rules('firstname','First Name', 'required|trim');
-			$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
-			$this->form_validation->set_rules('department','Department','required|trim');
-			$this->form_validation->set_rules('userid', 'Username', 'required|trim');
+			$this->form_validation->set_rules('userid', 'Username', 'required|trim|is_unique[users.username]');
 
 			if($this->input->post('type')=='participant'){
 				$this->form_validation->set_rules('category', 'Category', 'required|trim');
 			}
 
-			$this->form_validation->set_message('is_unique', "User ".$this->session->userdata('username')." is already registered.");
+			$this->form_validation->set_message('is_unique', "User ".$this->input->post('userid')." is already registered.");
 			
 			if ($this->form_validation->run()){
 
-				$this->load->model('users_model');
-				$username = $this->input->post('username');
-
-				if($this->input->post('type')=='participant'){
-					$this->users_model->add_participant();
-					$redirect=$this->session->set_flashdata('success','User Added');
+				$this->load->library('authldap');
+				$username = $this->input->post('userid');
+				$ldap_info= $this->authldap->get_ldap_info($username);
+				
+				if($ldap_info == "Not a valid WSU Access ID"){
+					$redirect=$this->session->set_flashdata('errors',$ldap_info);
 					redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
 				}
 				else{
-					$this->users_model->admin_add_user();
-					$redirect=$this->session->set_flashdata('success','User Added');
-					redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
-				}
+					$this->load->model('users_model');
+					$username = $this->input->post('username');
 
+					if($this->input->post('type')=='participant'){
+						$this->users_model->add_participant($ldap_info);
+						$redirect=$this->session->set_flashdata('success','User Added');
+						redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+					}
+					else{
+						$this->users_model->admin_add_user($ldap_info);
+						$redirect=$this->session->set_flashdata('success','User Added');
+						redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+					}
+				}
 			}
 			else{
 				

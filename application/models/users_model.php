@@ -81,13 +81,16 @@ class Users_model extends CI_Model {
 
 
 	//Admin adds a user, skips temp-users table
-	public function admin_add_user(){
+	public function admin_add_user($ldap_info){
+		$username = $this->input->post('userid');
+		
 		$data = array(
 				'usertype'=>$this->input->post('type'),
-				'firstname'=>$this->input->post('firstname'),
-				'lastname' =>$this->input->post('lastname'),
-				'department'=>$this->input->post('department'),
-				'username' => $this->input->post('userid')
+				'firstname'=>$ldap_info['fn'],
+				'lastname' =>$ldap_info['ln'],
+				'department'=>$ldap_info['coll'],
+				//'username'=>md5($this->input->post('userid')),
+				'username'=>$username,
 				);
 				
 		$did_add_user = $this->db->insert('users', $data);
@@ -99,15 +102,17 @@ class Users_model extends CI_Model {
 
 	}
 
-	public function add_participant(){
-		$this->load->library('authldap');
+	public function add_participant($ldap_info){
+
+		$username = $this->input->post('userid');
+
 		$data = array(
 				'usertype'=>$this->input->post('type'),
-				'firstname'=>$this->input->post('firstname'),
-				'lastname' =>$this->input->post('lastname'),
-				'department'=>$this->input->post('department'),
+				'firstname'=>$ldap_info['fn'],
+				'lastname' =>$ldap_info['ln'],
+				'department'=>$ldap_info['coll'],
 				//'username'=>md5($this->input->post('userid')),
-				'username'=>($this->input->post('userid')),
+				'username'=>$username,
 				);
 
 			$did_add_user = $this->db->insert('users', $data);

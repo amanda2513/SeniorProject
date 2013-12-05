@@ -227,6 +227,70 @@ class AuthLDAP {
         $str=str_replace($metaChars,$quotedMetaChars,$str); //replace them
         return ($str);  
     }
+
+    public function get_ldap_info($username){
+             
+        foreach($this->ldap_uri as $uri) {
+            $this->ldapconn = ldap_connect($uri);
+            if($this->ldapconn) {
+               break;
+            }else {
+                log_message('info', 'Error connecting to '.$uri);
+            }
+        }
+        // At this point, $this->ldapconn should be set.  If not... DOOM!
+        if(! $this->ldapconn) {
+            log_message('error', "Couldn't connect to any LDAP servers.  Bailing...");
+            //show_error('Error connecting to your LDAP server(s).  Please check the connection and try again.'.ldap_error($this->ldapconn));
+        }
+        
+        // Start TLS if requested
+        if($this->use_tls) {
+            if(! ldap_start_tls($this->ldapconn)) {
+                log_message('error', "Couldn't properly initialize a TLS connection to your LDAP server.");
+                log_message('error', 'Hopefully this helps: '.ldap_error($this->ldapconn).' (Errno: '.ldap_errno($this->ldapconn).')');
+                //show_error("<h3>Error starting TLS session.</h3>\n<p>LDAP Error: ".ldap_errno($this->ldapconn)."  ".ldap_error($this->ldapconn()));            
+            }
+        }
+
+        // We've connected, now we can get user credentials...
+        
+        // These two ldap_set_options are needed for binding to AD properly
+        // They should also work with any modern LDAP service.
+        ldap_set_option($this->ldapconn, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
+
+            $bind = ldap_bind($this->ldapconn);
+
+        if(!$bind){
+            log_message('error', 'Unable to perform anonymous/proxy bind');
+            //show_error('Unable to bind for user id lookup');
+        }
+
+        log_message('debug', 'Successfully bound to directory.  Performing dn lookup for '.$username);
+        $filter = '('.$this->login_attribute.'='.$username.')';
+        foreach($this->user_search_base as $usb) {
+            $search = ldap_search($this->ldapconn, $usb, $filter, 
+                array());
+            $entries = ldap_get_entries($this->ldapconn, $search);
+            if(isset($entries[0]['dn'])) {
+                $binddn = $entries[0]['dn'];
+                $ldap_data= array(
+                        'fn' => $entries[0]['givenname'][0],
+                        'ln' => $entries[0]['sn'][0],
+                        'coll' => $entries[0]['coll'][0]
+                        );
+                break;
+            }
+        }
+
+        if(empty($binddn)) {
+            return 'Not a valid WSU Access ID';
+        }
+        else{
+            return $ldap_data;
+        }
+    }
 }
 
 ?>
