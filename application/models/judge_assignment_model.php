@@ -86,6 +86,23 @@ class Judge_assignment_model extends CI_Model {
 		return $sql->result();
 	}
 
+	public function get_logged_in_judge_projects($username){
+		$this->db->where('username',$username);
+		$this->db->from('users');
+		$sql = $this->db->get();
+		$judge_record = $sql->row();
+
+		$this->db->where('judge_id',$judge_record->id);
+		$this->db->from('assigned_judges');
+		$this->db->join('projects','assigned_judges.project_id = projects.project_id');
+		$this->db->join('participants','projects.project_id=participants.project_id');
+		$this->db->join('users','participants.participant_id=users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
 	public function truncate_table($table_name){
 		$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
 

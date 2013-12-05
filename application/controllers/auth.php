@@ -54,7 +54,6 @@ class Auth extends CI_Controller {
                     $rules->set_value('password'))) {
                     
                     //redirect ('gerss/projects_participants');
-                    echo "HELLO";
                 // Login WIN!
                 if($this->session->flashdata('tried_to')) {
                     redirect($this->session->flashdata('tried_to'));    

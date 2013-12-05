@@ -38,6 +38,10 @@
 			window.location.href=fullURL;
 		};
 
+		function enable_participants(){
+			document.getElementById('select_participant').disabled = false;
+		};
+
 		
 		var $subcategory_count=0;
 		//Each subcategory has 1 set of criteria by default, this is incremented in add_subcat_criteria method
@@ -210,17 +214,46 @@
 		</div>
 	</div>
 
-	<div class="navbar wsu_navbar row-fluid">
-		<div class="navbar-inner span12">
-			<ul class="nav text-center">
-				<li class="span1"><a id="nav_home" href="<?php echo base_url()."gerss/home"?>"><img alt="home" src="<?php echo (IMG.'home.png');?>"></img></a></li>
-				<li class="span2"><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
-				<li class="active span2"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
-				<li class="span3"><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
-				<li class="span3"><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
-			</ul>
-		</div>
-	</div>
+<?php
+	if($this->session->userdata('role')=='admin'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+					<li class="active span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+					<li class="span3"><a id="nav_manageusers" href="'.base_url()."manage_users/participant".'">Manage Users</a></li>
+					<li class="span3"><a id="nav_systemsettings" href="'.base_url()."settings/general".'">System Settings</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+	elseif($this->session->userdata('role')=='seu'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+					<li class="active span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+	elseif($this->session->userdata('role')=='judge'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+					<li class="active span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+?>
 
 	<div class="hero-unit wsu_hero_unit">
 		
@@ -271,7 +304,7 @@
 									<option value="0">Select a Judge</option>
 									<?php
 										foreach($judges as $judge){
-											if($this->uri->segment(3) && $judge->id == $this->uri->segment(3)){
+											if(($this->uri->segment(3) && $judge->id == $this->uri->segment(3)) || $this->session->userdata('role')=='judge'){
 												$selected = " selected='selected'";
 											}
 											else{
@@ -290,20 +323,23 @@
 							<label class="control-label" for="participant">Participant:</label>
 							<div class="controls inline" name="judge">
 								<select class="input-xlarge" name="select_participant" id="select_participant" onChange="set_url()" disabled>
-									<option value="0"></option>
 									<?php
-										foreach($judges as $judge){
-											echo '<option value="'.$judge->id.'">Select a Participant</option>';
+									if($this->session->userdata('role')!='judge'){
+										echo '<option value="0"></option>';
+									}
+									
+									foreach($judges as $judge){
+										echo '<option value="'.$judge->id.'">Select a Participant</option>';
+									}
+									foreach($assignments as $assignment){
+										if($assignment->lastname==$this->uri->segment(4) && $assignment->firstname==$this->uri->segment(5)){
+											$selected = " selected='selected'";
 										}
-										foreach($assignments as $assignment){
-											if($assignment->lastname==$this->uri->segment(4) && $assignment->firstname==$this->uri->segment(5)){
-												$selected = " selected='selected'";
-											}
-											else{
-												$selected = "";
-											}
-											echo '<option value="'.$assignment->judge_id.'"'.$selected.'>'.$assignment->lastname.', '.$assignment->firstname.'</option>';
+										else{
+											$selected = "";
 										}
+										echo '<option value="'.$assignment->judge_id.'"'.$selected.'>'.$assignment->lastname.', '.$assignment->firstname.'</option>';
+									}
 									?>
 								</select>
 							</div>
@@ -314,7 +350,11 @@
 		</form><!--close judge/participant form-->
 
 		<?php
-			
+
+		if($this->session->userdata('role')=='judge'){
+			echo '<script>enable_participants();</script>';
+		}
+					
 		if($option_selected){
 
 		echo '

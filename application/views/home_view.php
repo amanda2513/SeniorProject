@@ -13,7 +13,7 @@
 	<div class="page-header" id="wsu_header">
 		
 			<?php
-				if($logged_in){
+			if($logged_in){
 				echo'
 				<div class="row-fluid">
 					<div class="row-fluid">
@@ -32,34 +32,68 @@
 						</div>
 					</div>
 				</div><!--End Header Row-fluid-->
-			</div><!--End Header-->
-
-			<div class="navbar wsu_navbar row-fluid">
-				<div class="navbar-inner span12">
-					<ul class="nav text-center">
-						<li class=" active span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
-						<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
-						<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
-						<li class="span3"><a id="nav_manageusers" href="'.base_url()."manage_users/participant".'">Manage Users</a></li>
-						<li class="span3"><a id="nav_systemsettings" href="'.base_url()."settings/general".'">System Settings</a></li>
-					</ul>
-				</div>
-			</div><!--End Navbar-->
-
-			';
-
+			</div><!--End Header-->';
+				if($this->session->userdata('role')=='admin'){
+					echo '
+					<div class="navbar wsu_navbar row-fluid">
+						<div class="navbar-inner span12">
+							<ul class="nav text-center">
+								<li class=" active span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+								<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+								<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+								<li class="span3"><a id="nav_manageusers" href="'.base_url()."manage_users/participant".'">Manage Users</a></li>
+								<li class="span3"><a id="nav_systemsettings" href="'.base_url()."settings/general".'">System Settings</a></li>
+							</ul>
+						</div>
+					</div><!--End Navbar-->';
+				}
+				elseif($this->session->userdata('role')=='seu'){
+					echo '
+					<div class="navbar wsu_navbar row-fluid">
+						<div class="navbar-inner span12">
+							<ul class="nav text-center">
+								<li class=" active span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+								<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+								<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+							</ul>
+						</div>
+					</div><!--End Navbar-->';
+				}
+				elseif($this->session->userdata('role')=='judge'){
+					echo '
+					<div class="navbar wsu_navbar row-fluid">
+						<div class="navbar-inner span12">
+							<ul class="nav text-center">
+								<li class=" active span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+								<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+								<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+							</ul>
+						</div>
+					</div><!--End Navbar-->';
 				}
 				else{
-					echo'
-					<div class="row-fluid">
-						<div class="span7">
-							<div class="row-fluid">
-								<div class="span12 pull-left">
-									<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
-								</div>
+					echo '
+					<div class="navbar wsu_navbar row-fluid">
+						<div class="navbar-inner span12">
+							<ul class="nav text-center">
+								<li class=" active span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+								<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+							</ul>
+						</div>
+					</div><!--End Navbar-->';
+				}
+			}
+			else{
+				echo'
+				<div class="row-fluid">
+					<div class="span7">
+						<div class="row-fluid">
+							<div class="span12 pull-left">
+								<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
 							</div>
 						</div>
-							<div class="span5">';
+					</div>
+						<div class="span5">';
 		
 					if($this->session->flashdata('errors')){
 						echo '

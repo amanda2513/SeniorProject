@@ -38,18 +38,46 @@
 		</div>
 	</div>
 
-	<div class="navbar wsu_navbar row-fluid">
-		<div class="navbar-inner span12">
-			<ul class="nav text-center">
-				<li class="span1"><a id="nav_home" href="<?php echo base_url()."gerss/home"?>"><img alt="home" src="<?php echo (IMG.'home.png');?>"></img></a></li>
-				<li class="span2"><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
-				<li class="active span2"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
-				<li class="span3"><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
-				<li class="span3"><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
-			</ul>
-		</div>
-	</div>
-
+<?php
+	if($this->session->userdata('role')=='admin'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+					<li class="active span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+					<li class="span3"><a id="nav_manageusers" href="'.base_url()."manage_users/participant".'">Manage Users</a></li>
+					<li class="span3"><a id="nav_systemsettings" href="'.base_url()."settings/general".'">System Settings</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+	elseif($this->session->userdata('role')=='seu'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+					<li class="active span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+	elseif($this->session->userdata('role')=='judge'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="span2"><a id="nav_projects" href="'.base_url()."gerss/projects_participants".'">Projects</a></li>
+					<li class="active span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+?>
 	<div class="hero-unit wsu_hero_unit">
 		<ul class="nav nav-tabs">
 			<li><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>

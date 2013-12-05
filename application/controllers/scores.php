@@ -30,7 +30,16 @@ class Scores extends CI_Controller {
 				}
 
 				$data['judges']=$judges;
-				$data['assignments']=$this->scores_model->get_assigned_projects();
+
+				if($this->session->userdata('role')=='judge'){
+					$data['assignments']=$this->scores_model->judge_assignment_model->get_logged_in_judge_projects($this->session->userdata('username'));
+				}
+				else
+				{
+					$data['assignments']=$this->scores_model->get_assigned_projects();
+				}
+
+				
 
 				if($this->uri->segment(3)){
 					$judge_id = $this->uri->segment(3);

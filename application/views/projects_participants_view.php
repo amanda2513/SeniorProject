@@ -43,35 +43,68 @@
 		</div>
 	</div>
 
-	<div class="navbar wsu_navbar row-fluid">
-		<div class="navbar-inner span12">
-			<ul class="nav text-center">
-				<li class="span1"><a id="nav_home" href="<?php echo base_url()."gerss/home"?>"><img alt="home" src="<?php echo (IMG.'home.png');?>"></img></a></li>
-				<li class="active span2"><a id="nav_projects" href="<?php echo base_url()."gerss/projects_participants"?>">Projects</a></li>
-				<li class="span2"><a id="nav_scores" href="<?php echo base_url()."scores/input"?>">Scores</a></li>
-				<li class="span3"><a id="nav_manageusers" href="<?php echo base_url()."manage_users/participant"?>">Manage Users</a></li>
-				<li class="span3"><a id="nav_systemsettings" href="<?php echo base_url()."settings/general"?>">System Settings</a></li>
-			</ul>
-		</div>
-	</div>
+<?php 
+	if($this->session->userdata('role')=='admin'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="active span2"><a id="nav_projects">Projects</a></li>
+					<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+					<li class="span3"><a id="nav_manageusers" href="'.base_url()."manage_users/participant".'">Manage Users</a></li>
+					<li class="span3"><a id="nav_systemsettings" href="'.base_url()."settings/general".'">System Settings</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+	elseif($this->session->userdata('role')=='seu' || $this->session->userdata('role')=='judge'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="active span2"><a id="nav_projects">Projects</a></li>
+					<li class="span2"><a id="nav_scores" href="'.base_url()."scores/input".'">Scores</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+	elseif($this->session->userdata('role')=='participant'){
+		echo '
+		<div class="navbar wsu_navbar row-fluid">
+			<div class="navbar-inner span12">
+				<ul class="nav text-center">
+					<li class="span1"><a id="nav_home" href="'.base_url()."gerss/home".'"><img alt="home" src="'.IMG.'home.png'.'"></img></a></li>
+					<li class="active span2"><a id="nav_projects">Projects</a></li>
+				</ul>
+			</div>
+		</div>';
+	}
+?>
 
 	<div class="hero-unit wsu_hero_unit">
-        
-		<form class="form-search" method="post" action='<?php $id=1; echo base_url()."gerss/search/$id"; ?>'>
-			<div class="input-append">
-				<input type="text" name="search"  id="search" class="input-medium search-query" placeholder="Participant's Last Name">
-				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
-			</div>
-			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."gerss/projects_participants"?>">Clear</a>
-		</form>
+        <?php
+        if($this->session->userdata('role')=='admin' || $this->session->userdata('role')=='seu'){
+        	$id=1;
+        	echo'
+			<form class="form-search" method="post" action="'.base_url()."gerss/search/$id".'">
+				<div class="input-append">
+					<input type="text" name="search"  id="search" class="input-medium search-query" placeholder="'."Participant's".' Last Name">
+					<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
+				</div>
+				<a class="btn wsu_btn" id="clear" href="'.base_url()."gerss/projects_participants".'">Clear</a>
+			</form>';
+		}
+		?>
 
 		
 
 		<ul class="nav nav-tabs">
-			<div id="group_by_text">Group By:</div>
+			<?php if($this->session->userdata('role')!='participant'){echo '<div id="group_by_text">Group By:</div>';}?>
 			<li class="active"><a href="<?php echo base_url()."gerss/projects_participants"?>">Participants</a></li>
-			<li><a href="<?php echo base_url()."gerss/projects_judges"?>">Judges</a></li>
-			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("participant");?>" id="btn_add_participant"><i class="icon-plus"></i> Add Participant</a>
+			<?php if($this->session->userdata('role')!='participant'){echo '<li><a href="'.base_url()."gerss/projects_judges".'">Judges</a></li>';}?>
+			<?php if($this->session->userdata('role')=='admin'){echo '<a class="btn wsu_btn pull-right" href="'.base_url()."manage_users/add?type=".urlencode("participant").'" id="btn_add_judge"><i class="icon-plus"></i> Add Participant</a>';}?>
 		</ul>
 
 		<table id="project_participants_table" class="table wsu_table table-bordered table-striped tablesorter" style="border-collapse:collapse;">
@@ -124,9 +157,14 @@
 							echo'
 							</td>
 							<td>
-								<button data-toggle="collapse" data-target="#project_'.$row->project_id.'_info" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Project Info"><i class="icon-eye-open"></i></button>
-								<a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i></a>
-								<button class="btn wsu_btn wsu_tooltip" onClick="printScorecard('.$row->id.')" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>
+								<button data-toggle="collapse" data-target="#project_'.$row->project_id.'_info" class="accordion-toggle btn wsu_btn wsu_tooltip"  rel="tooltip" title="Project Info"><i class="icon-eye-open"></i> </button> ';
+								if($this->session->userdata('role')=='admin' || $this->session->userdata('role')=='participant'){
+									echo ' <a class="btn wsu_btn wsu_tooltip" href="'.base_url()."manage_users/edit/".$row->usertype."/".$username.'" rel="tooltip" title="Edit User Info"><i class="icon-pencil"></i> </a>';
+								}
+								if($this->session->userdata('role')!='participant'){
+									echo' <button class="btn wsu_btn wsu_tooltip" onClick="printScorecard('.$row->id.')" rel="tooltip" title="Print Scorecard"><i class="icon-print"></i></button>';
+								}
+							echo'
 							</td>
 							
 						</tr>

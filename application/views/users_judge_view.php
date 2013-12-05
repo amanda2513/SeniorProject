@@ -101,9 +101,9 @@
 			<li class="active"><a href='<?php echo base_url()."manage_users/judge"?>'>Judges</a></li>
 			<li><a href='<?php echo base_url()."manage_users/seu"?>'>Scorers</a></li>
 			<li><a href='<?php echo base_url()."manage_users/admin"?>'>Admin</a></li>
-			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/add?type=".urlencode("judge");?>" id="btn_add_judge"><i class="icon-plus"></i> Add Judge</a>
-			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/disable_all/judge";?>" id="disable_all_judge"><i class="icon-lock"></i> Disable All</a>
-			<a class="btn wsu_btn pull-right" href="<?php echo base_url()."manage_users/enable_all/judge";?>" id="enable_all_judge"><i class="icon-lock"></i> Enable All</a>
+			<a class="btn wsu_btn pull-right enable_buttons" href="<?php echo base_url()."manage_users/add?type=".urlencode("judge");?>" id="btn_add_judge"><i class="icon-plus"></i> Add Judge</a>
+			<a class="btn wsu_btn pull-right enable_buttons" href="<?php echo base_url()."manage_users/disable_all/judge";?>" id="disable_all_judge"><i class="icon-lock"></i> Disable All Judges</a>
+			<a class="btn wsu_btn pull-right enable_buttons" href="<?php echo base_url()."manage_users/enable_all/judge";?>" id="enable_all_judge"><i class="icon-lock"></i> Enable All Judges</a>
 		</ul>
 
 		<table id="users_judge_table" class="table wsu_table table-bordered table-striped tablesorter">

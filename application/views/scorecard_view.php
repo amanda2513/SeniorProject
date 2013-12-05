@@ -33,16 +33,24 @@
 
 
 	<?php
+
+		if($this->session->userdata('role')=='judge'){
+			$judge_name = $this->session->userdata('ln').', '.$this->session->userdata('fn');
+		}
+		else{
+			$judge_name = "";
+		}
 		
 		echo '
-			<div class="pull-left">
+			<div class="pull-right">
 			<button class="btn wsu_btn" id="print_btn" onClick="printScorecard()">Print</button>
 			</div>
 
-			<div class="pull-right">
-				Judge Name:
-				<input type="text" class="input input-medium">
-			</div>
+			<label>
+			Judge Name:
+			<input type="text" class="input" size="32" value="'.$judge_name.'">
+			</label>
+			
 
 			<table class="table wsu_table table-bordered table-striped">
 			<tr>
