@@ -11,57 +11,43 @@
 </head>
 <body>
 	<div class="page-header" id="wsu_header">
-		<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
-
-		<div class="wsu_sign_in_container pull-right">
-			<?php 
-				if(validation_errors() != false){
-					echo '<div class="alert" id="wsu_alert">
-					<strong>Could not validate your credentials.</div>';
-	  			}
-	  			else{
-	  				echo '<p class="text-center" id="wsu_login_message">Already Registered?</p>';
-	  			}
-  			?>
-			<?php 
-				$form_attributes = 
-					array('name'=>'signinform','class'=>'form-inline','id'=>'sign_in_form');
-				echo form_open('gerss/login_validation', $form_attributes);
-
-				$username_attributes = 
-					array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Username');
-				echo form_input($username_attributes);
-			
-				$password_attributes = 
-					array('name'=>'password','class'=>'input-medium','id'=>'password','placeholder'=>'Password');
-				echo form_password($password_attributes);
-				
-				$submit_attributes = 
-					array('name'=>'signin','class'=>'btn btn-small wsu_btn','id'=>'sign_in_btn');
-				echo form_submit($submit_attributes,'Sign In');
-
-				echo form_close();
-			?>
-		</div>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="span3 pull-left">
+					<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
+				</div>
+				<div class="span5">
+				</div>
+				<div class="span2 offset2">
+		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+				</div>			
+			</div>
+		</div>		
 	</div><!--close header-->
 
 	<div class="hero-unit wsu_hero_unit">
 		<h2 class="wsu_h2 text-center hidden-phone hidden-tablet">Graduate Exhibition Registration &amp; Scoring System</h2>
 		<h4 class="wsu_h2 text-center visible-phone visible-tablet">Graduate Exhibition Registration &amp; Scoring System</h4>
 		<!--Invalid registrations redirect back to this page with errors-->
-		<?php		
-			//Get the type of registration from the URL .../registration?type=[whateverthisis] and store it in variable selected_option
-		 	$selected_type = $_GET['type'];
-
-		 	//The values of registration type dropdown
-		 	$options = array("participant","judge");
+		<?php
+			if(isset($_GET['type'])){
+				//Get the type of registration from the URL .../registration?type=[whateverthisis] and store it in variable selected_option
+				$selected_type = $_GET['type'];
+			}else{
+				$selected_type = 0;
+			}
+				//The values of registration type dropdown
+				$options = array("0","participant","judge");
 
 		 	//If type from URL is participant, make that the default selected dropdown option, else judge
-		 	if($selected_type == "participant"){
-		 		$options[0]="selected='selected'";
+			if($selected_type == "0"){
+				$options[0]="selected='selected'";
+			}		
+		 	elseif($selected_type == "participant"){
+		 		$options[1]="selected='selected'";
 		 	}
 		 	else{
-		 		$options[1]="selected='selected'";
+		 		$options[2]="selected='selected'";
 		 	}
 		?>
 
@@ -78,8 +64,9 @@
 						<label class="control-label" for='type'> Registration Type: </label>
 						<div class="controls">
 							<select name="type" id="type" onChange="this.form.submit()">
-								<option value="participant" <?php echo $options[0]?>>Participant</option>
-								<option value="judge" <?php echo $options[1]?>>Judge</option>
+								<option value="0" <?php echo $options[0]?>>Select a Type</option>
+								<option value="participant" <?php echo $options[1]?>>Participant</option>
+								<option value="judge" <?php echo $options[2]?>>Judge</option>
 							</select>
 						</div>
 					</div>
@@ -125,53 +112,32 @@
 							<input type="hidden" name="type" id="type" value="<?php echo $selected_type?>">
 
 			    			<div class="control-group">
+								<label class="control-label" for="userid">User ID:</label>
+								<div class="controls">
+									<input type="text" name="userid" class="input-large" id="userid" placeholder="UserID" value="<?php echo $this->session->userdata('username');?>" readonly>
+								</div>
+							</div>
+							
+							<div class="control-group">
 			    				<label class="control-label" for="full_name">Name:</label>
 			    				<div class="controls inline" name="full_name">
-			    					<input type="text" name="firstname" class="input-large" placeholder="First Name"/>
-			    					<input type="text" name="lastname" class="input-large" placeholder="Last Name"/>
+									<input type="text" name="firstname" class="input-large" id="firstname" placeholder="Firstname" value="<?php echo $this->session->userdata('fn');?>" readonly>                               
+			    					<input type="text" name="lastname" class="input-large" placeholder="Last Name" value="<?php echo $this->session->userdata('ln');?>" readonly />
 			    				</div>
 			    			</div>
 
 							<div class="control-group">
 								<label class="control-label" for="department">Department:</label>
 								<div class="controls">
-									<select name="department">
-										<option value="">Select Your Department</option>
-										<option value="Computer Science">Computer Science</option>
-										<option value="English">English</option>
-										<option value="Science">Science</option>
-									</select>
+									<input type="text" name="department" class="input-large" placeholder="Department" value="<?php echo $this->session->userdata('coll');?>" readonly />
 								</div>
 							</div>
-
-
-							<div class="control-group">
-								<label class="control-label" for="email">WSU Email:</label>
-								<div class="controls">
-									<input type="email" name="email" class="input-large" id="email" placeholder="Email" action="<?php echo $this->input->post('email');?>">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="password">Create a Password:</label>
-								<div class="controls">
-									<input type="password" name="password" class="input-large" id="password" placeholder="Password">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="cpassword">Confirm Password:</label>
-								<div class="controls">
-									<input type="password" name="cpassword" class="input-large" id="confirm_password" placeholder="Password">
-								</div>
-							</div>
+							
 						</div><!--close left span-->
 
 					<?php
 						//If the registration type is Participant, add these fields about their project
 						if($selected_type=='participant'){
-
-							
 							echo 
 							//open right column - span6 - participant only
 							'<div class="span6" id="project_info_span">
@@ -182,11 +148,9 @@
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="0">Select a Category</option>';
-											foreach($categories as $category){
-												echo '<option value="'.$category->category.'">'. $category->category.'</option>';
-											}
-								echo	'</select>
+											<option value="Poster">Poster</option>
+											<option value="Oral Presentation">Oral Presentation</option>
+										</select>
 									</div>
 								</div>
 

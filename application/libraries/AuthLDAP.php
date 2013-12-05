@@ -1,35 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * This file is part of AuthLDAP.
-
-    AuthLDAP is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    AuthLDAP is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with AuthLDAP.  If not, see <http://www.gnu.org/licenses/>.
- * 
- */
 /**
  * AuthLDAP Class
  *
  * Simple LDAP Authentication library for Code Igniter.
  *
- * @package         AuthLDAP
- * @author          Greg Wojtak <gwojtak@techrockdo.com>
- * @version         0.7
- * @link            http://www.techrockdo.com/projects/auth_ldap
- * @license         GNU Lesser General Public License (LGPL)
- * @copyright       Copyright © 2010-2013 by Greg Wojtak <gwojtak@techrockdo.com>
- * @todo            Allow for privileges in groups of groups in AD
- * @todo            Rework roles system a little bit to a "auth level" paradigm
  */
 class AuthLDAP {
     function __construct() {
@@ -38,13 +13,10 @@ class AuthLDAP {
         log_message('debug', 'AuthLDAP initialization commencing...');
 
         // Load the session library
-        $this->ci->load->library('session');
+        //$this->ci->load->library('session');
 
         // Load the configuration
         $this->ci->load->config('authldap');
-
-        // Load the language file
-        // $this->ci->lang->load('authldap_lang', 'english');
 
         $this->_init();
     }
@@ -69,33 +41,17 @@ class AuthLDAP {
         $this->user_search_base    = $this->ci->config->item('user_search_base');
         if(empty($this->user_search_base)) {
             $this->user_search_base[0] = $this->search_base;
-        }
-        $this->group_search_base   = $this->ci->config->item('group_search_base');
-        if(empty($this->group_search_base)) {
-            $this->group_search_base[0] = $this->search_base;
-        }
+        }  
         $this->user_object_class   = $this->ci->config->item('user_object_class');
-        $this->group_object_class  = $this->ci->config->item('group_object_class');
         $this->user_search_filter  = $this->ci->config->item('user_search_filter');
-        $this->group_search_filter = $this->ci->config->item('group_search_filter');
         $this->login_attribute     = $this->ci->config->item('login_attribute');
         $this->login_attribute     = strtolower($this->login_attribute);
-        $this->proxy_user          = $this->ci->config->item('proxy_user');
-        $this->proxy_pass          = $this->ci->config->item('proxy_pass');
-        $this->roles               = $this->ci->config->item('roles');
-        $this->auditlog            = $this->ci->config->item('auditlog');
         if($this->schema_type == 'rfc2307') {
             $this->member_attribute = 'memberUid';
         }else if($this->schema_type == 'rfc2307bis' || $this->schema_type == 'ad') {
             $this->member_attribute = 'member';
             
         }
-        
-        $this->role_filter = '';
-        foreach($this->roles as $role) {
-            $this->role_filter .= '(cn='.$role.')';
-        }
-        $this->role_filter = '(|'.$this->role_filter.')';
     }
 
     /**
@@ -109,22 +65,17 @@ class AuthLDAP {
          * For now just pass this along to _authenticate.  We could do
          * something else here before hand in the future.
          */
+        $this->ci->load->model('users_model');
 
         $user_info = $this->_authenticate($username,$password);
-        print_r('<br> User Info --- '.$user_info);
-        /*if(empty($user_info['role_level'])) {
-            log_message('info', $username." has no role to play.");
-            show_error($username.' succssfully authenticated, but is not allowed because the username was not found in an allowed access group.');
-        }*/
-        // Record the login
-        $this->_audit("Successful login: ".$user_info['cn']."(".$username.") from ".$this->ci->input->ip_address());
-
+        $user_type = $this->ci->users_model->get_single_user_type('users',$username);
+        
         // Set the session data
         $customdata = array('username' => $username,
                             'cn' => $user_info['cn'],
-                            'role_name' => $user_info['role_name'],
-                            'role_level' => $user_info['role_level'],
-                            'logged_in' => TRUE);
+                            'is_logged_in' => TRUE,
+                            'role'=>$user_type
+                            );
     
         $this->ci->session->set_userdata($customdata);
         return TRUE;
@@ -135,7 +86,7 @@ class AuthLDAP {
      * @return bool
      */
     function is_authenticated() {
-        if($this->ci->session->userdata('logged_in')) {
+        if($this->ci->session->userdata('is_logged_in')) {
             return TRUE;
         } else {
             return FALSE;
@@ -146,23 +97,9 @@ class AuthLDAP {
      * @access public
      */
     function logout() {
-        // Just set logged_in to FALSE and then destroy everything for good measure
-        $this->ci->session->set_userdata(array('logged_in' => FALSE));
+        // Just set is_logged_in to FALSE and then destroy everything for good measure
+        $this->ci->session->set_userdata(array('is_logged_in' => FALSE));
         $this->ci->session->sess_destroy();
-    }
-
-    /**
-     * @access private
-     * @param string $msg
-     * @return bool
-     */
-    private function _audit($msg){
-        $date = date('Y/m/d H:i:s');
-        if( ! file_put_contents($this->auditlog, $date.": ".$msg."\n",FILE_APPEND)) {
-            log_message('info', 'Error opening audit log '.$this->auditlog);
-            return FALSE;
-        }
-        return TRUE;
     }
 
     /**
@@ -201,14 +138,8 @@ class AuthLDAP {
         // They should also work with any modern LDAP service.
         ldap_set_option($this->ldapconn, LDAP_OPT_REFERRALS, 0);
         ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
-        
-        // Find the DN of the user we are binding as
-        // If proxy_user and proxy_pass are set, use those, else bind anonymously
-        if($this->proxy_user) {
-            $bind = ldap_bind($this->ldapconn, $this->proxy_user, $this->proxy_pass);
-        }else {
+
             $bind = ldap_bind($this->ldapconn);
-        }
 
         if(!$bind){
             log_message('error', 'Unable to perform anonymous/proxy bind');
@@ -220,7 +151,6 @@ class AuthLDAP {
         foreach($this->user_search_base as $usb) {
             $search = ldap_search($this->ldapconn, $usb, $filter, 
                 array());
-            print_r('search---'.$search);
             $entries = ldap_get_entries($this->ldapconn, $search);
             if(isset($entries[0]['dn'])) {
                 $binddn = $entries[0]['dn'];
@@ -233,24 +163,25 @@ class AuthLDAP {
         }
         // Now actually try to bind as the user
         $bind = ldap_bind($this->ldapconn, $binddn, $password);
-        if(! $bind) {
-            $this->_audit("Failed login attempt: ".$username." from ".$_SERVER['REMOTE_ADDR']);
-            show_error('Unable to bind to server: Invalid credentials for '.$username);
+        if(!$bind){         
+            $redirect=$this->ci->session->set_flashdata('errors','Error Binding');
+            redirect(base_url()."gerss/home".$this->ci->input->post('redirect'));
         }
         $cn = $entries[0]['cn'][0];
-        print_r($entries);
         $dn = stripslashes($entries[0]['dn']);
         $id = $entries[0][$this->login_attribute][0];
+
+        $fn = $entries[0]['givenname'][0];
+        $ln = $entries[0]['sn'][0];
+        $coll = $entries[0]['coll'][0];
         
-        if($this->schema_type == 'rfc2307') {
-            $get_role_arg = $id;               
-        }else if($this->schema_type == 'rfc2307bis' || $this->schema_type == 'ad') {
-            $get_role_arg = $this->ldap_escape($dn, false);
-        }
-        /*$role_level = $this->_get_role($get_role_arg);
-        return array('cn' => $cn, 'dn' => $entries[0]['dn'], 'id' => $id,
-            'role_name' => $this->roles[$role_level],
-            'role_level' => $role_level);*/
+        $this->ci->session->set_userdata(array('fn'=>$fn, 'ln'=>$ln, 'coll'=>$coll));
+        
+        //return array('fn'=>$fn, 'ln'=>$ln, 'coll'=>$coll);
+        
+        //echo  'Name = '.$fn.' '.$ln; 
+        //echo  '  collage = '.$coll; 
+        //echo  '  ID = '.$id; 
     }
 
     /**
@@ -281,45 +212,6 @@ class AuthLDAP {
         $str=str_replace($metaChars,$quotedMetaChars,$str); //replace them
         return ($str);  
     }
-    
-    /*private function _get_role_level($role_name) {
-        foreach($this->roles as $level => $name) {
-            if(strtolower($name) == $role_name) {
-                return $level;
-            }
-        }
-    }*/
-    
-     /**
-     * @access private
-     * @param string $username
-     * @return int
-     */
-     /*private function _get_role($username) {        
-        $filter = '(&('.$this->member_attribute.'='.$username.')'.$this->role_filter.')';
-        $role = '';
-        
-        foreach($this->group_search_base as $gsb) {
-            $search = ldap_search($this->ldapconn, $gsb, $filter, array('cn'));
-            if($search) {
-                $results = ldap_get_entries($this->ldapconn, $search);
-                if($results['count'] != 0) {                    
-                    for($i = 0; $i < $results['count']; $i++) {
-                        $role = $results[$i]['cn'][0];
-                        if($role) {
-                            return $this->_get_role_level(strtolower($role));
-                        }
-                    }
-                }else {
-                    log_message('error', "Error finding any groups");
-                    show_error("Group search successful but no memberships were found");
-                }
-            }
-        }     
-        log_message('error', "Error searching for group:".ldap_error($this->ldapconn));
-        show_error('Couldn\'t find groups: '.ldap_error($this->ldapconn));
-        return false;
-    }*/
 }
 
 ?>

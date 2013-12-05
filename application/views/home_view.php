@@ -76,7 +76,7 @@
 					echo form_open('gerss/login_validation', $form_attributes);
 
 					$username_attributes = 
-						array('name'=>'email','class'=>'input-medium','id'=>'email','placeholder'=>'Email');
+						array('name'=>'username','class'=>'input-medium','id'=>'username','placeholder'=>'Student ID');
 					echo form_input($username_attributes);
 				
 					$password_attributes = 

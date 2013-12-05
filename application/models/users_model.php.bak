@@ -1,50 +1,96 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Users_model extends CI_Model {
-/*
+
 	public function set_user_session(){
-		$username = $this->input->post('username');
-		$user_type = $this->get_single_user_type('users',$username);
+		$email = $this->input->post('email');
+		$user_type = $this->get_single_user_type('users',$email);
 
 		$data = array (
-				'username'=>$username,
+				'email'=>$email,
 				'is_logged_in' => 1,
 				'role'=>$user_type
 			);
 		$this->session->set_userdata($data);
 	}
-*/
+
 	public function can_log_in(){
-		//$this->db->where('username',md5($this->input->post('username')));
-		$this->db->where('username',($this->input->post('username')));
+		$this->db->where('email',$this->input->post('email'));
+		$this->db->where('password',md5($this->input->post('password')));
 		$query = $this->db->get('users');
 
 		if($query->num_rows==1){
-			return true;
-		} else {
-			return false;
+			$user_record=$query->row();
+			if($user_record->status=='Enabled')
+				return true;
+			else
+				return false;
 		}
+		else
+			return false;
 	}
-	
-	//Add User To USERS Table
-	public function add_user(){
+
+	public function add_temp_user($key){
 		$data = array (
-			//'usertype'=>$this->input->post('type'),
-			//'firstname'=>$this->input->post('firstname'),
-			//'lastname' =>$this->input->post('lastname'),
-			//'department'=>$this->input->post('department'),
-			'id' => $this->input->post('id'),
+			'usertype'=>$this->input->post('type'),
+			'firstname'=>$this->input->post('firstname'),
+			'lastname' =>$this->input->post('lastname'),
+			'department'=>$this->input->post('department'),
+			'email' => $this->input->post('email'),
+			'password'=>md5($this->input->post('password')),
 			'category'=>$this->input->post('category'),
 			'title'=>$this->input->post('project_title'),
 			'description'=>$this->input->post('project_desc'),
+			'key' => $key
 		);
+
+		$query = $this->db->insert('temp_users',$data);
+		if($query){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	/*//Valid Key
+	public function is_key_valid($key){
+		$this->db->where('key', $key);
+		$query = $this->db->get('temp_users');
+		
+		if ($query->num_rows() == 1){
+			return true;
+		}else return false;
+	}*/
+	
+	//Add User To USERS Table
+	public function add_user($key){
+		$this->db->where('key', $key);
+		$temp_user = $this->db->get('temp_users');
+		
+		if ($temp_user->num_rows() == 1){
+			$row = $temp_user->row();
+			
+			$data = array(
+				'email' => $row->email,
+				'password'=>$row->password,
+				'key' => $row->key,
+				'firstname'=>$row->firstname,
+				'lastname' =>$row->lastname,
+				'department'=>$row->department,
+				'title'=>$row->title,
+				'description'=>$row->description,
+				'usertype'=>$row->usertype,
+				'category'=>$row->category
+				);
 				
-		$did_add_user = $this->db->insert('users', $data);
-			if($did_add_user){
-				return true;
-			}else{
-				return false;
-			}
+				$did_add_user = $this->db->insert('users', $data);
+		}
+		if($did_add_user){
+			$this->db->where('key', $key);
+			$this->db->delete('temp_users');
+			return true;
+		}return false;
 	}
 
 	
@@ -58,7 +104,8 @@ class Users_model extends CI_Model {
 
 
 	public function get_user_by_username($username){
-		$this->db->where('username',$username);
+		$email=$username."@";
+		$this->db->like('email',$email);
 		$sql = $this->db->get('users');
 		return $sql->row_array();
 	}
@@ -71,7 +118,8 @@ class Users_model extends CI_Model {
 				'firstname'=>$this->input->post('firstname'),
 				'lastname' =>$this->input->post('lastname'),
 				'department'=>$this->input->post('department'),
-				'username' => $this->input->post('username')
+				'email' => $this->input->post('email'),
+				'password'=>md5($this->input->post('password'))
 				);
 				
 		$did_add_user = $this->db->insert('users', $data);
@@ -84,18 +132,17 @@ class Users_model extends CI_Model {
 	}
 
 	public function add_participant(){
-		$this->load->library('authldap');
 		$data = array(
 				'usertype'=>$this->input->post('type'),
 				'firstname'=>$this->input->post('firstname'),
 				'lastname' =>$this->input->post('lastname'),
 				'department'=>$this->input->post('department'),
-				//'username'=>md5($this->input->post('userid')),
-				'username'=>($this->input->post('userid')),
+				'email' => $this->input->post('email'),
+				'password'=>md5($this->input->post('password')),
 				);
-
-			$did_add_user = $this->db->insert('users', $data);
-			$participant_id = mysql_insert_id();
+				
+		$did_add_user = $this->db->insert('users', $data);
+		$participant_id = mysql_insert_id();
 
 		if($did_add_user){
 			$data = array(
@@ -170,9 +217,8 @@ class Users_model extends CI_Model {
 	}
 
 	//Returns a user's type (participant, judge, admin, score_entry) based on their email.
-	public function get_single_user_type($table_name,$username){
-		//$sql = $this->db->get_where($table_name,array('username'=>md5($username)));
-		$sql = $this->db->get_where($table_name,array('username'=>$username));
+	public function get_single_user_type($table_name,$user_email){
+		$sql = $this->db->get_where($table_name,array('email'=>$user_email));
 		$user_record = $sql -> row();
 		return $user_record -> usertype;
 	}
@@ -187,10 +233,10 @@ class Users_model extends CI_Model {
 	public function update_user($id){
 		$data = array(
 				'usertype'=>$this->input->post('type'),
-				//'firstname'=>$this->input->post('firstname'),
-				//'lastname' =>$this->input->post('lastname'),
-				//'department'=>$this->input->post('department'),
-				//'username' => $this->input->post('userid')
+				'firstname'=>$this->input->post('firstname'),
+				'lastname' =>$this->input->post('lastname'),
+				'department'=>$this->input->post('department'),
+				'email' => $this->input->post('email')
 				);
 
 		$this->db->where('id',$id);
@@ -206,10 +252,11 @@ class Users_model extends CI_Model {
 	public function update_participant($id){
 		$data = array(
 				'usertype'=>$this->input->post('type'),
-				//'firstname'=>$this->input->post('firstname'),
-				//'lastname' =>$this->input->post('lastname'),
-				//'department'=>$this->input->post('department'),
-				//'username' => $this->input->post('username')
+				'firstname'=>$this->input->post('firstname'),
+				'lastname' =>$this->input->post('lastname'),
+				'department'=>$this->input->post('department'),
+				'email' => $this->input->post('email'),
+				'password'=>md5($this->input->post('password')),
 				);
 		
 		$this->db->where('id',$id);
@@ -232,7 +279,6 @@ class Users_model extends CI_Model {
 	}
 
 	public function get_participant_info(){
-		//echo "get_participant_info";
 		$this->db->select('*');
 		$this->db->from('participants');
 		$this->db->join('projects', 'participants.project_id = projects.project_id');
@@ -242,7 +288,7 @@ class Users_model extends CI_Model {
 
 		return $sql->result();
 	}
-//NOTE: Missing in Plamen's.
+
 	public function get_selected_project_info($project_id){
 		$this->db->where('projects.project_id',$project_id);
 		$this->db->from('projects');
@@ -264,7 +310,7 @@ class Users_model extends CI_Model {
 
 		return $sql->result();
 	}
-//NOTE: Missing in Plamen's
+
 	public function filter_projects_by_category($category_name){
 		$this->db->where('category',$category_name);
 		$this->db->from('projects');

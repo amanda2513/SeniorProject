@@ -47,25 +47,17 @@ class Auth extends CI_Controller {
             $rules = $this->form_validation;
             $rules->set_rules('username', 'Username', 'required|alpha_dash');
             $rules->set_rules('password', 'Password', 'required');
-
+       
             // Do the login...
             if($rules->run() && $this->authldap->login(
                     $rules->set_value('username'),
                     $rules->set_value('password'))) {
+                    
+                    //redirect ('gerss/projects_participants');
+                    echo "HELLO";
                 // Login WIN!
                 if($this->session->flashdata('tried_to')) {
-                    redirect($this->session->flashdata('tried_to'));
-                }else {
-                /*$this->load->view('auth/success_view', array(
-                    'username' => $this->session->userdata('username'), 
-                    'role_name' => $this->session->userdata('role_name'),
-                    'role_level' => $this->session->userdata('role_level'),
-                    'logged_in' => $this->session->userdata('logged_in'),
-                    'name' => $this->session->userdata('name'),
-                    'id' => $this->session->userdata('session_id'),
-                    'user_agent' => $this->session->userdata('user_agent')
-                  )
-                );*/
+                    redirect($this->session->flashdata('tried_to'));    
                 }
             }else {
                 // Login FAIL
@@ -76,8 +68,6 @@ class Auth extends CI_Controller {
                 // Already logged in...
                 $this->load->view('auth/success_view', array(
                     'username' => $this->session->userdata('username'), 
-                    'role_name' => $this->session->userdata('role_name'),
-                    'role_level' => $this->session->userdata('role_level'),
                     'logged_in' => $this->session->userdata('logged_in'),
                     'name' => $this->session->userdata('name'),
                     'id' => $this->session->userdata('session_id'),

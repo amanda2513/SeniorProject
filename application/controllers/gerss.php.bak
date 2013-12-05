@@ -7,14 +7,7 @@ class Gerss extends CI_Controller {
 		$this->home();
 	}
 //-----------------PAGES-------------------------//
-/*
-	echo $this->session->userdata('fn');
-		echo " ";  |is_unique[users.username]
-		echo $this->session->userdata('ln');
-		echo " ";
-		echo $this->session->userdata('coll');
-		//$this->users_model->set_user_session();
-*/
+
 //-----------------HOME PAGE---------------------//
 	public function home(){
 		$data['title']="WSU-GERSS :: Home";
@@ -24,37 +17,32 @@ class Gerss extends CI_Controller {
 		$data['in_registration_period'] = $data['settings']['reg_cutoff_date'] < date('m/d/y');
 		$this->load->view('home_view',$data);
 	}
-	
-	public function login_validation($errorMsg = NULL){
-		$this->session->keep_flashdata('tried_to');
+
+	public function login_validation(){
 		$this->load->library('form_validation');
-		$this->load->library('authldap');
-		$this->load->model('users_model');
-		
-		$rules = $this->form_validation;
-		$rules->set_rules('username', '', 'required|trim|xss_clean');
-		$rules->set_rules('password','','required|trim');
-		
-		
-		if($rules->run() && $this->authldap->login($rules->set_value('username'), $rules->set_value('password'))){
-			if(	$this->users_model->can_log_in()){
-				redirect('gerss/projects_participants');
-			}else{
-				redirect('gerss/registration?type=0');
-			}
+
+		$this->form_validation->set_rules('email', '', 'required|trim|xss_clean|callback_validate_credentials');
+		$this->form_validation->set_rules('password','','required|md5|trim');
+
+		if ($this->form_validation->run()){
+			
+			$this->load->model('users_model');
+			$this->users_model->set_user_session();
+
+			redirect('gerss/projects_participants');
 		}
 		else {
 			$redirect= $this->session->set_flashdata('errors', validation_errors());
 
 			$data['title']="WSU-GERSS :: Home";
-			redirect($this->input->post('redirect'));	
+			redirect($this->input->post('redirect'));
 		}
 	}
-	
-	//public function validate_credentials() {
-		//$this->load->model('users_model');
-		//return $this->users_model->can_log_in();
-	//}
+
+	public function validate_credentials() {
+		$this->load->model('users_model');
+		return $this->users_model->can_log_in();
+	}
 
 //---------------REGISTRATION-------------------------------//
 	public function registration() {
@@ -71,7 +59,9 @@ class Gerss extends CI_Controller {
 		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
-		$this->form_validation->set_rules('userid', 'Username', 'required|trim|xss_clean|is_unique[users.username]');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
+		$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]|callback_password_check');
+		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
 
 		if($this->input->post('type')=='participant')
 		{
@@ -79,8 +69,9 @@ class Gerss extends CI_Controller {
 			$this->form_validation->set_rules('project_title', 'Project Title', 'required|trim');
 			$this->form_validation->set_rules('project_desc', 'Project Description', 'required|trim|callback_limit_words');
 		}
+
 		
-		$this->form_validation->set_message('is_unique', "User ".$this->session->userdata('username')." is already registered.");
+		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
 		if ($this->form_validation->run()){
 			if($this->input->post('type')=='participant'){
@@ -124,6 +115,13 @@ class Gerss extends CI_Controller {
 		}
 	}
 
+//----------------CHECK FOR VALID WSU EMAIL ADDRESS-------------//	
+	public function valid_domain($str){
+		if (stristr($str,'@wayne.edu') !== false) return true;
+			$this->form_validation->set_message(__FUNCTION__, "$str is not a valid WSU email address.");
+	  	return FALSE;
+	}
+
 //----------------LIMIT DESCRIPTION TO 250 WORDS-------------//	
 	public function limit_words($str){
 		$this->load->helper('text');
@@ -132,6 +130,26 @@ class Gerss extends CI_Controller {
 		$this->form_validation->set_message(__FUNCTION__, "Description should not exceed 250 words.");
 	  	return false;
 	}
+
+//----------------PASSWORD CHECK-------------//	
+public function password_check($str)
+{
+   if (preg_match('#[0-9]#', $str) && preg_match('#[a-zA-Z]#', $str)) return TRUE;
+   $this->form_validation->set_message(__FUNCTION__, "Your password should contain a number and a letter.");
+   return FALSE;
+}
+/* Require number,letter,and special characters
+if (!preg_match ("/[&@<>%\*\,\^!#$%().]/i", $str))
+
+    {
+        $this->form_validation->set_message('password_check', 'Your password should contain a number,letter,and special characters"');
+        return FALSE;
+    }
+    else
+    {
+        return TRUE;
+    }}
+*/
 
 //----------------PROJECTS PAGE-----------------------------//
 	public function projects_participants(){

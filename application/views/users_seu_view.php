@@ -129,8 +129,8 @@
 					if(!empty($score_entry_user)){
 						foreach($score_entry_user as $row){
 							
-							$parts=explode("@",$row->email);
-							$username=$parts[0];
+							$parts=$row->username;
+							$username=$parts;
 
 							echo 
 

@@ -127,18 +127,19 @@ class Manage_users extends CI_Controller {
 		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
-		$this->form_validation->set_rules('userid', 'Username', 'required|trim');
-
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]|callback_valid_domain');
+		$this->form_validation->set_rules('password', 'Password', 'required|trim');
+		$this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|trim|matches[password]');
 		if($this->input->post('type')=='participant'){
 			$this->form_validation->set_rules('category', 'Category', 'required|trim');
 		}
 
-		$this->form_validation->set_message('is_unique', "User ".$this->session->userdata('username')." is already registered.");
+		$this->form_validation->set_message('is_unique', "That email address already exists.");
 		
 		if ($this->form_validation->run()){
 
 			$this->load->model('users_model');
-			$username = $this->input->post('username');
+			$email = $this->input->post('email');
 
 			if($this->input->post('type')=='participant'){
 				$this->users_model->add_participant();
@@ -220,7 +221,7 @@ class Manage_users extends CI_Controller {
 		$this->form_validation->set_rules('firstname','First Name', 'required|trim');
 		$this->form_validation->set_rules('lastname','Last Name', 'required|trim');
 		$this->form_validation->set_rules('department','Department','required|trim');
-		$this->form_validation->set_rules('userid', 'Username', 'required|trim');
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|callback_valid_domain');
 				
 		
 		
@@ -229,7 +230,7 @@ class Manage_users extends CI_Controller {
 			$id=$this->uri->segment(5);
 
 			$this->load->model('users_model');
-			$username = $this->input->post('username');
+			$email = $this->input->post('email');
 
 			if ($this->input->post('type')=='participant'){
 				$this->users_model->update_participant($id);
@@ -346,7 +347,7 @@ class Manage_users extends CI_Controller {
 	public function enable_all(){
 		if ($this->session->userdata('is_logged_in') && $this->session->userdata('role')=='admin'){
 			$role = $this->uri->segment(3);
-			
+
 			$this->load->model('users_model');
 			$this->users_model->change_role_status($role,'Enabled');
 			

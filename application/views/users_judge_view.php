@@ -129,8 +129,8 @@
 					if(!empty($judge)){
 						foreach($judge as $row){
 							
-							$parts=explode("@",$row->email);
-							$username=$parts[0];
+							$parts=$row->username;
+							$username=$parts;
 
 							echo 
 

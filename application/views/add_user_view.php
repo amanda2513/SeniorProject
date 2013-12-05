@@ -133,6 +133,13 @@
 							<p class="text-center muted"><small>Basic Information: All Fields Are Required</small></p>
 
 							<input type="hidden" name="type" id="type" value="<?php echo $selected_type?>">
+							
+							<div class="control-group">
+			    				<label class="control-label" for="userid">UserID:</label>
+			    				<div class="controls inline" name="userid">
+			    					<input type="text" name="userid" class="input-large" placeholder="UserID"/>
+			    				</div>
+			    			</div>
 
 			    			<div class="control-group">
 			    				<label class="control-label" for="full_name">Name:</label>
@@ -151,28 +158,6 @@
 										<option value="English">English</option>
 										<option value="Science">Science</option>
 									</select>
-								</div>
-							</div>
-
-
-							<div class="control-group">
-								<label class="control-label" for="email">WSU Email:</label>
-								<div class="controls">
-									<input type="email" name="email" class="input-large" id="email" placeholder="Email" action="<?php echo $this->input->post('email');?>">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="password">Temporary Password:</label>
-								<div class="controls">
-									<input type="password" name="password" class="input-large" id="password" placeholder="Password">
-								</div>
-							</div>
-
-							<div class="control-group">
-								<label class="control-label" for="cpassword">Confirm Temporary Password:</label>
-								<div class="controls">
-									<input type="password" name="cpassword" class="input-large" id="confirm_password" placeholder="Password">
 								</div>
 							</div>
 						</div><!--close left span-->

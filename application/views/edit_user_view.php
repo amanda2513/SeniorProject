@@ -29,6 +29,7 @@
 	</script>
 </head>
 <body>
+
 	<div class="page-header" id="wsu_header">
 		<div class="row-fluid">
 			<div class="span12">
@@ -150,7 +151,6 @@
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
-
 						<?php
 						//Change form layout based on registration type
 						//start form's left column
@@ -166,45 +166,27 @@
 							<input type="hidden" name="type" id="hidden_type" value="<?php echo $selected_type;?>">
 
 			    			<div class="control-group">
+								<label class="control-label" for="userid">User ID:</label>
+								<div class="controls">
+									<input type="text" name="userid" class="input-large" id="userid" placeholder="UserID" value="<?php echo set_value('userid',$user_data['username']);?>" readonly>
+								</div>
+							</div>
+							
+							<div class="control-group">
 			    				<label class="control-label" for="full_name">Name:</label>
 			    				<div class="controls inline" name="full_name">
-			    					<input type="text" name="firstname" class="input-large" placeholder="First Name" value="<?php echo set_value('firstname',$user_data['firstname']);?>"/>
-			    					<input type="text" name="lastname" class="input-large" placeholder="Last Name"value="<?php echo set_value('lastname',$user_data['lastname']);?>"/>
+									<input type="text" name="firstname" class="input-large" id="firstname" placeholder="Firstname" value="<?php echo set_value('firstname',$user_data['firstname']);?>" readonly>                               
+			    					<input type="text" name="lastname" class="input-large" placeholder="Last Name" value="<?php echo set_value('lastname',$user_data['lastname']);?>" readonly />
 			    				</div>
 			    			</div>
-
-			    			
 
 							<div class="control-group">
 								<label class="control-label" for="department">Department:</label>
 								<div class="controls">
-									<select name="department" value="<?php echo set_value('department',$user_data['department']);?>">
-										<option value="">Select User's Department</option>
-										<?php		
-											$departments = array('Computer Science', 'English', 'Science');
-
-											foreach($departments as $department){
-												if($user_data['department'] == $department){
-										 			$selected="selected='selected'";
-											 	}
-											 	else{
-											 		$selected = "";
-											 	}
-											 	echo '<option value="'.$department.'"'.$selected.'>'.$department.'</option>';
-										 	}
-										?>
-									</select>
+									<input type="text" name="department" class="input-large" placeholder="Department" value="<?php echo set_value('department',$user_data['department']);?>" readonly />
 								</div>
 							</div>
-
-
-							<div class="control-group">
-								<label class="control-label" for="email">WSU Email:</label>
-								<div class="controls">
-									<input type="email" name="email" class="input-large" id="email" placeholder="Email" action="<?php echo $this->input->post('email');?>" value="<?php echo set_value('email',$user_data['email']);?>" readonly>
-								</div>
-							</div>
-
+							
 						</div><!--close left span-->
 
 					<?php
