@@ -37,22 +37,30 @@ class Gerss extends CI_Controller {
 		
 		
 		if($rules->run() && $this->authldap->login($rules->set_value('username'), $rules->set_value('password'))){
-			if(	$this->users_model->can_log_in() || $this->session->userdata('coll')=='Master'){
-				if($this->session->userdata('role')=='admin' || $this->session->userdata('role')=='participant'){
-					redirect(base_url().'gerss/projects_participants');
-				}
-				elseif($this->session->userdata('role')=='judge'){
-					redirect(base_url().'gerss/projects_judges');
+			if($this->users_model->is_registered()){
+				if($this->users_model->can_log_in()){
+					$this->session->set_userdata('is_logged_in',TRUE);
+					if($this->session->userdata('role')=='admin' || $this->session->userdata('role')=='participant'){
+						redirect(base_url().'gerss/projects_participants');
+					}
+					elseif($this->session->userdata('role')=='judge'){
+						redirect(base_url().'gerss/projects_judges');
+					}
+					else{
+						redirect(base_url().'scores/input');
+					}
 				}
 				else{
-					redirect(base_url().'scores/input');
+					$redirect=$this->session->set_flashdata('errors','Login has been disabled by the site admin. Please try again later.');
+					redirect(base_url()."gerss/home",$this->input->post('redirect'));
 				}
-			}else{
+			}
+			else{
 				redirect(base_url().'gerss/registration?type=0');
 			}
 		}
 		else {
-			$redirect= $this->session->set_flashdata('errors', validation_errors());
+			$redirect= $this->session->set_flashdata('credentials_error', validation_errors());
 
 			$data['title']="WSU-GERSS :: Home";
 			redirect($this->input->post('redirect'));	

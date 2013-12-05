@@ -14,14 +14,30 @@ class Users_model extends CI_Model {
 		$this->session->set_userdata($data);
 	}
 */
-	public function can_log_in(){
+	public function is_registered(){
 		//$this->db->where('username',md5($this->input->post('username')));
 		$this->db->where('username',($this->input->post('username')));
 		$query = $this->db->get('users');
 
 		if($query->num_rows==1){
 			return true;
-		} else {
+		} 
+		else{
+			return false;
+		}
+	}
+
+	public function can_log_in(){
+		//$this->db->where('username',md5($this->input->post('username')));
+		$this->db->where('username',($this->input->post('username')));
+		$query = $this->db->get('users');
+		$user_record = $query->row();
+		$user_status = $user_record->status;
+
+		if($user_status == "Enabled"){
+			return true;
+		} 
+		else{
 			return false;
 		}
 	}

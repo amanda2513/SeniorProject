@@ -95,14 +95,17 @@
 					</div>
 						<div class="span5">';
 		
-					if($this->session->flashdata('errors')){
+					if($this->session->flashdata('credentials_error')){
 						echo '
-								<div class="alert text-center span10 offset2 wsu_sign_in_alert" id="wsu_alert">
-									<strong>Could not validate your credentials.
-								</div>';
+							<div class="alert text-center span10 offset2 wsu_sign_in_alert" id="wsu_alert">
+								<strong>Could not validate your credentials.
+							</div>';
 		  			}
 		  			else{
-		  				echo '<p class="text-center" id="wsu_login_message">Register / Sign In</p>';
+		  				echo '
+		  					<div class="span10" id="wsu_login_message">
+		  						Register / Sign In
+		  					</div>';
 		  			}
 			
 					$form_attributes = 
@@ -110,7 +113,7 @@
 					echo form_open('gerss/login_validation', $form_attributes);
 
 					$username_attributes = 
-						array('name'=>'username','class'=>'input-medium','id'=>'username','placeholder'=>'Student ID');
+						array('name'=>'username','class'=>'input-medium','id'=>'username','placeholder'=>'WSU Access ID');
 					echo form_input($username_attributes);
 				
 					$password_attributes = 

@@ -67,16 +67,16 @@ class AuthLDAP {
          */
         $this->ci->load->model('users_model');
         if($username=='masteradmin'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'is_logged_in' => 'TRUE','fn'=>'master', 'ln'=>'admin', 'coll'=>'Master', 'role'=>'admin'));
+            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'admin', 'coll'=>'Master', 'role'=>'admin'));
         }
         elseif($username=='masterjudge'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'is_logged_in' => 'TRUE','fn'=>'master', 'ln'=>'judge', 'coll'=>'Master','role'=>'judge'));
+            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'judge', 'coll'=>'Master','role'=>'judge'));
         }
         elseif($username=='masterscorer'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'is_logged_in' => 'TRUE','fn'=>'master', 'ln'=>'scorer', 'coll'=>'Master', 'role'=>'seu'));
+            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'scorer', 'coll'=>'Master', 'role'=>'seu'));
         }
         elseif($username=='masterparticipant'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'is_logged_in' => 'TRUE','fn'=>'master', 'ln'=>'participant', 'coll'=>'Master','role'=>'participant'));
+            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'participant', 'coll'=>'Master','role'=>'participant'));
         }
         else
         {
@@ -87,7 +87,6 @@ class AuthLDAP {
             // Set the session data
             $customdata = array('username' => $username,
                                 'cn' => $user_info['cn'],
-                                'is_logged_in' => TRUE,
                                 'role'=>$user_type
                                 );
         
@@ -174,12 +173,13 @@ class AuthLDAP {
         }
 
         if(empty($binddn)) {
-            show_error("Error looking up DN for ".$username.": ".ldap_error($this->ldapconn));
+            $redirect=$this->ci->session->set_flashdata('credentials_error','Could not validate your credentials');
+            redirect(base_url()."gerss/home".$this->ci->input->post('redirect'));
         }
         // Now actually try to bind as the user
         $bind = ldap_bind($this->ldapconn, $binddn, $password);
         if(!$bind){         
-            $redirect=$this->ci->session->set_flashdata('errors','Error Binding');
+            $redirect=$this->ci->session->set_flashdata('credentials_error','Could not validate your credentials');
             redirect(base_url()."gerss/home".$this->ci->input->post('redirect'));
         }
         $cn = $entries[0]['cn'][0];
