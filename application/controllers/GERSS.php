@@ -101,7 +101,7 @@ class Gerss extends CI_Controller {
 		$this->load->model('users_model'); 
 		
 		if($this->users_model->admin_add_user()){
-			$redirect=$this->session->set_flashdata('success','You have been registered. You can now login with your WSU credentials.');
+			$redirect=$this->session->set_flashdata('success','You have been registered.');
 			redirect($this->input->post('redirect'));
 		}
 		else{
