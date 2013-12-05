@@ -76,7 +76,12 @@ class Settings extends CI_Controller {
 					$this->edit_category(urldecode($this->uri->segment(4)));
 					break;
 				case 'delete':
-					if($this->category_settings_model->delete_category($this->uri->segment(4))){
+					if($this->category_settings_model->is_category_used($this->uri->segment(4))){
+						$redirect=$this->session->set_flashdata('errors','Cannot delete it at this time. A project is registered under that category.');
+						redirect(base_url()."settings/categories",$this->input->post('redirect'));
+					}
+					else{
+						$this->category_settings_model->delete_category($this->uri->segment(4));
 						$redirect=$this->session->set_flashdata('success','Project Category Deleted');
 						redirect(base_url()."settings/categories",$this->input->post('redirect'));
 					}
@@ -125,6 +130,8 @@ class Settings extends CI_Controller {
 
 	public function edit_category_validation(){
 		if ($this->session->userdata('is_logged_in')&&$this->session->userdata('role')=='admin'){
+
+			$this->load->library('form_validation');
 
 			$this->form_validation->set_rules('category_name','Category Name','required|trim|xss_clean');
 

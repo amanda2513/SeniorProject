@@ -46,6 +46,23 @@ class Category_settings_model extends CI_Model {
 		return false;
 	}
 
+	public function is_category_used($category_id){
+		$this->db->where('cat_id',$category_id);
+		$sql = $this->db->get('categories');
+		$result = $sql -> row();
+
+		$this->db->where('category',$result->category);
+		$sql = $this->db->get('projects');
+
+		if($sql->num_rows>=1){
+			return true;
+		}
+		else{
+			return false;
+		}
+
+	}
+
 	public function add_subcategory($cat_id,$subcategory){
 		$data = array(
 				'cat_id'=>$cat_id,
