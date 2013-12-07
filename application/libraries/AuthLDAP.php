@@ -30,8 +30,11 @@ class AuthLDAP {
         // Verify that the LDAP extension has been loaded/built-in
         // No sense continuing if we can't
         if (! function_exists('ldap_connect')) {
-            show_error('LDAP functionality not present.  Either load the module ldap php module or use a php with ldap support compiled in.');
+            //show_error('LDAP functionality not present.  Either load the module ldap php module or use a php with ldap support compiled in.');
             log_message('error', 'LDAP functionality not present in php.');
+            $redirect=$this->ci->session->set_flashdata('errors','Server Error: Cannot sign in or register at this time.');
+            redirect(base_url()."gerss/home".$this->ci->input->post('redirect'));
+
         }
 
         $this->ldap_uri            = $this->ci->config->item('ldap_uri');
