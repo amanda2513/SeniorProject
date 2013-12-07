@@ -153,11 +153,10 @@ class Manage_users extends CI_Controller {
 			if ($this->form_validation->run()){
 
 				$this->load->library('authldap');
-				$username = $this->input->post('userid');
-				$ldap_info= $this->authldap->get_ldap_info($username);
+				$ldap_info= $this->authldap->get_ldap_info($this->input->post('userid'));
 				
-				if($ldap_info == "Not a valid WSU Access ID"){
-					$redirect=$this->session->set_flashdata('errors',$ldap_info);
+				if($ldap_info == false){
+					$redirect=$this->session->set_flashdata('errors','Not a Valid WSU Access ID');
 					redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
 				}
 				else{

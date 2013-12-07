@@ -91,7 +91,7 @@
 			if($user_type=='seu'||$user_type=='admin'){
 				$message="";
 				if($scoring_requirements['all_projects_assigned']!=1){
-					$message=$message." Not all projects have been assigned. ";
+					$message=$message." Not all projects have been assigned judges. ";
 				}
 				if($scoring_requirements['exhibition_started']!=1){
 					$message=$message." The exhibition has not started.";

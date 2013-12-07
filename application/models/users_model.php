@@ -83,15 +83,26 @@ class Users_model extends CI_Model {
 	//Admin adds a user, skips temp-users table
 	public function admin_add_user($ldap_info){
 		$username = $this->input->post('userid');
-		
-		$data = array(
+		if(isset($ldap_info)){
+			$data = array(
+					'usertype'=>$this->input->post('type'),
+					'firstname'=>$ldap_info['fn'],
+					'lastname' =>$ldap_info['ln'],
+					'department'=>$ldap_info['coll'],
+					//'username'=>md5($this->input->post('userid')),
+					'username'=>$username,
+					);
+		}
+		else{
+			$data = array(
 				'usertype'=>$this->input->post('type'),
-				'firstname'=>$ldap_info['fn'],
-				'lastname' =>$ldap_info['ln'],
-				'department'=>$ldap_info['coll'],
-				//'username'=>md5($this->input->post('userid')),
-				'username'=>$username,
+ 				'firstname'=>$this->input->post('firstname'),
+ 				'lastname' =>$this->input->post('lastname'),
+ 				'department'=>$this->input->post('department'),
+ 				//'username'=>md5($this->input->post('userid')),
+				'username'=>($this->input->post('userid')),
 				);
+		}
 				
 		$did_add_user = $this->db->insert('users', $data);
 
@@ -106,7 +117,8 @@ class Users_model extends CI_Model {
 
 		$username = $this->input->post('userid');
 
-		$data = array(
+		if(isset($ldap_info)){
+			$data = array(
 				'usertype'=>$this->input->post('type'),
 				'firstname'=>$ldap_info['fn'],
 				'lastname' =>$ldap_info['ln'],
@@ -114,9 +126,20 @@ class Users_model extends CI_Model {
 				//'username'=>md5($this->input->post('userid')),
 				'username'=>$username,
 				);
+		}
+		else{
+			$data = array(
+				'usertype'=>$this->input->post('type'),
+ 				'firstname'=>$this->input->post('firstname'),
+ 				'lastname' =>$this->input->post('lastname'),
+ 				'department'=>$this->input->post('department'),
+ 				//'username'=>md5($this->input->post('userid')),
+				'username'=>($this->input->post('userid')),
+				);
+		}
 
-			$did_add_user = $this->db->insert('users', $data);
-			$participant_id = mysql_insert_id();
+		$did_add_user = $this->db->insert('users', $data);
+		$participant_id = mysql_insert_id();
 
 		if($did_add_user){
 			$data = array(

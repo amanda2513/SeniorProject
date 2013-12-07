@@ -284,8 +284,10 @@ class AuthLDAP {
             }
         }
 
+        print_r($ldap_data);
+
         if(empty($binddn)) {
-            return 'Not a valid WSU Access ID';
+            return FALSE;
         }
         else{
             return $ldap_data;
