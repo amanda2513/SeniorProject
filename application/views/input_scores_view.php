@@ -259,8 +259,10 @@
 		
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="<?php echo base_url()."scores/input"?>">Input Scores</a></li>
-			<li><a href="<?php echo base_url()."scores/view"?>">View Scores</a></li>
-			<?php
+			<?php 
+				if($this->session->userdata('role') != 'judge'){
+					echo '<li><a href="<?php echo base_url()."scores/view"?>">View Scores</a></li>';
+				}
 				if($this->uri->segment(3)){
 					echo'<a href="'.base_url().'scores/input" class="btn wsu_btn pull-right">Change Judge & Participant</a>';
 				}

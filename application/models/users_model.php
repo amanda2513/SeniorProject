@@ -14,9 +14,9 @@ class Users_model extends CI_Model {
 		$this->session->set_userdata($data);
 	}
 */
-	public function is_registered(){
+	public function is_registered($username){
 		//$this->db->where('username',md5($this->input->post('username')));
-		$this->db->where('username',($this->input->post('username')));
+		$this->db->where('username',$username);
 		$query = $this->db->get('users');
 
 		if($query->num_rows==1){
@@ -83,7 +83,7 @@ class Users_model extends CI_Model {
 	//Admin adds a user, skips temp-users table
 	public function admin_add_user($ldap_info){
 		$username = $this->input->post('userid');
-		if(isset($ldap_info)){
+		if($ldap_info!=""){
 			$data = array(
 					'usertype'=>$this->input->post('type'),
 					'firstname'=>$ldap_info['fn'],

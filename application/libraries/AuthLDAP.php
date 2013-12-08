@@ -84,8 +84,12 @@ class AuthLDAP {
         else
         {
             $user_info = $this->_authenticate($username,$password);
-        
-            $user_type = $this->ci->users_model->get_single_user_type('users',$username);
+            if($this->ci->users_model->is_registered($username)){
+                $user_type = $this->ci->users_model->get_single_user_type('users',$username);
+            }
+            else{
+                $user_type = '';
+            }
             
             // Set the session data
             $customdata = array('username' => $username,

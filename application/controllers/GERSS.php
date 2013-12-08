@@ -40,10 +40,12 @@ class Gerss extends CI_Controller {
 		$rules = $this->form_validation;
 		$rules->set_rules('username', '', 'required|trim|xss_clean');
 		$rules->set_rules('password','','required|trim');
+
+		$username = $this->input->post('username');
 		
 		
 		if($rules->run() && $this->authldap->login($rules->set_value('username'), $rules->set_value('password'))){
-			if($this->users_model->is_registered()){
+			if($this->users_model->is_registered($username)){
 				if($this->users_model->can_log_in()){
 					$this->session->set_userdata('is_logged_in',TRUE);
 					if($this->session->userdata('role')=='admin' || $this->session->userdata('role')=='participant'){
@@ -134,8 +136,9 @@ class Gerss extends CI_Controller {
 //----------------REGISTER USER----------------------------//	
 	public function register_user(){
 		$this->load->model('users_model'); 
+		$ldap_info ="";
 		
-		if($this->users_model->admin_add_user()){
+		if($this->users_model->admin_add_user($ldap_info)){
 			$this->load->model('users_model');
 			$user_type = $this->users_model->get_single_user_type('users',$this->session->userdata('username'));
 			$this->session->set_userdata('role',$user_type);
@@ -152,8 +155,8 @@ class Gerss extends CI_Controller {
 
 	public function register_participant(){
 		$this->load->model('users_model'); 
-		
-		if($this->users_model->add_participant()){
+		$ldap_info ="";
+		if($this->users_model->add_participant($ldap_info)){
 			$this->load->model('users_model');
 			$user_type = $this->users_model->get_single_user_type('users',$this->session->userdata('username'));
 			$this->session->set_userdata('role',$user_type);
