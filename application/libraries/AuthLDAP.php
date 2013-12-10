@@ -129,7 +129,8 @@ class AuthLDAP {
      * @param string $password
      * @return array 
      */
-    private function _authenticate($username, $password) {        
+    private function _authenticate($username, $password) {    
+        error_reporting(0);    
         foreach($this->ldap_uri as $uri) {
             $this->ldapconn = ldap_connect($uri);
             if($this->ldapconn) {
