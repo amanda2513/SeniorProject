@@ -130,7 +130,7 @@
 
 		<form class="form-horizontal" name="general_settings" id="general_settings" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/general_settings_form";?>'>
 			<div class="row-fluid">
-				<div class="span6 offset3">
+				<div class="span8 offset2">
 
 					<div class="row-fluid">
 						<div class="span2">
@@ -148,6 +148,7 @@
 						<label class="control-label" for="welcome">Welcome Message: </label>
 						<div class="controls" name="welcome">
 							<textarea size="16" rows="5" type="text" id="home_msg" name="home_msg"><?php echo set_value('exhib_location',$settings['homepage_message']);?></textarea>
+							<br><small class="muted text-center">For line breaks type &lt;br&gt;</small>
 						</div>
 					</div>
 

@@ -196,8 +196,15 @@ class AuthLDAP {
         $fn = $entries[0]['givenname'][0];
         $ln = $entries[0]['sn'][0];
         $coll = $entries[0]['coll'][0];
+
+        if(array_key_exists('dept', $entries[0])){
+            $dept = $entries[0]['dept'][0];
+        }
+        else{
+            $dept="Other";
+        }
         
-        $this->ci->session->set_userdata(array('fn'=>$fn, 'ln'=>$ln, 'coll'=>$coll));
+        $this->ci->session->set_userdata(array('fn'=>$fn, 'ln'=>$ln, 'coll'=>$coll, 'dept'=>$dept));
         
         //return array('fn'=>$fn, 'ln'=>$ln, 'coll'=>$coll);
         
@@ -282,16 +289,23 @@ class AuthLDAP {
             $entries = ldap_get_entries($this->ldapconn, $search);
             if(isset($entries[0]['dn'])) {
                 $binddn = $entries[0]['dn'];
+                
+                if(array_key_exists('dept', $entries[0])){
+                    $dept = $entries[0]['dept'][0];
+                }
+                else{
+                    $dept="Other";
+                }
+
                 $ldap_data= array(
                         'fn' => $entries[0]['givenname'][0],
                         'ln' => $entries[0]['sn'][0],
-                        'coll' => $entries[0]['coll'][0]
+                        'coll' => $entries[0]['coll'][0],
+                        'dept' => $dept
                         );
                 break;
             }
         }
-
-        print_r($ldap_data);
 
         if(empty($binddn)) {
             return FALSE;

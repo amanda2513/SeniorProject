@@ -19,11 +19,16 @@
 	</script>
 	<script type="text/javascript">
 		function confirmModal(id){
-			bootbox.confirm("Are you sure you delete this?",function(result){
-				if(result){
+			bootbox.dialog("Are you sure you want to delete this?",[{
+				"label": "Delete",
+				"class":"btn wsu_btn pull-left",
+				"callback": function(){
 					window.location.href='<?php echo base_url()."manage_users/delete/admin/";?>'+id;
 				}
-			});
+			}, {
+				"label": "Cancel",
+				"class":"btn wsu_btn pull-right"
+			}]);
 		}
 	</script>
 </head>

@@ -129,9 +129,16 @@
 			    			</div>
 
 							<div class="control-group">
+								<label class="control-label" for="department">College:</label>
+								<div class="controls">
+									<input type="text" name="college" class="input-large" placeholder="College" value="<?php echo $this->session->userdata('coll');?>" readonly />
+								</div>
+							</div>
+
+							<div class="control-group">
 								<label class="control-label" for="department">Department:</label>
 								<div class="controls">
-									<input type="text" name="department" class="input-large" placeholder="Department" value="<?php echo $this->session->userdata('coll');?>" readonly />
+									<input type="text" name="department" class="input-large" placeholder="Department" value="<?php echo $this->session->userdata('dept');?>" readonly />
 								</div>
 							</div>
 							

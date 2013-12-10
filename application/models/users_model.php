@@ -88,9 +88,10 @@ class Users_model extends CI_Model {
 					'usertype'=>$this->input->post('type'),
 					'firstname'=>$ldap_info['fn'],
 					'lastname' =>$ldap_info['ln'],
-					'department'=>$ldap_info['coll'],
+					'college'=>$ldap_info['coll'],
+					'department'=>$ldap_info['dept'],
 					//'username'=>md5($this->input->post('userid')),
-					'username'=>$username,
+					'username'=>$username
 					);
 		}
 		else{
@@ -98,9 +99,10 @@ class Users_model extends CI_Model {
 				'usertype'=>$this->input->post('type'),
  				'firstname'=>$this->input->post('firstname'),
  				'lastname' =>$this->input->post('lastname'),
+ 				'college'=>$this->input->post('college'),
  				'department'=>$this->input->post('department'),
  				//'username'=>md5($this->input->post('userid')),
-				'username'=>($this->input->post('userid')),
+				'username'=>($this->input->post('userid'))
 				);
 		}
 				
@@ -117,12 +119,13 @@ class Users_model extends CI_Model {
 
 		$username = $this->input->post('userid');
 
-		if(isset($ldap_info)){
+		if($ldap_info!=""){
 			$data = array(
 				'usertype'=>$this->input->post('type'),
 				'firstname'=>$ldap_info['fn'],
 				'lastname' =>$ldap_info['ln'],
-				'department'=>$ldap_info['coll'],
+				'college'=>$ldap_info['coll'],
+				'department'=>$ldap_info['dept'],
 				//'username'=>md5($this->input->post('userid')),
 				'username'=>$username,
 				);
@@ -132,6 +135,7 @@ class Users_model extends CI_Model {
 				'usertype'=>$this->input->post('type'),
  				'firstname'=>$this->input->post('firstname'),
  				'lastname' =>$this->input->post('lastname'),
+ 				'college'=>$this->input->post('college'),
  				'department'=>$this->input->post('department'),
  				//'username'=>md5($this->input->post('userid')),
 				'username'=>($this->input->post('userid')),

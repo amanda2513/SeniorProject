@@ -221,6 +221,13 @@
 			    				</div>
 			    			</div>
 
+			    			<div class="control-group">
+								<label class="control-label" for="college">College:</label>
+								<div class="controls">
+									<input type="text" name="college" class="input-large" placeholder="College" value="<?php echo set_value('department',$user_data['college']);?>" readonly />
+								</div>
+							</div>
+
 							<div class="control-group">
 								<label class="control-label" for="department">Department:</label>
 								<div class="controls">
