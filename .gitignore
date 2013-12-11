@@ -9,3 +9,6 @@ application/logs/*
 !application/logs/.htaccess
 
 application/config/database.php
+
+application/abstract_uploads/*
+!application/abstract_uploads/READ_ME.txt
