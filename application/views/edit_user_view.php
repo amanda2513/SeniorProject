@@ -359,8 +359,11 @@
 					}
 					echo'>';
 
-					if($judge->department == $user_data['department']){
-						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant are from the same department. Consider assigning a different judge."></i>';
+					if($judge->department == $user_data['department'] && $judge->department!='Other'){
+						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant are from the same department. Consider assigning the judge to a different project."></i>';
+					}
+					elseif($judge->department == $user_data['department'] && $judge->department =='Other'){
+						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant may be from the same department. Consider assigning the judge to a different project."></i>';
 					}
 
 					echo'
@@ -450,8 +453,11 @@
 					}
 					echo'>';
 
-					if($participant->department == $user_data['department']){
+					if($participant->department == $user_data['department'] && $participant->department!='Other'){
 						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant are from the same department. Consider assigning the judge to a different project."></i>';
+					}
+					elseif($participant->department == $user_data['department'] && $participant->department =='Other'){
+						echo ' <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Judge and Participant may be from the same department. Consider assigning the judge to a different project."></i>';
 					}
 
 					echo'

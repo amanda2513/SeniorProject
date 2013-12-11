@@ -332,7 +332,7 @@ class Settings extends CI_Controller {
 						$assigned_judges_count = $this->judge_assignment_model->count_assigned_judges($proj->project_id);
 						
 						if($assigned_judges_count < $settings['judges_per_project']){
-							if($judge->department != $participant_department){
+							if($judge->department != $participant_department || $participant_department == 'Other' || $judge->department == 'Other'){
 								$judge_project_count = $this->judge_assignment_model->count_assigned_projects($judge->id);
 								if($judge_project_count < $settings['projects_per_judge']){
 									$this->judge_assignment_model->assign_judge($proj->project_id, $judge->id);

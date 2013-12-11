@@ -309,7 +309,7 @@
 		<br>
 		<hr>
 		<div class="end_year">
-			<p><strong>Export Scores &amp; Reset System</strong></p>
+			<p><strong>Reports &amp; System Reset</strong></p>
 			<br>
 			<div class="row-fluid">
 				<div class="span12">
