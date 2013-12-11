@@ -394,4 +394,19 @@ class Settings extends CI_Controller {
 			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}
+
+	public function reset_system(){
+		if ($this->session->userdata('is_logged_in')&&$this->session->userdata('role')=='admin'){
+			$this->load->model('general_settings_model');
+			$this->general_settings_model->reset_system();
+
+			$redirect=$this->session->set_flashdata('success','The system has been reset.');
+			redirect(base_url()."settings/general",$this->input->post('redirect'));
+
+		}
+		else{
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
+		}
+	}
 }

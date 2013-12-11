@@ -36,7 +36,7 @@ class General_settings_model extends CI_Model {
 
 		//insert default data into settings db
 		$data = array(
-				'homepage_msg'=>NULL,
+				'homepage_message'=>"Welcome! We're very excited about the next Graduate Exhibition. <br> Pardon us while we set up the system. Please visit us again soon!",
 				'exhib_date'=>'0000-00-00',
 				'exhib_location'=>NULL,
 				'exhib_start' =>NULL,
@@ -107,5 +107,22 @@ class General_settings_model extends CI_Model {
 				}
 			}
 		}
+	}
+
+	public function reset_system(){
+		//delete all users that aren't admins
+		$this->db->where('usertype !=','admin');
+		$this->db->delete('users');
+
+		//truncate all tables except categories, subcategories, and subcat_criteria
+		$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+		
+		$this->db->truncate('projects');
+		$this->db->truncate('assigned_judges');
+		$this->db->truncate('participants');
+		$this->db->truncate('criteria_scores');
+		$this->db->truncate('system_settings');
+
+		$this->db->query('SET FOREIGN_KEY_CHECKS = 1');
 	}
 }

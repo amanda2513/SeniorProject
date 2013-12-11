@@ -67,7 +67,7 @@ class Gerss extends CI_Controller {
 				redirect(base_url().'gerss/registration?type=0');
 			}
 			else{
-				$redirect=$this->session->set_flashdata('credentials_error','Sorry, registration has ended.');
+				$redirect=$this->session->set_flashdata('credentials_error','Sorry, you cannot register at this time.');
 				redirect(base_url()."gerss/home",$this->input->post('redirect'));
 			}
 		}
@@ -221,8 +221,9 @@ class Gerss extends CI_Controller {
 			foreach($data['judge'] as $judge){
 				$judge->assignment_count=$this->judge_assignment_model->count_assigned_projects($judge->id);
 				$judge->assignments=$this->judge_assignment_model->get_assigned_projects($judge->id);
+
+				$data['projects']=$this->judge_assignment_model->get_judge_projects($judge->id);
 			}
-			$data['projects']=$this->judge_assignment_model->get_judge_projects($judge->id);
 			$data['title']="WSU-GERSS :: Projects";
 			$this->load->view('projects_judges_view',$data);
 		}

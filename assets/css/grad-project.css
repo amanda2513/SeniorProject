@@ -270,7 +270,7 @@ hr{
 	color: #ffffff;
 }
 
-.wsu_btn[disabled]:hover{
+.wsu_btn_danger[disabled]:hover{
 	background: #CC0000 !important;
 	color: #ffffff;
 }

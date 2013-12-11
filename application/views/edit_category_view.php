@@ -193,7 +193,7 @@
 				<div class="span12">
 
 					<div class="row-fluid">
-						<div class="span6 offset3">
+						<div class="span8 offset2">
 							<div class="span6">							
 								<button type="button" class="btn btn-medium wsu_btn span12" id="add_subcat" onclick="add_subcategory(); return false;"><i class="icon-plus"></i> Add Subcategory</button>
 							</div>
@@ -204,7 +204,7 @@
 					</div>
 
 					<div class="row-fluid">
-						<div class="span6 offset3">
+						<div class="span8 offset2">
 
 							<hr>
 							
@@ -261,7 +261,7 @@
 		    		</div>
 
 					<div class="row-fluid">
-						<div class="span6 offset3">
+						<div class="span8 offset2">
 							<div class="span6">							
 								<button type="button" class="btn btn-medium wsu_btn span12" id="add_subcat" onclick="add_subcategory(); return false;"><i class="icon-plus"></i> Add Subcategory</button>
 							</div>

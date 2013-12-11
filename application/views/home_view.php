@@ -215,7 +215,7 @@
 				echo'
 				<div class="text-center row-fluid">
              		<div class="span6 offset3">
-             			<strong class="muted"><small>Registration Period Has Ended</small></strong>
+             			<strong class="muted"><small>Sorry, you cannot register at this time.</small></strong>
 					</div>
 				</div>';
 			}

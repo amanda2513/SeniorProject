@@ -11,7 +11,7 @@ class Scores_model extends CI_Model {
 		$today = date('Y-m-d');
 
 		foreach($exhib_info as $info){
-			if( date('Y-m-d',strtotime($info['exhib_date'])) <= date('Y-m-d',strtotime($today))){
+			if( $info['exhib_date'] != '0000-00-00' && date('Y-m-d',strtotime($info['exhib_date'])) <= date('Y-m-d',strtotime($today))){
 				$exhibition_started = true;
 			}
 			else{
