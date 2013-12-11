@@ -285,7 +285,7 @@
 					<small class="muted text-center">Restrict Access</small>
 					<!--Restrict access to only admin and score entry users on/off dropdown-->
 					<div class="control-group">
-						<label class="control-label" for="restrict_access">Access to only Admin &amp; Score Entry Users</label>
+						<label class="control-label" for="restrict_access">Access to only Admin &amp; Scorers</label>
 						<div class="controls">
 							<select name="restrict_access" id="restrict_access" value="<?php echo set_value('restrict_access',$settings['restrict_access']);?>" >
 								<option value="1" <?php echo $options[1]?>>On</option>
