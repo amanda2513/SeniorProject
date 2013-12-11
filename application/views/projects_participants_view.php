@@ -176,25 +176,12 @@
 						</tr>
 						<tr class="tablesorter-childRow">
 							<td colspan="5" class="hiddenRow">'.'
-								<div class="accordian-body collapse" id="project_'.$row->project_id.'_info">
-									<div class="row-fluid hidden_row_headers">
-										<div class="span3 offset1 text-center">
-											<em>Project Title</em>
-										</div>
-										<div class="span6 offset1 text-center">
-											<em>Project Description</em>
-										</div>
-									</div>
-									<hr>
-									<div class="row-fluid">
-										<div class="span3 offset1 text-center">'.
-											$row->title .'
-										</div>
-										<div class="span6 offset1 text-center">'.
-											$row->description .'
-										</div>
-									</div>
-									<hr>
+								<div class="accordian-body collapse" id="project_'.$row->project_id.'_info">';
+									if(isset($row->abstract))
+										echo '<iframe src="'.base_url().'abstract_uploads/'.$username.'_abstract.pdf" width="100%" height="300px" seamless readonly></iframe>';
+									else
+										echo '<p class="text-center">There is no abstract for '.$row->lastname.', '.$row->firstname.'</p>';
+								echo'
 								</div>
 							</td>
 						</tr>';
