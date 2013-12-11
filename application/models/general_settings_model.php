@@ -114,6 +114,12 @@ class General_settings_model extends CI_Model {
 		$this->db->where('usertype !=','admin');
 		$this->db->delete('users');
 
+		$files = glob('abstract_uploads/*'); // get all file names
+		foreach($files as $file){ // iterate files
+			if(is_file($file))
+		    	unlink($file); // delete file
+		}
+
 		//truncate all tables except categories, subcategories, and subcat_criteria
 		$this->db->query('SET FOREIGN_KEY_CHECKS = 0');
 		

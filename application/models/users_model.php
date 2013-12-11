@@ -151,8 +151,50 @@ class Users_model extends CI_Model {
 				'title'=>$this->input->post('project_title'),
 				'description'=>$this->input->post('project_desc')
 				);
+
+			
 			$did_add_project = $this->db->insert('projects',$data);
 			$project_id = mysql_insert_id();
+
+			if($_FILES['project_abstract_pdf']['size'] > 0){
+
+	
+
+				//load library
+				$this->load->library('upload');
+
+				$fileInfo = pathinfo($_FILES["project_abstract_pdf"]["name"]);
+				$filename = $username . '_abstract.' . $fileInfo['extension'];
+
+				//Set the config
+				$config['upload_path'] = 'abstract_uploads'; //Use relative or absolute path
+				$config['allowed_types'] = 'pdf'; 
+				$config['max_size'] = '100';
+				$config['max_width'] = '1024';
+				$config['max_height'] = '768';
+				$config['overwrite'] = true; //If the file exists it will overwritten
+				$config['file_name'] = $filename;
+
+				//Initialize
+				$this->upload->initialize($config);
+
+				//Upload file
+				if( ! $this->upload->do_upload("project_abstract_pdf")){
+
+				    //echo the errors
+				    echo $this->upload->display_errors();
+				}
+
+				$path_name = 'abstract_uploads/'.$filename;
+
+				//If the upload success
+							
+
+				$this->db->where('project_id',$project_id);
+				$this->db->update('projects', array('abstract'=>$path_name));
+
+
+			}
 
 			if($did_add_project){
 				$data = array(
@@ -195,7 +237,14 @@ class Users_model extends CI_Model {
 		$did_delete_user = $this->db->delete('users');
 
 		$this->db->where('project_id',$project_id);
+		$sql = $this->db->get('projects');
+		$result = $sql->row();
+		$path_name = $result->abstract;
+
+		$this->db->where('project_id',$project_id);
 		$did_delete_user =$this->db->delete('projects');
+
+		unlink($path_name);
 
 		if($did_delete_user){
 			return true;
