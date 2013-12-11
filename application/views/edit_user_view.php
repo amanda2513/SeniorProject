@@ -184,7 +184,7 @@
 			Name, Department, Email, Password
 			Same for all users until IF statement
 		-->
-		<form class="form-horizontal" name="registration" id="registration" method="post"
+		<form class="form-horizontal" enctype="multipart/form-data" name="registration" id="registration" method="post"
 		accept-charset="utf-8" action='<?php echo base_url()."manage_users/edit_user_validation/".
 		$this->uri->segment(3).'/'.$this->uri->segment(4).'/'.$user_data['id'];?>'>
 
@@ -276,6 +276,20 @@
 										<textarea name="project_desc" class="input-xlarge" id="description" rows="10" placeholder="Abstract should not exceed 250 words">'. $project_data->description.'</textarea>
 									</div>
 								</div>
+								<div class="control-group">
+									<label class="control-label" for="project_abstract_pdf">Upload Abstract: '; 
+									if(isset($project_data->abstract)){
+											echo '<i class="icon-ok-sign wsu_tooltip" rel="tooltip" title="Abstract is already uploaded, but you can upload another to replace it."></i>';
+										}
+										else{
+											echo '<i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="There is no abstract for this user. Consider uploading one now."></i>';
+										}
+										echo '</label>
+									<div class="controls">
+										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+										<input name="project_abstract_pdf" type="file" id="abstract_pdf">
+									</div>
+								</div>
 							</div><!--close right column (participant only) span-->';
 
 						}
@@ -300,7 +314,7 @@
 
 			echo '
 			<div class="row-fluid">
-				<p class="span4 text-left"><strong>Manually Assign Judges</strong></p>
+				<p class="span4 text-left"><strong>Manually Assign Judges To This Project</strong></p>
 				<p class="span8 text-right">
 					<small class="muted">Current Settings:  Max Judges Per Project='.$judges_per_project.'  &amp;  Max Projects Per Judge='.$projects_per_judge.' </small> <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Manual assignment allows you to disregard these settings. Please use your best judgement."></i>
 				</p>
@@ -387,7 +401,7 @@
 
 			echo '
 			<div class="row-fluid">
-				<p class="span4 text-left"><strong>Manually Assign Judge</strong></p>
+				<p class="span4 text-left"><strong>Manually Assign Projects To This Judge</strong></p>
 				<p class="span8 text-right">
 					<small class="muted">Current Settings:  Max Judges Per Project='.$judges_per_project.'  &amp;  Max Projects Per Judge='.$projects_per_judge.' </small> <i class="icon-exclamation-sign wsu_tooltip" rel="tooltip" title="Manual assignment allows you to disregard these settings. Please use your best judgement."></i>
 				</p>

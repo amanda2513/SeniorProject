@@ -116,7 +116,7 @@
 			Name, Department, Email, Password
 			Same for all users until IF statement
 		-->
-		<form class="form-horizontal" name="registration" id="registration" method="post" accept-charset="utf-8" action='<?php echo base_url()."manage_users/add_user_validation";?>'>
+		<form class="form-horizontal" enctype="multipart/form-data" name="registration" id="registration" method="post" accept-charset="utf-8" action='<?php echo base_url()."manage_users/add_user_validation";?>'>
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="row-fluid">
@@ -173,6 +173,13 @@
 									<label class="control-label" for="project_desc">Description:</label>
 									<div class="controls">
 										<textarea name="project_desc" class="input-xlarge" id="description" rows="10" placeholder="Abstract should not exceed 250 words"></textarea>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="project_abstract_pdf">Upload Abstract: </label>
+									<div class="controls">
+										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+										<input name="project_abstract_pdf" type="file" id="abstract_pdf">
 									</div>
 								</div>
 							</div><!--close right column (participant only) span-->';

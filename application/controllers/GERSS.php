@@ -106,6 +106,9 @@ class Gerss extends CI_Controller {
 			$this->form_validation->set_rules('category', 'Project Category', 'required|trim');
 			$this->form_validation->set_rules('project_title', 'Project Title', 'required|trim');
 			$this->form_validation->set_rules('project_desc', 'Project Description', 'required|trim|callback_limit_words');
+			if(empty($_FILES['project_abstract_pdf']['name'])){
+				$this->form_validation->set_rules('project_abstract_pdf','Abstract Form','required');
+			}
 		}
 		
 		$this->form_validation->set_message('is_unique', "User ".$this->session->userdata('username')." is already registered.");

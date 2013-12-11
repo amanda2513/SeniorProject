@@ -10,5 +10,5 @@ application/logs/*
 
 application/config/database.php
 
-application/abstract_uploads/*
-!application/abstract_uploads/READ_ME.txt
+abstract_uploads/*
+!abstract_uploads/READ_ME.txt
