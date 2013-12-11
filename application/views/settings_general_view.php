@@ -68,6 +68,19 @@
 				bootbox.alert('Sorry, judges cannot be assigned at this time. <br> Please verify that the settings have been saved and the registration cut-off date has passed.');
 			}
 		}
+
+		function resetSystemPrompt(){
+			bootbox.dialog("<p class='text-center'>This will <strong><em>permanently</em></strong> delete all Participants, Judges, Scorers, Scores, and General Settings. Admin and Project Category Settings will not be deleted. <br> <br> Are you sure you want to reset the system? <br> <em>You may want to export scores first!</em></p>",[{
+				"label": "Reset System",
+				"class":"btn wsu_btn_danger pull-left",
+				"callback": function(){
+					window.location.href='<?php echo base_url()."settings/reset_system";?>';
+				}
+			}, {
+				"label": "Cancel",
+				"class":"btn wsu_btn pull-right"
+			}]);
+		}
 	</script>
 
 </head>
@@ -127,6 +140,8 @@
   				echo '<br>';
   			}
   		?>
+  		<hr>
+  		<p><strong>Current Year's Settings</strong></p>
 
 		<form class="form-horizontal" name="general_settings" id="general_settings" method="post" accept-charset="utf-8" action='<?php echo base_url()."settings/general_settings_form";?>'>
 			<div class="row-fluid">
@@ -291,6 +306,24 @@
 				</div><!--close settings span-->
 			</div><!--close settings row-fluid-->
 		</form><!--close form-->
+		<br>
+		<hr>
+		<div class="end_year">
+			<p><strong>Export Scores &amp; Reset System</strong></p>
+			<br>
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="span2 offset4">
+						<a class="btn wsu_btn" href="<?php echo base_url()?>settings/export_scores">Export Scores</a>
+					</div>
+					<div class="span3">
+						<button class="btn wsu_btn_danger" onclick="resetSystemPrompt();">Reset System</button>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
 	</div><!--close hero-unit-->
 </body>
 </html>

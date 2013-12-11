@@ -175,4 +175,86 @@ class Scores_model extends CI_Model {
 		return $sql->row('avg_score');
 	}
 
+	public function get_final_scores(){
+		$this->load->model('users_model');
+		$this->load->model('judge_assignment_model');
+		$this->load->model('category_settings_model');
+		
+		$data['projects']=$this->users_model->get_some_participant_info();
+
+		foreach($data['projects'] as $project){
+			$category = $this->category_settings_model->get_category($project->category);
+			$project->TotalScore = 0;
+			$subcategories=$this->category_settings_model->get_subcategories($category->cat_id);
+			foreach($subcategories as $scat_key=>$subcat){
+				$criteria_count = 0;
+				$subcat_score=0;
+				$subcat->criteria = $this->category_settings_model->get_criteria($subcat->subcat_id);
+				foreach($subcat->criteria as $crit_key=>$criterion){
+					$criterion->avg_points = $this->scores_model->average_criterion_score($criterion->criteria_id,$project->project_id);
+					$project->TotalScore+=$criterion->avg_points;
+				}
+			}
+			$project->PointsPossible = $this->category_settings_model->get_category_pts_possible($category->cat_id);
+			$project->ScorePercent = round($project->TotalScore / $project->PointsPossible * 100,2);
+
+		}
+		
+		$scores = json_decode(json_encode($data['projects']), true);
+		
+		return $scores;
+
+		// echo '<pre>';
+		// print_r($scores);
+		// echo '</pre>';
+
+	}
+
+	public function export_scores($data){
+
+		$colnames = array(
+			'project_id' => "Project ID",
+			'username' => "WSU Access ID",
+			'lastname' => "Last Name",
+			'firstname' => "First Name",
+			'college' => "College",
+			'department' => "Department",
+			'category' => "Project Category",
+			'TotalScore' => "Score",
+			'PointsPossible' => "Points Possible",
+			'ScorePercent' => "Score Percentage"
+		);
+
+		function map_colnames($input){
+			global $colnames;
+			return isset($colnames[$input]) ? $colnames[$input] : $input;
+		}
+
+
+	    function cleanData(&$str){
+			$str = preg_replace("/\t/", "\\t", $str);
+			$str = preg_replace("/\r?\n/", "\\n", $str);
+			if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
+		}
+
+		// filename for download
+		$filename = "GradExped_Scores_" . date('MY') . ".xls";
+
+		header("Content-Disposition: attachment; filename=\"$filename\"");
+		header("Content-Type: application/vnd.ms-excel");
+		//header("Content-Type: text/plain");
+		$flag = false;
+		$i = 0;
+		while($i<count($data)) {
+			if(!$flag) {
+				// display field/column names as first row
+				$firstline = array_map("map_colnames", $colnames);
+				echo implode("\t", $firstline) . "\r\n";
+				$flag = true;
+			}
+			array_walk($data[$i], 'cleanData');
+			echo implode("\t", array_values($data[$i])) . "\r\n";
+			$i++;
+		}
+	}
 }

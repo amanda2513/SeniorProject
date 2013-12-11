@@ -135,9 +135,9 @@
 							<input type="hidden" name="type" id="type" value="<?php echo $selected_type?>">
 							
 							<div class="control-group">
-			    				<label class="control-label" for="userid">UserID:</label>
+			    				<label class="control-label" for="userid">WSU Access ID:</label>
 			    				<div class="controls inline" name="userid">
-			    					<input type="text" name="userid" class="input-large" placeholder="UserID"/>
+			    					<input type="text" name="userid" class="input-large"/>
 			    				</div>
 			    			</div>
 						</div><!--close left span-->

@@ -382,4 +382,16 @@ class Settings extends CI_Controller {
 			redirect(base_url()."gerss/home",$this->input->post('redirect'));
 		}
 	}
+
+	public function export_scores(){
+		if ($this->session->userdata('is_logged_in')&&$this->session->userdata('role')=='admin'){
+			$this->load->model('scores_model');
+			$scores = $this->scores_model->get_final_scores();
+			$this->scores_model->export_scores($scores);
+		}
+		else{
+			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
+			redirect(base_url()."gerss/home",$this->input->post('redirect'));
+		}
+	}
 }

@@ -295,7 +295,18 @@ class Users_model extends CI_Model {
 
 		return $sql->result();
 	}
-//NOTE: Missing in Plamen's.
+
+	public function get_some_participant_info(){
+		$this->db->select('p.project_id, username, lastname, firstname, college, department, category');
+		$this->db->from('participants');
+		$this->db->join('projects p', 'participants.project_id = p.project_id');
+		$this->db->join('users', 'participants.participant_id = users.id');
+
+		$sql = $this->db->get();
+
+		return $sql->result();
+	}
+
 	public function get_selected_project_info($project_id){
 		$this->db->where('projects.project_id',$project_id);
 		$this->db->from('projects');
@@ -317,7 +328,7 @@ class Users_model extends CI_Model {
 
 		return $sql->result();
 	}
-//NOTE: Missing in Plamen's
+
 	public function filter_projects_by_category($category_name){
 		$this->db->where('category',$category_name);
 		$this->db->from('projects');

@@ -260,6 +260,21 @@ hr{
 	color: #333333;
 }
 
+.wsu_btn_danger{
+	background: #CC0000;
+	color:#ffffff;
+}
+
+.wsu_btn_danger:hover{
+	background-color: #990000;
+	color: #ffffff;
+}
+
+.wsu_btn[disabled]:hover{
+	background: #CC0000 !important;
+	color: #ffffff;
+}
+
 .wsu_pagination {
 	margin:0;
 	width: 50%;
