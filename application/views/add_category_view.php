@@ -41,7 +41,7 @@
 						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 						'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
 							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
-							'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
+							'<input type="number" min="0" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
@@ -68,7 +68,7 @@
 				'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][desc]" class="input-large" rows="3"></textarea>'+
 					'<i class="icon-remove" onclick="delete_criterion('+$subcat_id+","+subcategory_criteria_count[$subcat_id]+')"></i>'+
-					'<input type="number" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][points]" class="input-large"/>'+
+					'<input type="number" min="0" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
 
@@ -90,11 +90,11 @@
 				</div>
 				<div class="span5">
 				</div>
-				<div class="span2 offset2">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -184,7 +184,7 @@
 										<label class="control-label" for="subcategory0_criteria">Criterion:</label>
 										<div class="controls inline" name="subcategory[0][criteria][]">
 											<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory[0][criteria][0][desc]" class="input-large" rows="3"></textarea>
-											<input type="number" placeholder="Points Possible" name="subcategory[0][criteria][0][points]" class="input-large"/>
+											<input type="number" min="0" placeholder="Points Possible" name="subcategory[0][criteria][0][points]" class="input-large"/>
 										</div>
 									</div>
 								</div>

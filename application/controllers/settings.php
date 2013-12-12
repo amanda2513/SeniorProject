@@ -130,6 +130,7 @@ class Settings extends CI_Controller {
 
 	public function edit_category_validation(){
 		if ($this->session->userdata('is_logged_in')&&$this->session->userdata('role')=='admin'){
+//			echo '<pre>'; print_r($_POST); echo '</pre>';
 
 			$this->load->library('form_validation');
 
@@ -140,13 +141,15 @@ class Settings extends CI_Controller {
 						'subcategory['.$subcat_id.'][name]',
 						'Subcategory Name','required|trim|xss_clean');
 				
-				foreach($subcategory['criteria'] as $criteria_id=>$subcat_criteria){
-					$this->form_validation->set_rules(
-						'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][desc]',
-						'Subcategory Criterion - Description','required|trim|xss_clean');
-					$this->form_validation->set_rules(
-						'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][points]',
-						'Subcategory Criterion - Points Possible','required|trim|numeric|xss_clean');
+				if(isset($subcategory['criteria'])){
+					foreach($subcategory['criteria'] as $criteria_id=>$subcat_criteria){
+						$this->form_validation->set_rules(
+							'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][desc]',
+							'Subcategory Criterion - Description','required|trim|xss_clean');
+						$this->form_validation->set_rules(
+							'subcategory['.$subcat_id.'][criteria]['.$criteria_id.'][points]',
+							'Subcategory Criterion - Points Possible','required|trim|numeric|xss_clean');
+					}
 				}
 			}
 
@@ -176,27 +179,36 @@ class Settings extends CI_Controller {
 	// everything that's valid has been added to db			
 
 						if(isset($subcat_id)){
-							foreach($subcategory['criteria'] as $criteria_index=>$subcat_criteria){
-								
-								$this->input->post($subcat_criteria['id']);
-								
-								$data= array(
-									'subcat_id' => $subcat_id,
-									'desc' => $subcat_criteria['desc'],
-									'points' => $subcat_criteria['points'],
-									'criteria_id' => $subcat_criteria['id']
-								);
+							if(isset($subcategory['criteria'])){
+								foreach($subcategory['criteria'] as $criteria_index=>$subcat_criteria){
+									
 
-								if(isset($subcat_criteria['id'])){
-									if(!$this->category_settings_model->update_criteria($data)){
-										$redirect=$this->session->set_flashdata('errors','Database Error from '. $subcat_criteria['desc'] .' and '. $subcat_criteria['points'] . ' Please Try Again.');
-										redirect(base_url()."settings/categories/edit/".$orig_catname,$this->input->post('redirect'));
+									if(isset($subcat_criteria['id'])){
+										$this->input->post($subcat_criteria['id']);
+									
+										$data= array(
+											'subcat_id' => $subcat_id,
+											'desc' => $subcat_criteria['desc'],
+											'points' => $subcat_criteria['points'],
+											'criteria_id' => $subcat_criteria['id']
+										);
+										if(!$this->category_settings_model->update_criteria($data)){
+											$redirect=$this->session->set_flashdata('errors','Database Error from '. $subcat_criteria['desc'] .' and '. $subcat_criteria['points'] . ' Please Try Again.');
+											redirect(base_url()."settings/categories/edit/".$orig_catname,$this->input->post('redirect'));
+										}
 									}
-								}
-								else{
-									if(!$this->category_settings_model->add_criteria($data)){
-										$redirect=$this->session->set_flashdata('errors','Database Error from '. $subcat_criteria['desc'] .' and '. $subcat_criteria['points'] . ' Please Try Again.');
-										redirect(base_url()."settings/categories/edit/".$orig_catname,$this->input->post('redirect'));
+									else{
+									
+										$data= array(
+											'subcat_id' => $subcat_id,
+											'desc' => $subcat_criteria['desc'],
+											'points' => $subcat_criteria['points']
+										);
+
+										if(!$this->category_settings_model->add_criteria($data)){
+											$redirect=$this->session->set_flashdata('errors','Database Error from '. $subcat_criteria['desc'] .' and '. $subcat_criteria['points'] . ' Please Try Again.');
+											redirect(base_url()."settings/categories/edit/".$orig_catname,$this->input->post('redirect'));
+										}
 									}
 								}
 							}
@@ -220,7 +232,7 @@ class Settings extends CI_Controller {
 			//no errors
 			$redirect=$this->session->set_flashdata('success','Project Category Updated');
 			redirect(base_url()."settings/categories",$this->input->post('redirect'));
-		}
+	 	}
 		else{
 			$redirect=$this->session->set_flashdata('errors','You do not have sufficient permissions to view that page.');
 			redirect(base_url()."gerss/home",$this->input->post('redirect'));

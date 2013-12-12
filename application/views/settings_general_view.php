@@ -34,6 +34,10 @@
 				defaultTime: false
 			});
 		});
+
+		function printAllScorecards(printAbstracts){
+			window.open('<?php echo base_url()."scores/all_judge_scorecards";?>/'+printAbstracts, 'Scorecard', 'width=700, height=700');
+		};
 	</script>
 
 	<script type="text/javascript">
@@ -93,11 +97,11 @@
 				</div>
 				<div class="span5">
 				</div>
-				<div class="span2 offset2">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -317,12 +321,18 @@
 			<p><strong>Reports &amp; System Reset</strong></p>
 			<br>
 			<div class="row-fluid">
-				<div class="span12">
-					<div class="span2 offset4">
-						<a class="btn wsu_btn" href="<?php echo base_url()?>settings/export_scores">Export Scores</a>
+				<div class="span11 offset1">
+					<div class = "span3">
+						<button class="btn wsu_btn" onclick="printAllScorecards(1);" id="btn_print_scorecards_and_abstracts"><i class="icon-print"></i> Abstracts &amp; Scorecards</button>
+					</div>
+					<div class = "span3">
+						<button class="btn wsu_btn" onclick="printAllScorecards(0);" id="btn_print_scorecards"><i class="icon-print"></i> Just Scorecards</button>
 					</div>
 					<div class="span3">
-						<button class="btn wsu_btn_danger" onclick="resetSystemPrompt();">Reset System</button>
+						<a class="btn wsu_btn" href="<?php echo base_url()?>settings/export_scores"><i class="icon-download"></i> Export Scores</a>
+					</div>
+					<div class="span3">
+						<button class="btn wsu_btn_danger" onclick="resetSystemPrompt();"><i class="icon-white icon-warning-sign"></i> Reset System</button>
 					</div>
 				</div>
 			</div>

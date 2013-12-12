@@ -1,29 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-	<title><?php echo $title;?></title>
-	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap.css');?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'bootstrap-responsive.css');?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo (CSS.'scorecard_print.css');?>">
-	<link rel="icon" type="image/ico" href="http://wayne.edu/global/favicon.ico"/>
-	<script type="text/javascript" src="<?php echo (JS.'jquery-1.9.1.min.js');?>"></script>
-	<script type="text/javascript" src="<?php echo (JS.'jquery.tablesorter.js');?>"></script>
-	<script type="text/javascript" src="<?php echo (JS.'bootstrap.js');?>"></script>
-	<script type="text/javascript">	
-		$(document).ready(function() {		
-			$("#project_participants_table").tablesorter( {sortList: [[0,0]]});
-		});	
 
-		function printScorecard(){
-			//var printButton = document.getElementsByTagName("button");
-			$('.printButton').hide();
-			window.print();
-			$('.printButton').show();
-		}
-	</script>
-</head>
-
-<body>
 	<?php
 		if($this->session->userdata('role')=='judge'){
 			$judge_name = $this->session->userdata('ln').', '.$this->session->userdata('fn');
@@ -34,22 +9,25 @@
 		else{
 			$judge_name = "<input type='text' class='input-medium'>";
 		}
+	
+	if($this->uri->segment(3)==true || !empty($this->uri->segment(3))){
+		echo'
+		<div class="page">
+			<button class="printButton pull-right btn wsu_btn btn-medium" onclick="printScorecard();">Print</button>';
+			if(isset($project->abstract)){
+				echo '<iframe width="100%" height="100%" name="plugin" src="'.base_url().'abstract_uploads/'.$project->username.'_abstract.pdf"></iframe';
+			}
+		echo'
+		</div>';
+	}
 	?>
 
-	<div class="page">
-		<button class="printButton pull-right btn wsu_btn btn-medium" onclick="printScorecard();">Print</button>	
-		<?php
-		
-		if(isset($project->abstract)){
-			//echo '<iframe src="'.base_url().'abstract_uploads/'.$project->username.'_abstract.pdf" width="100%" height="810" seamless></iframe>';
-			echo '<iframe width="100%" height="100%" name="plugin" src="'.base_url().'abstract_uploads/'.$project->username.'_abstract.pdf"></iframe';
+	<div class="page" id="page">
+	<?php
+		if($this->uri->segment(3)==false || empty($this->uri->segment(3))){
+			echo'<button class="printButton pull-right btn wsu_btn btn-medium" onclick="printScorecard();">Print</button>';
 		}
-		?>
-	</div>
-
-	<div class="page">
-		
-
+	?>
 
 		<div class="page-header" id="print_header">
 			<div id="scorecard_title" class="text-center">
@@ -103,5 +81,3 @@
 			</table>';
 		?>
 	</div>
-</body>
-</html>

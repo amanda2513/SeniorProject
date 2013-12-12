@@ -36,11 +36,13 @@
 				<div class="span3 pull-left">
 					<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
 				</div>
-				<div class="span2 offset7">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span5">
+				</div>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -249,13 +251,13 @@
 							//open right column - span6 - participant only
 							'<div class="span6" id="project_info_span">
 
-								<p class="text-center muted"><small>Project Information: All Fields are Optional</small></p>
+								<p class="text-center muted"><small>Project Information: Category Field is Required</small></p>
 
 								<div class="control-group">
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="0">Select a Category</option>';
+											<option value="">Select a Category</option>';
 											foreach($categories as $category){
 												if($project_data->category==$category->category){
 													$selected = "selected='selected'";
@@ -271,7 +273,7 @@
 
 								<div class="control-group">
 									<label class="control-label" for="project_abstract_pdf">Upload Abstract: '; 
-									if(isset($project_data->abstract)){
+									if(isset($project_data->abstract) && $project_data->abstract != NULL){
 											echo '<i class="icon-ok-sign wsu_tooltip" rel="tooltip" title="Abstract is already uploaded, but you can upload another to replace it."></i>';
 										}
 										else{
@@ -281,9 +283,18 @@
 									<div class="controls">
 										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 										<input name="project_abstract_pdf" type="file" id="abstract_pdf">
+										<small class="muted">PDF files only</small>
 									</div>
-								</div>
-							</div><!--close right column (participant only) span-->';
+								</div>';
+								if(isset($project_data->abstract) && $project_data->abstract != NULL){
+								echo '<div class="control-group">
+										<label class="control-label" for="project_abstract_pdf">Current Abstract: </label>
+										<div class="controls">
+											<a class="wsu_btn btn" href="'.base_url().$project_data->abstract.'">View</a>
+										</div>
+									</div>';
+								}
+						echo'</div><!--close right column (participant only) span-->';
 
 						}
 						else{

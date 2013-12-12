@@ -16,28 +16,26 @@
 			if($logged_in){
 				echo'
 				<div class="row-fluid">
-					<div class="row-fluid">
 						<div class="span12">
 							<div class="span3 pull-left">
 								<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
 							</div>
-							<div class="span2 offset7">
-								<div class="span6" id="wsu_login_message">
-									Welcome, '.$this->session->userdata('fn').' '.$this->session->userdata('ln').'
+							<div class="span5">
+							</div>
+							<div class="span4 pull-right">
+								<div class="span4 offset4" id="wsu_user_welcome">
+									Welcome,<br>'.$this->session->userdata('fn').' '.$this->session->userdata('ln').'
 								</div>
-								<div class="span6">
-			            			<a class="btn wsu_btn" id="sign_out_btn" href='.base_url(). "gerss/logout".'>Sign Out</a>
+								<div class="span4">
+			            			<a class="btn wsu_btn" id="sign_out_btn" href="'.base_url()."gerss/logout".'">Sign Out</a>
 			            		</div>
-							</div><!--end sign-out div-->		
+							</div>			
 						</div>
 					</div>
 					<div class="row-fluid">
 						<div class="wsu_title text-center span12">
 							Graduate Exhibition Registration &amp; Scoring System
 						</div>
-					</div>
-					<div class="row-fluid">
-						
 					</div>
 				</div><!--End Header Row-fluid-->
 			</div><!--End Header-->';
@@ -101,21 +99,24 @@
 							</div>
 						</div>
 					</div>
-						<div class="span7">';
+					<div class="span7">
+						<div class="row-fluid">';
 		
 					if($this->session->flashdata('credentials_error')){
 						echo '
 							<div class="alert text-center span6 offset5 wsu_sign_in_alert" id="wsu_alert">
 								<strong>'.$this->session->flashdata('credentials_error').'</strong>
-							</div>';
+							</div>
+						</div>';
 		  			}
 		  			else{
 		  				echo '
-		  					<div class="span7 text-center pull-right" id="wsu_login_message">
+		  					<div class="span6 offset1 text-center pull-right" id="wsu_login_message">
 		  						Register / Sign In
-		  					</div>';
+		  					</div>
+		  				</div>';
 		  			}
-					echo' <div class="pull-right">';
+					echo' <div class="row-fluid"><div class="pull-right">';
 					$form_attributes = 
 						array('name'=>'signinform','class'=>'span12 form-inline','id'=>'sign_in_form');
 					echo form_open('gerss/login_validation', $form_attributes);
@@ -134,13 +135,15 @@
 
 					form_close();
 					echo'
-							</div>
-						</div>
-					</div><!--End Header row-fluid-->';
+							</div><!--row-fluid-->
+							</div><!--End right span-->
+						</div><!--End row-fluid-->
+					</div><!--End Header row-fluid-->
+
+				</div><!--End Header-->';
 				}
 				
 			?>
-	</div><!--End Header-->
 
 	<div class="hero-unit wsu_hero_unit">
 		<?php

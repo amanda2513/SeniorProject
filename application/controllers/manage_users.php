@@ -255,7 +255,9 @@ class Manage_users extends CI_Controller {
 			$this->form_validation->set_rules('department','Department','required|trim');
 			$this->form_validation->set_rules('userid', 'Username', 'required|trim');
 					
-			
+			if($this->input->post('type')=='participant'){
+				$this->form_validation->set_rules('category', 'Category', 'required|trim');
+			}
 			
 			if ($this->form_validation->run()){
 				

@@ -43,11 +43,11 @@
 				</div>
 				<div class="span5">
 				</div>
-				<div class="span2 offset2">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -98,7 +98,7 @@
 
 		<form class="form-search" method="post" action='<?php $id=2; echo base_url()."manage_users/search_users_participant_view/$id"; ?>'>
 			<div class="input-append">
-				<input type="text" name="search_judge" id="search_judge" class="input-medium search-query" placeholder="Judge's Last Name">
+				<input type="text" name="search_judge" id="search_judge" class="input-large search-query" placeholder="Judge's Last Name">
 				<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 			</div>
 			<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."manage_users/judge";?>">Clear</a>

@@ -18,11 +18,11 @@
 				</div>
 				<div class="span5">
 				</div>
-				<div class="span2 offset2">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -154,7 +154,7 @@
 							//open right column - span6 - participant only
 							'<div class="span6" id="project_info_span">
 
-								<p class="text-center muted"><small>Project Information: Category Field is Required</small></p>
+								<p class="text-center muted"><small>Project Information: Category &amp; Abstract are Required</small></p>
 
 								<div class="control-group">
 									<label class="control-label" for="category">Category:</label>
@@ -173,6 +173,7 @@
 									<div class="controls">
 										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 										<input name="project_abstract_pdf" type="file" id="abstract_pdf">
+										<small class="muted">PDF files only</small>
 									</div>
 								</div>
 							</div><!--close right column (participant only) span-->';

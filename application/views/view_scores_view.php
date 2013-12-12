@@ -15,8 +15,8 @@
 	<script type="text/javascript">	
 		$(document).ready(function() {		
 			$("#scores_table").tablesorter({
-				sortForce: [[5,1]],
-				sortList: [[5,1]],
+				sortForce: [[4,1]],
+				sortList: [[4,1]],
 				cssChildRow: "tablesorter-childRow"
 			});
 
@@ -48,11 +48,11 @@
 				</div>
 				<div class="span5">
 				</div>
-				<div class="span2 offset2">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -111,7 +111,7 @@
 			<div class="span5">
 				<form class="form-search" method="post" action='<?php echo base_url()."scores/view/";?>'>
 					<div class="input-append">
-						<input type="text" name="search_participants" id="search_participants" class="input-medium search-query" placeholder="Participant's Last Name">
+						<input type="text" name="search_participants" id="search_participants" class="input-large search-query" placeholder="Participant's Last Name">
 						<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 					</div>
 					<a class="btn wsu_btn" id="clear" href="<?php echo base_url()."scores/view";?>">Clear</a>
@@ -218,13 +218,13 @@
 									<div class="accordian-body collapse score_breakdown" id="scores_'.$project->lastname.'">
 										<div class="row-fluid hidden-phone hidden_row_headers">
 											<div class="span3 text-center">
-												<em>Subcategory</em>
+												<strong>Subcategory</strong>
 											</div>
 											<div class="span6 text-center">
-												<em class="text-center">Criteria Scores</em>
+												<strong class="text-center">Criteria Scores</strong>
 											</div>
 											<div class="span3 text-center">
-												<em>Subcategory Total</em>
+												<strong>Subcategory Total</strong>
 											</div>
 										</div>
 										<hr>';

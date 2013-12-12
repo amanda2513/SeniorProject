@@ -14,7 +14,7 @@
 	<script type="text/javascript">		
 		$(document).ready(function() {		
 			$("#scores_table").tablesorter({
-				sortList: [[5,1]]
+				sortList: [[4,1]]
 			});
 		});
 
@@ -55,6 +55,9 @@
 			<thead>
 				<tr>
 					<th>
+						AccessID
+					</th>
+					<th>
 						Participant Name
 					</th>
 					<th>
@@ -76,7 +79,7 @@
 							echo 
 
 							'<tr>
-							
+								<td>' . $project->username. '</td>
 								<td>' . $project->lastname. ', '. $project->firstname . '</td>
 								<td>' . $project->category . '</td>
 								<td>

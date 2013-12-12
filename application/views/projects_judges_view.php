@@ -18,10 +18,6 @@
 		function printScorecard(id){
 			window.open('<?php echo base_url()."scores/judge_scorecard/";?>'+id, 'Scorecard', 'width=700, height=700');
 		};
-
-		function printAllScorecards(){
-			window.open('<?php echo base_url()."scores/all_judge_scorecards";?>', 'Scorecard', 'width=700, height=700');
-		};
 	</script>
 </head>
 <body>
@@ -33,11 +29,11 @@
 				</div>
 				<div class="span5">
 				</div>
-				<div class="span2 offset2">
-					<div class="span6" id="wsu_login_message">
-						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+				<div class="span4 pull-right">
+					<div class="span4 offset4" id="wsu_user_welcome">
+						Welcome,<br><?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
 					</div>
-					<div class="span6">
+					<div class="span4">
             			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
             		</div>
 				</div>			
@@ -97,7 +93,7 @@
         	echo'
 			<form class="form-search" method="post" action="'.base_url()."gerss/search/$id".'">
 				<div class="input-append">
-					<input type="text" name="search"  id="search" class="input-medium search-query" placeholder="'."Judge's".' Last Name">
+					<input type="text" name="search"  id="search" class="input-large search-query" placeholder="'."Judge's".' Last Name">
 					<button class="btn wsu_btn" type="submit" id="search"><i class="icon-search"></i> Search</button>
 				</div>
 				<a class="btn wsu_btn" id="clear" href="'.base_url()."gerss/projects_participants".'">Clear</a>
@@ -110,7 +106,6 @@
 			<li><a href="<?php echo base_url()."gerss/projects_participants"?>">Participants</a></li>
 			<li class="active"><a href="<?php echo base_url()."gerss/projects_judges"?>">Judges</a></li>
 			<?php if($this->session->userdata('role')=='admin'){echo'<a class="btn wsu_btn pull-right" href="'.base_url()."manage_users/add?type=".urlencode("judge").'" id="btn_add_judge"><i class="icon-plus"></i> Add Judge</a>';}?>
-			<?php if($this->session->userdata('role')=='admin'){echo'<button class="btn wsu_btn pull-right enable_buttons" onclick="printAllScorecards();" id="btn_print_scorecards"><i class="icon-print"></i> Print All Judge Scorecards</button>';}?>
 		</ul>
 
 		<table id="project_judges_table" class="table table-bordered table-striped tablesorter">
@@ -169,7 +164,7 @@
 											
 									foreach($row->assignments as $assigned){
 										if(isset($assigned->abstract))
-											echo '<iframe src="'.base_url().'abstract_uploads/'.$assigned->username.'_abstract.pdf" width="100%" height="300px" seamless readonly></iframe><hr>';
+											echo '<iframe src="'.base_url().'abstract_uploads/'.$assigned->username.'_abstract.pdf" scrolling="yes" width="100%" height="300px" seamless readonly>Your browser does not support PDF viewing. View the abstract <a href="'.base_url().'abstract_uploads/'.$assigned->username.'_abstract.pdf">here</a>.<br></iframe><hr>';
 										else
 											echo '<p class="text-center hidden_row_headers">There is no abstract for '.$assigned->lastname.', '.$assigned->firstname.'</p><hr>';
 									}

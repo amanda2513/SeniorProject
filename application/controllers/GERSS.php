@@ -103,7 +103,8 @@ class Gerss extends CI_Controller {
 
 		if($this->input->post('type')=='participant')
 		{
-			$this->form_validation->set_rules('category', 'Project Category', 'required|trim');
+			$this->form_validation->set_rules('category', 'Category', 'required|trim');
+			
 			if(empty($_FILES['project_abstract_pdf']['name'])){
 				$this->form_validation->set_rules('project_abstract_pdf','Abstract Form','required');
 			}

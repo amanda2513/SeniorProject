@@ -157,7 +157,7 @@
 									<label class="control-label" for="category">Category:</label>
 									<div class="controls">
 										<select name="category" id="category">
-											<option value="0">Select a Category</option>';
+											<option value="">Select a Category</option>';
 											foreach($categories as $category){
 												echo '<option value="'.$category->category.'">'. $category->category.'</option>';
 											}
@@ -170,6 +170,7 @@
 									<div class="controls">
 										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 										<input name="project_abstract_pdf" type="file" id="abstract_pdf">
+										<small class=muted>PDF files only</small>
 									</div>
 								</div>
 							</div><!--close right column (participant only) span-->
