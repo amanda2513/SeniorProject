@@ -147,9 +147,7 @@ class Users_model extends CI_Model {
 
 		if($did_add_user){
 			$data = array(
-				'category'=>$this->input->post('category'),
-				'title'=>$this->input->post('project_title'),
-				'description'=>$this->input->post('project_desc')
+				'category'=>$this->input->post('category')
 				);
 
 			
@@ -322,9 +320,7 @@ class Users_model extends CI_Model {
 
 		if($did_update_user){
 			$data = array(
-				'category'=>$this->input->post('category'),
-				'title'=>$this->input->post('project_title'),
-				'description'=>$this->input->post('project_desc')
+				'category'=>$this->input->post('category')
 				);
 			$this->db->where('project_id',$project_id);
 			$did_update_project = $this->db->update('projects',$data);

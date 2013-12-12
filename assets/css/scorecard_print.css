@@ -2,6 +2,10 @@ html{
 	width:100%;
 }
 
+body{
+	margin:0;
+}
+
 img{
 	max-width:10%;
 	width:10%;
@@ -45,10 +49,20 @@ img{
 	margin-bottom:10%;
 }
 
+.printButton{
+	margin-top:0;
+	margin-bottom:10%;
+}
+
 #print_header{
 	margin-bottom:1%;
 }
 
-@page { size 8.5in 11in; margin: 2cm }
+@page { size: 8.5in 11in; }
 
-div.page { page-break-after: always }
+div.page { 
+	font-size: 12pt; 
+    height: 810px;
+    page-break-after: always;
+    page-break-inside: avoid;
+}

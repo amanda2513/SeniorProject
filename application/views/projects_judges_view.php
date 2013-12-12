@@ -34,7 +34,12 @@
 				<div class="span5">
 				</div>
 				<div class="span2 offset2">
-		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+					<div class="span6" id="wsu_login_message">
+						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+					</div>
+					<div class="span6">
+            			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
+            		</div>
 				</div>			
 			</div>
 		</div>
@@ -160,40 +165,17 @@
 							<tr class="tablesorter-childRow">
 								<td colspan="5" class="hiddenRow">'.'
 									<div class="accordian-body collapse" id="judge_'.$row->id.'_assignments">
-										<div class="row-fluid hidden_row_headers">
-											<div class="span3">
-												<em>Participant Name</em>
-											</div>
-											<div class="span2">
-												<em>Project Category</em>
-											</div>
-											<div class="span3">
-												<em>Project Title</em>
-											</div>
-											<div class="span4">
-												<em>Project Description</em>
-											</div>
-										</div>
-										<hr>';
+										<div class="row-fluid hidden_row_headers">';
+											
 									foreach($row->assignments as $assigned){
-										echo'
-										<div class="row-fluid">
-											<div class="span3">'.
-												$assigned->lastname.', '.$assigned->firstname.'
-											</div>
-											<div class="span2">'.
-												$assigned->category.'
-											</div>
-											<div class="span3">'.
-												$assigned->title.'
-											</div>
-											<div class="span4">'.
-												$assigned->description.'
-											</div>
-										</div>
-										<hr>';
-										}
+										if(isset($assigned->abstract))
+											echo '<iframe src="'.base_url().'abstract_uploads/'.$assigned->username.'_abstract.pdf" width="100%" height="300px" seamless readonly></iframe><hr>';
+										else
+											echo '<p class="text-center hidden_row_headers">There is no abstract for '.$assigned->lastname.', '.$assigned->firstname.'</p><hr>';
+									}
+
 								echo'
+										</div>
 									</div>
 								</td>
 							</tr>';

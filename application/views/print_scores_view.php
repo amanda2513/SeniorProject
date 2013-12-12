@@ -58,9 +58,6 @@
 						Participant Name
 					</th>
 					<th>
-						Project Title
-					</th>
-					<th>
 						Category
 					</th>
 					<th>
@@ -81,7 +78,6 @@
 							'<tr>
 							
 								<td>' . $project->lastname. ', '. $project->firstname . '</td>
-								<td>' . $project->title . '</td>
 								<td>' . $project->category . '</td>
 								<td>
 									<div>'.

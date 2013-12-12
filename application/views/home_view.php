@@ -22,7 +22,12 @@
 								<a href="http://www.wayne.edu"><img id="wsu_logo" src="'.IMG.'wsu-wordmark.gif'.'"/></a>
 							</div>
 							<div class="span2 offset7">
-			            		<a class="btn wsu_btn" id="sign_out_btn" href='.base_url(). "gerss/logout".'>Sign Out</a>
+								<div class="span6" id="wsu_login_message">
+									Welcome, '.$this->session->userdata('fn').' '.$this->session->userdata('ln').'
+								</div>
+								<div class="span6">
+			            			<a class="btn wsu_btn" id="sign_out_btn" href='.base_url(). "gerss/logout".'>Sign Out</a>
+			            		</div>
 							</div><!--end sign-out div-->		
 						</div>
 					</div>
@@ -30,6 +35,9 @@
 						<div class="wsu_title text-center span12">
 							Graduate Exhibition Registration &amp; Scoring System
 						</div>
+					</div>
+					<div class="row-fluid">
+						
 					</div>
 				</div><!--End Header Row-fluid-->
 			</div><!--End Header-->';

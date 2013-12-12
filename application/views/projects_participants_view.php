@@ -36,7 +36,12 @@
 					<a href="http://www.wayne.edu"><img id="wsu_logo" src="<?php echo (IMG.'wsu-wordmark.gif');?>"/></a>
 				</div>
 				<div class="span2 offset7">
-		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+					<div class="span6" id="wsu_login_message">
+						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+					</div>
+					<div class="span6">
+            			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
+            		</div>
 				</div>			
 			</div>
 		</div>
@@ -180,7 +185,7 @@
 									if(isset($row->abstract))
 										echo '<iframe src="'.base_url().'abstract_uploads/'.$username.'_abstract.pdf" width="100%" height="300px" seamless readonly></iframe>';
 									else
-										echo '<p class="text-center">There is no abstract for '.$row->lastname.', '.$row->firstname.'</p>';
+										echo '<p class="text-center hidden_row_headers">There is no abstract for '.$row->lastname.', '.$row->firstname.'</p>';
 								echo'
 								</div>
 							</td>

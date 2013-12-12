@@ -49,7 +49,12 @@
 				<div class="span5">
 				</div>
 				<div class="span2 offset2">
-		            <a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout"; ?>'>Sign Out</a>
+					<div class="span6" id="wsu_login_message">
+						Welcome, <?php echo $this->session->userdata('fn')?> <?php echo $this->session->userdata('ln')?>
+					</div>
+					<div class="span6">
+            			<a class="btn wsu_btn" id="sign_out_btn" href='<?php echo base_url(). "gerss/logout";?>'>Sign Out</a>
+            		</div>
 				</div>			
 			</div>
 		</div>
@@ -159,10 +164,6 @@
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
 					<th>
-						Project Title
-						<i class="pull-right icon-resize-vertical"></i>
-					</th>
-					<th>
 						Category
 						<i class="pull-right icon-resize-vertical"></i>
 					</th>
@@ -191,7 +192,6 @@
 							'<tr>
 							
 								<td>' . $project->lastname. ', '. $project->firstname . '</td>
-								<td>' . $project->title . '</td>
 								<td>' . $project->category . '</td>
 								<td>';
 									if($project->judge_entry_count!=$project->judge_count){

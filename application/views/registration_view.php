@@ -166,19 +166,6 @@
 								</div>
 
 								<div class="control-group">
-									<label class="control-label" for="project_title">Title:</label>
-									<div class="controls">
-										<input type="text" name="project_title" class="input-xlarge" id="title" placeholder="Title">
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label" for="project_desc">Description:</label>
-									<div class="controls">
-										<textarea name="project_desc" class="input-xlarge" id="description" rows="10" placeholder="Abstract should not exceed 250 words"></textarea>
-									</div>
-								</div>
-
-								<div class="control-group">
 									<label class="control-label" for="project_abstract_pdf">Upload Abstract: </label>
 									<div class="controls">
 										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
