@@ -170,7 +170,7 @@
 									<div class="controls">
 										<input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 										<input name="project_abstract_pdf" type="file" id="abstract_pdf">
-										<small class=muted>PDF files only</small>
+										<p class="muted"><small class="muted">PDF files only</small></p>
 									</div>
 								</div>
 							</div><!--close right column (participant only) span-->
