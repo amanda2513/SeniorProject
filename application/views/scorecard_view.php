@@ -10,7 +10,7 @@
 			$judge_name = "<input type='text' class='input-medium'>";
 		}
 	
-	if($this->uri->segment(3)==true || !empty($this->uri->segment(3))){
+	if($this->uri->segment(3)==true || $this->uri->segment(3)){
 		echo'
 		<div class="page">
 			<button class="printButton pull-right btn wsu_btn btn-medium" onclick="printScorecard();">Print</button>';
@@ -24,7 +24,7 @@
 
 	<div class="page" id="page">
 	<?php
-		if($this->uri->segment(3)==false || empty($this->uri->segment(3))){
+		if($this->uri->segment(3)==false || !$this->uri->segment(3)){
 			echo'<button class="printButton pull-right btn wsu_btn btn-medium" onclick="printScorecard();">Print</button>';
 		}
 	?>
