@@ -40,7 +40,7 @@
 					'<div class="control-group">'+
 						'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 						'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
-							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
+							'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea><br>'+
 							'<input type="number" min="0" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
 						'</div>'+
 					'</div>'+
@@ -67,7 +67,7 @@
 				'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 				'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][desc]" class="input-large" rows="3"></textarea>'+
-					'<i class="icon-remove" onclick="delete_criterion('+$subcat_id+","+subcategory_criteria_count[$subcat_id]+')"></i>'+
+					'<i class="icon-remove" onclick="delete_criterion('+$subcat_id+","+subcategory_criteria_count[$subcat_id]+')"></i><br>'+
 					'<input type="number" min="0" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+subcategory_criteria_count[$subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
@@ -183,7 +183,7 @@
 									<div class="control-group">
 										<label class="control-label" for="subcategory0_criteria">Criterion:</label>
 										<div class="controls inline" name="subcategory[0][criteria][]">
-											<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory[0][criteria][0][desc]" class="input-large" rows="3"></textarea>
+											<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory[0][criteria][0][desc]" class="input-large" rows="3"></textarea><br>
 											<input type="number" min="0" placeholder="Points Possible" name="subcategory[0][criteria][0][points]" class="input-large"/>
 										</div>
 									</div>

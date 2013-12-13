@@ -37,10 +37,11 @@
 					'<i class="icon-remove" onclick="remove_subcat('+$subcat_id+')"></i>'+
 				'</div>'+
 				'<div id="dynamic_subcat'+$subcat_id+'_criteria">'+
-					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criterion</button>'+					'<div class="control-group">'+
+					'<button class="btn btn-medium wsu_btn" id="add_subcat'+$subcat_id+'_criteria" onclick="add_subcat_criteria('+$subcat_id+');return false;"><i class="icon-plus"></i> Add Criterion</button>'+
+					'<div class="control-group">'+
 					'<label class="control-label" for="subcategory'+$subcat_id+'_criteria">Criterion:</label>'+
 					'<div class="controls inline" name="subcategory['+$subcat_id+'][criteria][]">'+
-						'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea>'+
+						'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][desc]" class="input-large" rows="3"></textarea><br>'+
 						'<input type="number" min="0" placeholder="Points Possible" name="subcategory['+$subcat_id+'][criteria]['+$subcat_id+'][points]" class="input-large"/>'+
 					'</div>'+
 				'</div>'+
@@ -66,7 +67,7 @@
 				'<label class="control-label" for="subcategory'+subcat_id+'_criteria">Criterion:</label>'+
 				'<div class="controls inline" name="subcategory['+subcat_id+'][criteria][]">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][desc]" class="input-large" rows="3"></textarea>'+
-					'<i class="icon-remove" onclick="remove_criterion('+subcat_id+","+subcategory_criteria_count[subcat_id]+')"></i>'+
+					'<i class="icon-remove" onclick="remove_criterion('+subcat_id+","+subcategory_criteria_count[subcat_id]+')"></i><br>'+
 					'<input type="number" min="0" placeholder="Points Possible" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
@@ -119,7 +120,7 @@
 				'<div class="controls inline" name="subcategory['+subcat_id+'][criteria][]">'+
 					'<input type="hidden" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][id]" value="'+db_criteria_id+'">'+
 					'<textarea type="text" placeholder="Ability to answer questions, Significance/relevance stated, etc." name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][desc]" class="input-large" rows="3">'+desc+'</textarea>'+
-					'<i class="icon-remove" onclick="delete_criterion('+db_criteria_id+')"></i>'+
+					'<i class="icon-remove" onclick="delete_criterion('+db_criteria_id+')"></i><br>'+
 					'<input type="number" value="'+points+'" min="0" placeholder="Points Possible" name="subcategory['+subcat_id+'][criteria]['+subcategory_criteria_count[subcat_id]+'][points]" class="input-large"/>'+
 				'</div>'+
 			'</div>';
