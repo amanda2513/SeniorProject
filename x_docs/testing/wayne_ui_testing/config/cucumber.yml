@@ -1,0 +1,1 @@
+default: PLATFORM=PC SELENIUM_DRIVER=selenium_firefox

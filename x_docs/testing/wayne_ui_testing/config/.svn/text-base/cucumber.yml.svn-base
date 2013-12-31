@@ -1,0 +1,11 @@
+default: PLATFORM=PC SELENIUM_DRIVER=selenium_firefox --tags ~@unsupported --tags ~@android --tags ~@ios --tags ~@manual --tags ~@TODO
+firefox: PLATFORM=PC SELENIUM_DRIVER=selenium_firefox --tags ~@unsupported --tags ~@android --tags ~@wip --tags ~@ios --tags ~@manual --tags ~@TODO
+chrome: PLATFORM=PC SELENIUM_DRIVER=selenium_chrome_linux --tags ~@unsupported --tags ~@android --tags ~@wip --tags ~@ios --tags ~@manual --tags ~@TODO
+safari: PLATFORM=PC SELENIUM_DRIVER=selenium_safari_linux --tags ~@unsupported --tags ~@android --tags ~@wip --tags ~@ios --tags ~@manual --tags ~@TODO
+pc_linux: PLATFORM=PC SELENIUM_DRIVER=selenium_firefox_linux --tags ~@unsupported --tags ~@android --tags ~@wip --tags ~@manual --tags ~@ios --tags ~@TODO
+pc_win7: PLATFORM=PC SELENIUM_DRIVER=selenium_firefox_win7 --tags ~@unsupported --tags ~@android --tags ~@wip --tags ~@manual --tags ~@pc --tags ~@ios --tags ~@TODO
+pc_noflash: PLATFORM=PC SELENIUM_DRIVER=selenium_unsupported_flash --tags @unsupported --tags ~@android --tags ~@manual --tags ~@wip --tags ~@ios --tags ~@TODO
+ios: PLATFORM=IOS SELENIUM_DRIVER=iphone --tags ~@android --tags ~@unsupported --tags ~@non-ios --tags ~@manual --tags ~@wip --tags ~@TODO --tags ~@pc --tags ~@bug
+android_with_flash: PLATFORM=ANDROID SELENIUM_DRIVER=android_with_flash --tags ~@unsupported --tags ~@manual --tags ~@android ~@without_flash_installed --tags ~@wip --tags ~@ios --tags ~@TODO
+android_without_flash: PLATFORM=ANDROID_WITHOUT_FLASH SELENIUM_DRIVER=android_without_flash --tags ~@manual --tags @android @without_flash_installed --tags ~@TODO
+android_with_html: PLATFORM=ANDROID_WITHOUT_FLASH SELENIUM_DRIVER=android_with_html --tags ~@unsupported --tags ~@android --tags ~@wip --tags ~@ios --tags ~@manual --tags ~@TODO --tags @android-html

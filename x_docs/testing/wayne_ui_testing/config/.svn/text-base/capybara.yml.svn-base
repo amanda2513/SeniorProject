@@ -1,0 +1,104 @@
+CI:
+  - :profile_name: :selenium_firefox_win7
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: firefox
+      :platform: vista
+      :javascript_enabled: true
+      :css_selectors_enabled: true
+      :takes_screenshot: true
+      :native_events: false
+      :rotatable: false
+    :url: 'http://selenium-hub.media-playout.bbc.co.uk:4444/wd/hub'
+    :resynchronization_timeout: 1000
+
+
+  - :profile_name: :selenium_firefox_linux
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: firefox
+      :platform: linux
+      :javascript_enabled: true
+      :css_selectors_enabled: true
+      :takes_screenshot: true
+      :native_events: false
+      :rotatable: false
+    :url: 'http://selenium-hub.media-playout.bbc.co.uk:4444/wd/hub'
+    :resynchronization_timeout: 1000
+
+  - :profile_name: :selenium_chrome_linux
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: chrome
+      :platform: vista
+      :javascript_enabled: true
+      :css_selectors_enabled: true
+      :takes_screenshot: true
+      :native_events: false
+      :rotatable: false
+    :url: 'http://selenium-hub.media-playout.bbc.co.uk:4444/wd/hub'
+    :resynchronization_timeout: 1000
+
+
+  - :profile_name: :selenium_firefox_linux
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: firefox
+      :platform: linux
+      :javascript_enabled: true
+      :css_selectors_enabled: true
+      :takes_screenshot: true
+      :native_events: false
+      :rotatable: false
+    :url: 'http://selenium-hub.media-playout.bbc.co.uk:4444/wd/hub'
+    :resynchronization_timeout: 1000
+
+
+  - :profile_name: :selenium_unsupported_flash
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: firefox
+      :platform: linux
+      :javascript_enabled: true
+      :css_selectors_enabled: true
+      :takes_screenshot: true
+      :native_events: false
+      :rotatable: false
+      :url: 'http://192.168.3.146:4444/wd/hub'
+      :resynchronization_timeout: 1000
+
+
+  - :profile_name: :iphone
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: iPhone
+      :platform: :mac
+      :javascript_enabled: true
+      :css_selectors_enabled: false
+      :takes_screenshot: false
+      :native_events: false
+      :rotatable: false
+    :url: 'http://192.168.3.143:3001/wd/hub'
+    :resynchronization_timeout: 1000
+
+  - :profile_name: :android_with_flash
+    :browser: :android
+    :url: 'http://selenium-hub.media-playout.bbc.co.uk:3003/wd/hub'
+
+  - :profile_name: :android_with_html
+    :browser: :remote
+    :desired_capabilities:
+      :browser_name: android
+      :javascript_enabled: true
+      :css_selectors_enabled: false
+      :takes_screenshot: false
+      :native_events: false
+      :rotatable: false
+    :url: 'http://testmac.media-playout.bbc.co.uk:3100/wd/hub'
+    :resynchronization_timeout: 1000
+
+DEV:
+  - :profile_name: :selenium_firefox
+    :browser: :firefox
+
+

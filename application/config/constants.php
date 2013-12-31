@@ -49,6 +49,7 @@ define('URL','/SeniorProject/');
 define('IMG',URL.'assets/img/');
 define('CSS',URL.'assets/css/');
 define('JS', URL.'assets/js/');
+define('password', 'ptd6GJJSWoGHAT');
 
 
 /* End of file constants.php */

@@ -149,15 +149,17 @@ class Manage_users extends CI_Controller {
 				if (empty($_FILES['project_abstract_pdf']['name'])){
 					$this->form_validation->set_rules('project_abstract_pdf','Abstract Form','required');
 				}
-			}
+			
 
-			if($_FILES['project_abstract_pdf']['name']){
-				$fileInfo = pathinfo($_FILES["project_abstract_pdf"]["name"]);
+				if($_FILES['project_abstract_pdf']['name']){
+					$fileInfo = pathinfo($_FILES["project_abstract_pdf"]["name"]);
 
-				if($fileInfo['extension']!='pdf'){
-					$redirect=$this->session->set_flashdata('errors','The abstract must be a PDF');
-					redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+					if($fileInfo['extension']!='pdf'){
+						$redirect=$this->session->set_flashdata('errors','The abstract must be a PDF');
+						redirect(base_url()."manage_users/add?type=".$this->input->post('type'),$this->input->post('redirect'));
+					}
 				}
+
 			}
 
 			$this->form_validation->set_message('is_unique', "User ".$this->input->post('userid')." is already registered.");

@@ -69,17 +69,8 @@ class AuthLDAP {
          * something else here before hand in the future.
          */
         $this->ci->load->model('users_model');
-        if($username=='masteradmin'&&$password=='master123'){
+        if($username=='masteradmin'&&$password==password){
             $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'admin', 'coll'=>'Master', 'role'=>'admin'));
-        }
-        elseif($username=='masterjudge'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'judge', 'coll'=>'Master','role'=>'judge'));
-        }
-        elseif($username=='masterscorer'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'scorer', 'coll'=>'Master', 'role'=>'seu'));
-        }
-        elseif($username=='masterparticipant'&&$password=='master123'){
-            $this->ci->session->set_userdata(array('username' => $username,'fn'=>'master', 'ln'=>'participant', 'coll'=>'Master','role'=>'participant'));
         }
         else
         {

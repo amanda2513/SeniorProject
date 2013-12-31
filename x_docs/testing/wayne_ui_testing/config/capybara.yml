@@ -1,0 +1,5 @@
+DEV:
+  - :profile_name: :selenium_firefox
+    :browser: :chrome
+
+

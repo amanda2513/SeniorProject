@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/!svn/ver/1079225/playout/bump3/trunk/config
+END
+capybara.yml
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/!svn/ver/1079225/playout/bump3/trunk/config/capybara.yml
+END
+cucumber.yml
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/!svn/ver/1071268/playout/bump3/trunk/config/cucumber.yml
+END
